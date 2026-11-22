@@ -32,9 +32,9 @@ Autoloads (live for the whole session)
 | `QuestManager` | `scripts/autoload/quest_manager.gd` | Reads `data/quests/quests.json` and works out active, optional and completed objectives plus discoveries from flags. Emits `objective_changed` and `journal_updated`. |
 | `DialogueManager` | `scripts/autoload/dialogue_manager.gd` | Runs conversations from `data/dialogue/*.json`. It emits `line_shown` and `choices_shown`, and waits for `advance()` / `choose()`. Events go to registered handlers. It also has `validate()`, used by the tests. |
 | `AudioManager` | `scripts/autoload/audio_manager.gd` | Crossfaded music and ambience, a pool of 10 sound-effect voices, buses (Music / Ambience / SFX) and per-area reverb. A missing file only produces a warning. |
-| `SaveManager` | `scripts/autoload/save_manager.gd` | One JSON save slot. Saves only when it is safe (no dialogue, cutscene, transition or challenge). Saves are triggered by area changes and objective changes. |
+| `SaveManager` | `scripts/autoload/save_manager.gd` | One JSON save slot. Saves only when it is safe (no dialogue, cutscene, transition or challenge). Saves are triggered by area changes and objective changes. **V2:** writes go through a verified temp file and keep a `.bak` of the previous save (`validate()` checks every field). `block_saving(reason, owner)` ties a block to a node's lifetime. `why_not_saving()` gives the player a reason. |
 | `SceneManager` | `scripts/autoload/scene_manager.gd` | Fades, `change_area(id, spawn, position)`, `goto_scene(path)`, spawn placement and flashes. |
-| `UI` | `scenes/ui/ui.tscn` + `scripts/ui/ui.gd` | The HUD (objective, prompts, toasts, area titles, save note), the Echo screen effect, the dialogue box, journal, document reader, pause and settings. It also registers the global dialogue events. |
+| `UI` | `scenes/ui/ui.tscn` + `scripts/ui/ui.gd` | The HUD (objective, prompts, toasts, area titles, save note), the Echo screen effect, the dialogue box, journal, document reader, pause and settings. It also registers the global dialogue events. **V2 additions:**<br>• `caption(text, world_pos)`: a non-modal line in the world.<br>• `begin_reveal()` / `end_reveal()`: hide prompts and pause toasts while a vision shows.<br>• The reconstruction board and the ritual view. |
 
 ## Key scenes and scripts
 
@@ -52,23 +52,31 @@ Autoloads (live for the whole session)
 - **Areas** (`scripts/world/game_area.gd` plus one script per area):
   - The base class sets camera bounds, music, ambience and reverb, registers the area's dialogue events, and places the player at the requested spawn.
   - Subclasses implement `_area_ready()` and `area_events()`.
-- **Systems** (`scripts/systems/`): `SealPuzzle` is pure logic, which keeps it unit-testable; `MistPulse` is a self-building, telegraphed hazard that you can reuse anywhere.
-- **Screens** (`scripts/ui/`): `main_menu.gd`, `prologue.gd`, and `ending.gd`, which plays the three ending sequences and builds the epilogue from `data/endings.json`.
+- **Systems** (`scripts/systems/`): `SealPuzzle` is pure logic, which keeps it unit-testable; `MistPulse` is a self-building, telegraphed hazard that you can reuse anywhere. **V2:** `ResonanceRitual` is the pure logic of the bell ritual.
+- **Screens** (`scripts/ui/`): `main_menu.gd`, `prologue.gd`, and `ending.gd`, which plays the three ending sequences and builds the epilogue from `data/endings.json`. `ending.gd` exposes `phase` (sequence / title / summary / credits) so tests can check that each ending completes.
+- **V2 interaction details:**
+  - `Interactable.align_select` picks rows of wall targets by where Rowan stands.
+  - `highlight_path` names a sprite that brightens while selected.
+  - `important` makes the prompt gold.
+  - `requires` accepts `"a, b, !c"`.
+- **V2 screens:**
+  - `reconstruction_view.gd`: the Echo Reconstruction board, driven by `data/reconstructions.json`.
+  - `ritual_view.gd`: the bell ritual, which emits `marks_changed`, `note_sung` and `soured` so the tower can light the bell's marks.
 
 ## Dialogue events
 
 A dialogue step `{"event": "name", "args": [...]}` calls a registered `Callable`. The conversation **waits** if the handler is a coroutine (it uses `await`) or returns a `Signal`.
 
-- **Global events** (registered by `UI`): `toast`, `sfx`, `music`, `ambience`, `shake`, `flash`, `open_document`, `fade_out`, `fade_in`, `echo_effect`.
+- **Global events** (registered by `UI`): `toast`, `sfx`, `music`, `ambience`, `shake`, `flash`, `open_document`, `fade_out`, `fade_in`, `echo_effect`, plus V2's `reconstruct` and `caption_here`.
 - **Area events** (returned by each area's `area_events()`):
 
 | Area | Events |
 |---|---|
-| Village | `pip_face_rowan`, `pip_face_tower`, `pip_hum`, `gate_open` |
+| Village | `pip_face_rowan`, `pip_face_tower`, `pip_hum`, `gate_open`, `well_memory`, `well_memory_end` |
 | Forge | `mara_hammer`, `mara_show_pin`, `mara_give_pin` |
 | Chapel | `archive_open`, `alden_enter` |
 | Mist path | `sentinel_stir`, `sentinel_challenge`, `sentinel_fade` |
-| Tower | `install_pin`, `bell_resonate`, `orin_appear`, `orin_look_bell`, `show_vista`, `ending` |
+| Tower | `install_pin`, `bell_resonate`, `orin_appear`, `orin_look_bell`, `show_vista`, `bell_ritual`, `ending` |
 
 `tests/test_data.gd` fails if a conversation uses an event that has no handler.
 

@@ -25,6 +25,7 @@ const MSG_START := "The bell gives you the first note. Follow the shape of the s
 const MSG_BREATH := "A breath. Then the rest of it."
 const MSG_SOUR := "The bell sours. Back to the start of the phrase."
 const MSG_DONE := "The thirteenth note. The one that gives back."
+const MSG_SING_LATER := "Follow the shape with W and S. E sings only the circled note."
 
 var ritual := ResonanceRitual.new()
 var _busy_until := 0.0
@@ -64,13 +65,18 @@ func is_open() -> bool:
 func play_note(note: ResonanceRitual.Note) -> ResonanceRitual.Result:
 	if not visible or _t < _busy_until:
 		return ResonanceRitual.Result.IGNORED
+	# E/Enter only sings the circled last note. Found in the browser test: an
+	# Enter meant for the dialogue just before landed here and soured the bell.
+	if note == ResonanceRitual.Note.SING and ritual.next_needed() != ResonanceRitual.Note.SING:
+		message.text = MSG_SING_LATER
+		return ResonanceRitual.Result.IGNORED
 	var index := ritual.sung
 	var result := ritual.press(note)
 	match result:
 		ResonanceRitual.Result.NEXT:
 			_ring(index)
 			_busy_until = _t + 0.15
-			if message.text == MSG_START or message.text == MSG_SOUR or message.text == MSG_BREATH:
+			if message.text in [MSG_START, MSG_SOUR, MSG_BREATH, MSG_SING_LATER]:
 				message.text = ""
 		ResonanceRitual.Result.PHRASE_DONE:
 			_ring(index)

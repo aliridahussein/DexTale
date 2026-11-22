@@ -217,6 +217,10 @@ func test_ritual_in_the_tower_with_keyboard_retry_and_step_back() -> void:
 	# keyboard: two correct notes, then a wrong one sours and resets the phrase
 	var view := ritual()
 	var r: ResonanceRitual = view.get("ritual")
+	# a stray Enter/E (e.g. still advancing dialogue) is not a wrong note
+	await press("interact")
+	await press("ui_accept")
+	runner.check(r.mistakes == 0 and r.sung == 1, "E before the circled note does not sour the bell")
 	for action in ["move_up", "move_up"]:
 		var before := r.sung
 		var g := 0.0
