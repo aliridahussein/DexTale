@@ -1,0 +1,133 @@
+{
+	"_about": "The Mistbound Path and the Hollow Sentinel.",
+
+	"sentinel_first": [
+		{"event": "sentinel_stir", "hide": true, "wait": 0.5},
+		["sentinel", "Turn back."],
+		["rowan", "I need to reach the tower."],
+		["sentinel", "All who climb must surrender what they carry."],
+		["rowan", "I don't have much."],
+		["sentinel", "Everyone says that before they remember."],
+		{"run": "sentinel_choices"}
+	],
+
+	"sentinel": [
+		{"if": "sentinel_story_heard", "run": "sentinel_riddle"},
+		["sentinel", "You are still here. Turn back. Or answer. Or endure."],
+		{"run": "sentinel_choices"}
+	],
+
+	"sentinel_choices": [
+		{"choice": [
+			{"text": "What are you?", "goto": "what"},
+			{"text": "Let me pass.", "goto": "pass"},
+			{"text": "I won't turn back.", "goto": "endure"}
+		]},
+		{"label": "what"},
+		{"if": "echo_sentinel", "run": "sentinel_story"},
+		["sentinel", "A question wearing armour. Listen, and you may hear the rest."],
+		["narrator", "The figure's outline wavers, like a memory struggling to hold its shape. (Stand close and press F to listen.)"],
+		{"end": true},
+		{"label": "pass"},
+		["sentinel", "Passage is not given. It is understood, or it is endured."],
+		["sentinel", "If you will not understand, then endure. Three breaths of the mist. Walk through them, and the road is yours."],
+		{"choice": [
+			{"text": "I'll walk through the mist.", "goto": "endure"},
+			{"text": "Not yet.", "goto": "wait"}
+		]},
+		{"label": "wait"},
+		["sentinel", "Then stand in the cold a while. It is good for thinking."],
+		{"end": true},
+		{"label": "endure"},
+		["sentinel", "Then walk. When the mist breathes, do not be in its breath."],
+		["narrator", "Light gathers on the ground before each pulse. Cross while the mist is still. Walk back south to stop."],
+		{"event": "sentinel_challenge"}
+	],
+
+	"sentinel_echo": [
+		["narrator", "For a moment the armour is empty. Behind the visor: a boy's face, frightened, trying very hard not to be."],
+		["voice", "[wave amp=10 freq=2]Come home before dark, love. Supper's on.[/wave]"],
+		{"run": "sentinel_story"}
+	],
+
+	"sentinel_story": [
+		["sentinel", "I guarded this road when the first bell was cast."],
+		["rowan", "You were a soldier?"],
+		["sentinel", "I was someone's son."],
+		["rowan", "What happened?"],
+		["sentinel", "The bell rang. They forgot my name."],
+		{"set": {"sentinel_story_heard": true}},
+		{"run": "sentinel_riddle"}
+	],
+
+	"sentinel_riddle": [
+		["sentinel", "Tell me, traveller. What remains of a person when their name is forgotten?"],
+		{"choice": [
+			{"text": "Nothing.", "goto": "nothing"},
+			{"text": "The people who remember them.", "goto": "people"},
+			{"text": "The things they chose to do.", "goto": "right"}
+		]},
+		{"label": "nothing"},
+		{"set": {"sentinel_wrong_answers": "+1"}},
+		["sentinel", "Then I am nothing. And nothing cannot step aside."],
+		{"goto": "offer"},
+		{"label": "people"},
+		{"set": {"sentinel_wrong_answers": "+1"}},
+		["sentinel", "There is no one left who remembers me. Is that all I was? Something other people carried?"],
+		{"label": "offer"},
+		["sentinel", "Think again. Or walk through the mist, if you would rather be brave than wise."],
+		{"choice": [
+			{"text": "Let me answer again.", "goto": "again"},
+			{"text": "I'll walk through the mist.", "goto": "endure"},
+			{"text": "Not yet.", "goto": "leave"}
+		]},
+		{"label": "again"},
+		{"run": "sentinel_riddle"},
+		{"label": "endure"},
+		["sentinel", "Then walk. When the mist breathes, do not be in its breath."],
+		["narrator", "Light gathers on the ground before each pulse. Cross while the mist is still. Walk back south to stop."],
+		{"event": "sentinel_challenge"},
+		{"end": true},
+		{"label": "leave"},
+		{"end": true},
+		{"label": "right"},
+		{"wait": 0.9},
+		["sentinel", "...The things they chose to do."],
+		["sentinel", "I chose to stand here. Every night. Even after they forgot why."],
+		["sentinel", "Yes. That is still mine."],
+		{"set": {"sentinel_resolved_peacefully": true}},
+		{"run": "sentinel_farewell"}
+	],
+
+	"sentinel_endured": [
+		["sentinel", "You walked through it. Most turn back at the first breath."],
+		["sentinel", "Endurance is a kind of answer. Not the only one."],
+		{"set": {"sentinel_endured": true}},
+		{"run": "sentinel_farewell"}
+	],
+
+	"sentinel_mercy": [
+		["sentinel", "Breathe. The mist is patient, and so am I."],
+		["sentinel", "I will hold it back a little. Not for long. Go when it is still."]
+	],
+
+	"sentinel_farewell": [
+		["sentinel", "Go, then."],
+		["sentinel", "And when you reach the bell..."],
+		["sentinel", "Ask it whose voice it borrowed."],
+		{"event": "sentinel_fade", "hide": true},
+		{"set": {"passed_sentinel": true}}
+	],
+
+	"path_shrine": [
+		["narrator", "A small roadside shrine. The name carved on its base has been chiselled away, every letter."],
+		["narrator", "Someone still leaves pebbles on the ledge. Fresh ones."]
+	],
+
+	"path_shrine_echo": [
+		["narrator", "A woman stands at the shrine with a lantern, calling down the road toward the tower."],
+		["voice", "[wave amp=10 freq=2]Come home, love! Supper's going cold, and the bell's about to...[/wave]"],
+		["narrator", "The name she calls is a gap in the air. Your ears slide right off it."],
+		["rowan", "She's calling a son who never came home. Calling a name the bell took."]
+	]
+}

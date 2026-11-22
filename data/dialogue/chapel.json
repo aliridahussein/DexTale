@@ -1,0 +1,168 @@
+{
+	"_about": "The Forgotten Chapel and its archive.",
+
+	"alden": [
+		{"if": "alden_confessed", "goto": "after"},
+		{"if": "solved_chapel_puzzle", "goto": "opened"},
+		{"if": "met_alden", "goto": "again"},
+		["alden", "There are no prayers left for what approaches tonight."],
+		["rowan", "Then perhaps we need answers instead."],
+		["alden", "Answers have a habit of arriving after they're useful."],
+		{"wait": 0.6},
+		["alden", "You're Orin's apprentice. The one who left."],
+		{"choice": [
+			{"text": "I'm the one who came back.", "goto": "back"},
+			{"text": "Orin's missing. I'm looking for him.", "goto": "missing"}
+		]},
+		{"label": "back"},
+		["alden", "Hm. That's rarer, in Dawnmere."],
+		{"label": "missing"},
+		{"if": "has_tuning_pin", "say": "rowan", "text": "Mara gave me this. The bell's tuning pin. It's marked with thirteen tolls."},
+		{"if": "has_tuning_pin", "say": "alden", "text": "Thirteen. ...Yes. I have seen that number written down. Once. Before it was sealed away."},
+		["alden", "Our oldest records are behind that door. The archive. I have tried to open it for twenty years."],
+		["alden", "Three seals: flame, moon and crown. Press them in the right order and it opens. Press them wrongly and..."],
+		["alden", "...nothing happens, actually. Which is somehow worse."],
+		["alden", "There is an inscription beside the door. My eyes are too old to read what is left of it."],
+		{"if": "!used_echo", "say": "alden", "text": "Perhaps younger ears will hear more than my eyes can see. Orin always said this place listens back."},
+		{"set": {"met_alden": true, "alden_mentioned_seals": true}},
+		{"end": true},
+
+		{"label": "again"},
+		{"if": "inscription_clear", "goto": "hint_clear"},
+		["alden", "The inscription by the archive door. Read what you can. Listen for the rest."],
+		{"end": true},
+		{"label": "hint_clear"},
+		{"if": "seal_attempts>=2", "goto": "hint_strong"},
+		["alden", "Before the crown, the fire. Before the fire, the moon. Old riddles always run backwards. Like memory."],
+		{"end": true},
+		{"label": "hint_strong"},
+		["alden", "Read it backwards, Rowan. What came first? The moon, watching alone. Then the fire. Then, last of all, the crown."],
+		{"end": true},
+
+		{"label": "opened"},
+		["alden", "Twenty years. And you open it in an evening. I should feel insulted. Mostly I feel afraid."],
+		["alden", "Go on. Whatever is in there has waited long enough."],
+		{"end": true},
+
+		{"label": "after"},
+		{"if": "learned_village_song", "goto": "after_song"},
+		["alden", "I will start a new record tonight. One that no bell can take. Written by everyone, so it would have to be forgotten by everyone."],
+		{"if": "saw_song_marks", "say": "alden", "text": "Those marks in the margin. I have heard the child, Pip, humming something with that shape. Ask Pip."},
+		{"end": true},
+		{"label": "after_song"},
+		["alden", "A song for everyone to sing at once. Of course. You cannot steal from a whole village at the same moment."],
+		["alden", "...Or perhaps you can. But it is harder. And harder is not nothing."]
+	],
+
+	"chapel_inscription": [
+		{"set": {"read_chapel_inscription": true}},
+		{"if": "inscription_clear", "goto": "clear"},
+		["narrator", "Words carved into the stone beside the archive door. Most have been worn smooth."],
+		["narrator", "“...the crown... fire was born... moon watched...”"],
+		{"if": "!used_echo", "say": "rowan", "text": "Worn away. But stone remembers longer than people do. (Stand close and press F to listen.)"},
+		{"if": "used_echo", "say": "rowan", "text": "If I listen, maybe the rest comes back."},
+		{"end": true},
+		{"label": "clear"},
+		["narrator", "“Before the crown, the fire was born. Before the fire, the moon watched alone.”"]
+	],
+
+	"chapel_inscription_echo": [
+		["narrator", "The worn letters fill with pale light, one line at a time."],
+		["narrator", "“Before the crown, the fire was born. Before the fire, the moon watched alone.”"],
+		["rowan", "A riddle about what came first."]
+	],
+
+	"chapel_archive_door": [
+		["narrator", "A heavy stone door set into the wall. Beside it, three seals: a flame, a moon and a crown."],
+		["rowan", "No handle. No keyhole. Just the seals."]
+	],
+
+	"chapel_seal_wrong": [
+		["narrator", "The seals grind back into place with a low, disappointed sound."],
+		{"if": "seal_attempts>=2", "say": "rowan", "text": "The inscription. It must be telling me the order."}
+	],
+
+	"chapel_seal_solved": [
+		["narrator", "Moon. Flame. Crown. The seals blaze, and stone groans against stone."],
+		{"event": "archive_open", "hide": true, "wait": 0.3},
+		["narrator", "The archive door swings inward. Cold, dry air spills out, smelling of old paper."],
+		["alden", "It's open. After twenty years... Go, Rowan. I'll follow."]
+	],
+
+	"chapel_ledger": [
+		{"if": "read_bellkeeper_ledger", "goto": "again"},
+		["narrator", "A heavy book on the lectern, bound in cracked leather. A bell is pressed into the cover."],
+		{"event": "open_document", "args": ["ledger"]},
+		{"if": "!read_ledger", "goto": "unfinished"},
+		{"set": {"saw_song_marks": true}},
+		["rowan", "The bell..."],
+		{"event": "alden_enter", "hide": true},
+		["alden", "So that is why the records have holes."],
+		["rowan", "The bell is stealing memories."],
+		["alden", "Not stealing."],
+		{"wait": 1.1},
+		["alden", "We gave it permission."],
+		{"choice": [
+			{"text": "Then we can take that permission away.", "goto": "take"},
+			{"text": "You knew. Didn't you?", "set": {"accused_alden": true}, "goto": "knew"}
+		]},
+		{"label": "knew"},
+		["alden", "No. Not knew. But I have always felt like a man who hid something, and then lost the key."],
+		{"label": "take"},
+		["rowan", "Then we can take that permission away."],
+		["alden", "Can we?"],
+		{"wait": 0.7},
+		["rowan", "There's something in the spine of the ledger..."],
+		{"event": "toast", "args": ["Found: an iron key stamped with a bell", "key"]},
+		{"set": {"has_gate_key": true, "alden_confessed": true, "read_bellkeeper_ledger": true}},
+		["alden", "The north gate. The tower road. Orin hid his key where only someone who read all of this would ever find it."],
+		["alden", "Go. I'll stay with the book. Someone should remember it, now that it has been read."],
+		{"end": true},
+		{"label": "unfinished"},
+		["rowan", "I should read all of it. Whatever's in here, Orin wanted it found."],
+		{"end": true},
+		{"label": "again"},
+		{"event": "open_document", "args": ["ledger"]}
+	],
+
+	"chapel_ledger_echo": [
+		["narrator", "A figure kneels beside the lectern, hands pressed flat on the open book. Grey robe. Bent back."],
+		["voice", "[wave amp=10 freq=2]Forgive me. I thought I could choose which memories it would take.[/wave]"],
+		["rowan", "Orin...?"],
+		{"if": "alden_confessed", "say": "alden", "text": "That voice. I... I was there. I held the lamp while he cut the pages out. I asked him why, and he said: so they cannot choose to forget it again."},
+		{"if": "alden_confessed", "say": "alden", "text": "And then the bell rang, and I forgot I had ever asked."}
+	],
+
+	"chapel_chorus_echo": [
+		["narrator", "For a heartbeat the pews are full. Villagers stand shoulder to shoulder in their old clothes, mouths open..."],
+		["narrator", "...singing. All of them at once. You can't hear the tune, only the feeling of it: many voices holding one thing up."],
+		["rowan", "That wasn't a hymn. That was something older."]
+	],
+
+	"chapel_shelves": [
+		["narrator", "Parish records, recipe books, and a treatise titled ON THE PROPER STORAGE OF TURNIPS, VOLUME III."],
+		["rowan", "Every record from before the bell was cast is missing. Not burned. Cut out, neatly."]
+	],
+
+	"chapel_altar": [
+		["narrator", "The altar cloth is embroidered with a golden bell. Someone has stitched over the clapper, again and again, until it's a knot."]
+	],
+
+	"chapel_statue": [
+		["narrator", "A statue of a robed figure holding a small bell. Its head lies on the floor beside it."],
+		["narrator", "Someone has placed a candle by the head, very respectfully. Someone else has drawn a moustache on it."]
+	],
+
+	"chapel_donations": [
+		["narrator", "The donation box contains one button, a dried bean, and an IOU signed PIP."]
+	],
+
+	"chapel_window": [
+		["narrator", "Stained glass: villagers in a ring, mouths open, beneath a rising moon. There is no bell anywhere in the picture."],
+		{"if": "learned_village_song", "say": "rowan", "text": "They're singing. Of course they are."}
+	],
+
+	"chapel_archive_shelf": [
+		["narrator", "Ledgers of births, marriages and harvests. Every few pages, a name has been scraped out of the paper."]
+	]
+}

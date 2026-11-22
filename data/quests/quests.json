@@ -1,0 +1,88 @@
+{
+	"_about": "Objectives and journal entries are views of story flags. 'start' and 'done' (objectives) and 'when' (discoveries) use the same conditions as dialogue: \"flag\", \"!flag\", \"flag>=2\" or a list of them.",
+	"objectives": [
+		{
+			"id": "find_silence",
+			"title": "Find out why the bell is silent.",
+			"detail": "Pip says Orin went up to the tower yesterday, after shouting at Mara the blacksmith about iron and tuning. Her forge is on the west side of the square.",
+			"start": "met_pip",
+			"done": "spoke_to_mara"
+		},
+		{
+			"id": "mara_pin",
+			"title": "Learn what Mara's family knows about the bell.",
+			"detail": "Mara's family has kept the bell's iron tuning pin for generations. There is a worn patch on it. Some worn things can still be heard: try listening (F) close to it.",
+			"start": "spoke_to_mara",
+			"done": "has_tuning_pin"
+		},
+		{
+			"id": "chapel_records",
+			"title": "Investigate the chapel records.",
+			"detail": "Brother Alden keeps Dawnmere's records in the chapel, east of the square. The oldest are sealed behind a door with three seals: flame, moon and crown.",
+			"start": "has_tuning_pin",
+			"done": "solved_chapel_puzzle"
+		},
+		{
+			"id": "read_ledger",
+			"title": "Read the Bellkeeper's Ledger.",
+			"detail": "The archive is open. A ledger waits on the lectern inside.",
+			"start": "solved_chapel_puzzle",
+			"done": "read_bellkeeper_ledger"
+		},
+		{
+			"id": "reach_tower",
+			"title": "Find a way to reach the bell tower.",
+			"detail": "Orin's key opens the north gate. The tower road runs through the mist, and something is guarding it.",
+			"start": "read_bellkeeper_ledger",
+			"done": "passed_sentinel"
+		},
+		{
+			"id": "truth",
+			"title": "Confront the truth of the bell.",
+			"detail": "The road is open. Climb the tower and find Orin.",
+			"start": "passed_sentinel",
+			"done": "met_orin_echo"
+		},
+		{
+			"id": "decide",
+			"title": "Decide the fate of Dawnmere.",
+			"detail": "One more toll will turn the mist away. Somebody has to choose what it costs.",
+			"start": "met_orin_echo",
+			"done": "ending_selected"
+		},
+		{
+			"id": "the_song",
+			"title": "Ask Pip about the old song.",
+			"detail": "The ledger's margin holds thirteen marks that rise and fall like a tune. Pip hums a song nobody else remembers.",
+			"optional": true,
+			"start": "saw_song_marks",
+			"done": "learned_village_song"
+		},
+		{
+			"id": "the_lullaby",
+			"title": "Ask Orin about Mara's lullaby.",
+			"detail": "You promised Mara you would ask.",
+			"optional": true,
+			"start": "promised_mara",
+			"done": "asked_orin_lullaby"
+		}
+	],
+	"discoveries": [
+		{"id": "letter", "when": "game_started", "title": "Orin's Letter", "text": "\"Come home before the thirteenth toll. There is something I need you to remember.\" It was the only thing he wrote."},
+		{"id": "forgetting", "when": "met_pip", "title": "People Forget", "text": "Pip says people forget things after the bell rings. Pip's grandmother used to sing an old tune, but nobody remembers her singing it."},
+		{"id": "well_names", "when": "echo_well", "title": "Names on the Well", "text": "Two names carved into the well: TOBIN and ELSIE. A voice in the stone: \"You promised you'd wait for me.\""},
+		{"id": "thirteen_marks", "when": "discovered_bell_markings", "title": "Thirteen Marks", "text": "The tuning pin bears a bell ringed by thirteen marks. Mara's father taught her that the bell rings only twelve times."},
+		{"id": "lullaby", "when": "mara_lullaby_told", "title": "Mara's Lullaby", "text": "Mara remembers holding her son as a baby. She cannot remember the song she sang him."},
+		{"id": "hollow_cradle", "when": "echo_cradle", "title": "A Hollow Lullaby", "text": "In the forge, the echo of a woman humming over a cradle. The tune itself has been scraped away."},
+		{"id": "inscription", "when": "inscription_clear", "title": "The Seal Inscription", "text": "\"Before the crown, the fire was born. Before the fire, the moon watched alone.\""},
+		{"id": "chorus", "when": "echo_chorus", "title": "A Congregation", "text": "In the chapel's echo, the whole village stood together and sang. Not a hymn. Something older."},
+		{"id": "ledger", "when": "read_bellkeeper_ledger", "title": "The Bellkeeper's Ledger", "text": "\"One toll. One cherished memory. The village remains unseen.\" The bell keeps Dawnmere hidden by taking what its people love."},
+		{"id": "song_marks", "when": "saw_song_marks", "title": "The Song Before the Bell", "text": "In the ledger's margin, thirteen marks rise and fall like a melody, above the words: the song before the bell."},
+		{"id": "kneeling", "when": "echo_ledger", "title": "A Kneeling Figure", "text": "\"Forgive me. I thought I could choose which memories it would take.\" It was Orin's voice."},
+		{"id": "gathering_song", "when": "learned_village_song", "title": "The Gathering Song", "text": "Pip's grandmother's tune has thirteen notes. Before there was a bell, the whole village sang it together at dusk."},
+		{"id": "shrine", "when": "echo_shrine", "title": "The Shrine Without a Name", "text": "A mother calling her son home for supper. The name she called has been cut out of the world."},
+		{"id": "sentinel", "when": "sentinel_story_heard", "title": "The Hollow Sentinel", "text": "A boy who guarded the tower road when the first bell was cast. The bell rang, and everyone forgot his name."},
+		{"id": "memories", "when": "echo_tower_memories", "title": "What the Bell Keeps", "text": "Inside the bell: a laugh, a lullaby, two names on a well, a monk tearing pages, a boy who held the road. Everything Dawnmere gave away."},
+		{"id": "orin", "when": "met_orin_echo", "title": "Orin's Echo", "text": "Night after night, Orin fed the bell his own memories to spare everyone else. Last night it took the last of him."}
+	]
+}

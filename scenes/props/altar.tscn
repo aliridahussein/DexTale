@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/props/altar.png" id="1_altar_png"]
+[ext_resource type="Script" path="res://scripts/world/prop_anim.gd" id="2_prop_anim_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/light_radial.png" id="4_light_radial_png"]
+[ext_resource type="Script" path="res://scripts/world/flicker_light.gd" id="5_flicker_light_gd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3"]
+size = Vector2(46, 14)
+
+[node name="Altar" type="StaticBody2D"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_altar_png")
+centered = false
+offset = Vector2(-24, -32)
+hframes = 3
+script = ExtResource("2_prop_anim_gd")
+fps = 4.0
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_3")
+
+[node name="Light" type="PointLight2D" parent="."]
+position = Vector2(0, -24)
+color = Color(1.0, 0.78, 0.5, 1.0)
+energy = 0.9
+texture = ExtResource("4_light_radial_png")
+texture_scale = 1.1
+script = ExtResource("5_flicker_light_gd")

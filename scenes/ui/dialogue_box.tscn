@@ -1,0 +1,106 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/dialogue_box.gd" id="1_dialogue_box_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/panel_dark.png" id="2_panel_dark_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/portrait_frame.png" id="3_portrait_frame_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/panel_small.png" id="4_panel_small_png"]
+
+[node name="DialogueBox" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+process_mode = 1
+script = ExtResource("1_dialogue_box_gd")
+
+[node name="Panel" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+offset_left = 6.0
+offset_top = 194.0
+offset_right = 474.0
+offset_bottom = 266.0
+texture = ExtResource("2_panel_dark_png")
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="PortraitFrame" type="TextureRect" parent="."]
+unique_name_in_owner = true
+offset_left = 15.0
+offset_top = 211.0
+offset_right = 53.0
+offset_bottom = 249.0
+texture = ExtResource("3_portrait_frame_png")
+
+[node name="Portrait" type="TextureRect" parent="."]
+unique_name_in_owner = true
+offset_left = 18.0
+offset_top = 214.0
+offset_right = 50.0
+offset_bottom = 246.0
+
+[node name="NamePlate" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+offset_left = 54.0
+offset_top = 184.0
+offset_right = 158.0
+offset_bottom = 200.0
+texture = ExtResource("4_panel_small_png")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="NameLabel" type="Label" parent="NamePlate"]
+unique_name_in_owner = true
+offset_left = 6.0
+offset_top = 2.0
+offset_right = 100.0
+offset_bottom = 14.0
+text = "Name"
+theme_override_colors/font_color = Color(0.9098, 0.78431, 0.43137, 1.0)
+
+[node name="Text" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+offset_left = 60.0
+offset_top = 204.0
+offset_right = 460.0
+offset_bottom = 260.0
+bbcode_enabled = true
+scroll_active = false
+text = ""
+
+[node name="Next" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 456.0
+offset_top = 252.0
+offset_right = 468.0
+offset_bottom = 264.0
+text = "▼"
+theme_override_colors/font_color = Color(0.9098, 0.78431, 0.43137, 1.0)
+
+[node name="Choices" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+offset_left = 300.0
+offset_top = 120.0
+offset_right = 470.0
+offset_bottom = 190.0
+texture = ExtResource("2_panel_dark_png")
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="ChoiceList" type="VBoxContainer" parent="Choices"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 7.0
+offset_right = -9.0
+offset_bottom = -7.0
+theme_override_constants/separation = 2

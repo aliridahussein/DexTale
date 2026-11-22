@@ -1,0 +1,11 @@
+{
+	"rowan": {"name": "Rowan", "portrait": "res://assets/portraits/rowan.png", "color": "#a8dcc8", "blip": 1.0},
+	"pip": {"name": "Pip", "portrait": "res://assets/portraits/pip.png", "color": "#f0d070", "blip": 1.45},
+	"mara": {"name": "Mara", "portrait": "res://assets/portraits/mara.png", "color": "#f0a878", "blip": 0.85},
+	"alden": {"name": "Brother Alden", "portrait": "res://assets/portraits/alden.png", "color": "#c8b8e8", "blip": 0.8},
+	"orin": {"name": "Orin", "portrait": "res://assets/portraits/orin.png", "color": "#98e2ff", "blip": 0.7},
+	"tobin": {"name": "Tobin", "portrait": "res://assets/portraits/tobin.png", "color": "#e0c898", "blip": 0.9},
+	"sentinel": {"name": "The Hollow Sentinel", "portrait": "res://assets/portraits/sentinel.png", "color": "#a8d8f8", "blip": 0.55},
+	"narrator": {"name": "", "narration": true, "blip": 1.0},
+	"voice": {"name": "A distant voice", "color": "#9ad8f0", "blip": 0.75}
+}

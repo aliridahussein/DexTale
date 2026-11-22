@@ -1,0 +1,216 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/ui.gd" id="1_ui_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/panel_small.png" id="2_panel_small_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/vignette.png" id="4_vignette_png"]
+[ext_resource type="Shader" path="res://assets/shaders/echo_overlay.gdshader" id="5_echo_overlay_gdshader"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/icon_bell.png" id="7_icon_bell_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/key_e.png" id="8_key_e_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/key_f.png" id="9_key_f_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/icon_quill.png" id="10_icon_quill_png"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="11_dialogue_box_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/document_view.tscn" id="12_document_view_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/journal.tscn" id="13_journal_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="14_pause_menu_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/settings_menu.tscn" id="15_settings_menu_tscn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3"]
+texture = ExtResource("2_panel_small_png")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 5.0
+content_margin_bottom = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6"]
+shader = ExtResource("5_echo_overlay_gdshader")
+shader_parameter/strength = 0.0
+
+[node name="UI" type="Node"]
+script = ExtResource("1_ui_gd")
+
+[node name="EffectsLayer" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Vignette" type="TextureRect" parent="EffectsLayer"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 0
+texture = ExtResource("4_vignette_png")
+modulate = Color(1.0, 1.0, 1.0, 0.8)
+
+[node name="EchoOverlay" type="ColorRect" parent="EffectsLayer"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+material = SubResource("ShaderMaterial_6")
+
+[node name="HudLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Hud" type="Control" parent="HudLayer"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Objective" type="PanelContainer" parent="HudLayer/Hud"]
+unique_name_in_owner = true
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 25.0
+offset_bottom = 21.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3")
+
+[node name="Row" type="HBoxContainer" parent="HudLayer/Hud/Objective"]
+theme_override_constants/separation = 3
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="HudLayer/Hud/Objective/Row"]
+texture = ExtResource("7_icon_bell_png")
+stretch_mode = 3
+custom_minimum_size = Vector2(12, 12)
+expand_mode = 1
+
+[node name="ObjectiveLabel" type="Label" parent="HudLayer/Hud/Objective/Row"]
+unique_name_in_owner = true
+text = ""
+theme_override_colors/font_color = Color(0.9098, 0.86275, 0.75294, 1.0)
+
+[node name="Prompt" type="PanelContainer" parent="HudLayer/Hud"]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 20.0
+offset_bottom = 14.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3")
+
+[node name="Row" type="HBoxContainer" parent="HudLayer/Hud/Prompt"]
+theme_override_constants/separation = 3
+
+[node name="Key" type="TextureRect" parent="HudLayer/Hud/Prompt/Row"]
+texture = ExtResource("8_key_e_png")
+stretch_mode = 3
+
+[node name="PromptLabel" type="Label" parent="HudLayer/Hud/Prompt/Row"]
+unique_name_in_owner = true
+text = "Inspect"
+
+[node name="EchoPrompt" type="PanelContainer" parent="HudLayer/Hud"]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 20.0
+offset_bottom = 14.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3")
+
+[node name="Row" type="HBoxContainer" parent="HudLayer/Hud/EchoPrompt"]
+theme_override_constants/separation = 3
+
+[node name="Key" type="TextureRect" parent="HudLayer/Hud/EchoPrompt/Row"]
+texture = ExtResource("9_key_f_png")
+stretch_mode = 3
+
+[node name="EchoLabel" type="Label" parent="HudLayer/Hud/EchoPrompt/Row"]
+text = "Listen"
+theme_override_colors/font_color = Color(0.60392, 0.84706, 0.94118, 1.0)
+
+[node name="Toast" type="PanelContainer" parent="HudLayer/Hud"]
+unique_name_in_owner = true
+offset_left = 180.0
+offset_top = 24.0
+offset_right = 200.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3")
+
+[node name="Row" type="HBoxContainer" parent="HudLayer/Hud/Toast"]
+theme_override_constants/separation = 4
+
+[node name="ToastIcon" type="TextureRect" parent="HudLayer/Hud/Toast/Row"]
+unique_name_in_owner = true
+stretch_mode = 3
+
+[node name="ToastLabel" type="Label" parent="HudLayer/Hud/Toast/Row"]
+unique_name_in_owner = true
+text = ""
+theme_override_colors/font_color = Color(0.94118, 0.89412, 0.78431, 1.0)
+
+[node name="AreaTitle" type="VBoxContainer" parent="HudLayer/Hud"]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 46.0
+offset_right = 480.0
+offset_bottom = 86.0
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="AreaTitleLabel" type="Label" parent="HudLayer/Hud/AreaTitle"]
+unique_name_in_owner = true
+text = ""
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.9098, 0.78431, 0.43137, 1.0)
+horizontal_alignment = 1
+
+[node name="AreaSubLabel" type="Label" parent="HudLayer/Hud/AreaTitle"]
+unique_name_in_owner = true
+text = ""
+theme_override_colors/font_color = Color(0.60392, 0.55686, 0.66667, 1.0)
+horizontal_alignment = 1
+
+[node name="SaveNote" type="HBoxContainer" parent="HudLayer/Hud"]
+unique_name_in_owner = true
+offset_left = 414.0
+offset_top = 251.0
+offset_right = 476.0
+offset_bottom = 267.0
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="Icon" type="TextureRect" parent="HudLayer/Hud/SaveNote"]
+texture = ExtResource("10_icon_quill_png")
+stretch_mode = 3
+
+[node name="Text" type="Label" parent="HudLayer/Hud/SaveNote"]
+text = "Saved"
+theme_override_colors/font_color = Color(0.84706, 0.8, 0.70588, 1.0)
+
+[node name="DialogueLayer" type="CanvasLayer" parent="."]
+layer = 15
+
+[node name="DialogueBox" parent="DialogueLayer" instance=ExtResource("11_dialogue_box_tscn")]
+unique_name_in_owner = true
+
+[node name="MenuLayer" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="DocumentView" parent="MenuLayer" instance=ExtResource("12_document_view_tscn")]
+unique_name_in_owner = true
+
+[node name="Journal" parent="MenuLayer" instance=ExtResource("13_journal_tscn")]
+unique_name_in_owner = true
+
+[node name="PauseMenu" parent="MenuLayer" instance=ExtResource("14_pause_menu_tscn")]
+unique_name_in_owner = true
+
+[node name="SettingsMenu" parent="MenuLayer" instance=ExtResource("15_settings_menu_tscn")]
+unique_name_in_owner = true

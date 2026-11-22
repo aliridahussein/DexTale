@@ -1,0 +1,9 @@
+# Godot 4 generated folders
+.godot/
+/android/
+# Exports
+/builds/
+*.tmp
+# Python caches from the asset tools
+__pycache__/
+*.pyc

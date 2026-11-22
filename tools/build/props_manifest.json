@@ -1,0 +1,1696 @@
+{
+ "tree_oak": {
+  "png": "res://assets/sprites/props/tree_oak.png",
+  "size": [
+   44,
+   56
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   22,
+   52
+  ],
+  "collide": [
+   -4,
+   -4,
+   8,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "tree_oak_b": {
+  "png": "res://assets/sprites/props/tree_oak_b.png",
+  "size": [
+   44,
+   56
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   22,
+   52
+  ],
+  "collide": [
+   -4,
+   -4,
+   8,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "tree_pine": {
+  "png": "res://assets/sprites/props/tree_pine.png",
+  "size": [
+   30,
+   52
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   15,
+   48
+  ],
+  "collide": [
+   -3,
+   -4,
+   6,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "tree_pine_dark": {
+  "png": "res://assets/sprites/props/tree_pine_dark.png",
+  "size": [
+   30,
+   52
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   15,
+   48
+  ],
+  "collide": [
+   -3,
+   -4,
+   6,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "tree_dead": {
+  "png": "res://assets/sprites/props/tree_dead.png",
+  "size": [
+   36,
+   52
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   18,
+   49
+  ],
+  "collide": [
+   -3,
+   -4,
+   6,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "bush": {
+  "png": "res://assets/sprites/props/bush.png",
+  "size": [
+   20,
+   16
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   10,
+   14
+  ],
+  "collide": [
+   -7,
+   -5,
+   14,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "bush_flowers": {
+  "png": "res://assets/sprites/props/bush_flowers.png",
+  "size": [
+   20,
+   16
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   10,
+   14
+  ],
+  "collide": [
+   -7,
+   -5,
+   14,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "bush_dark": {
+  "png": "res://assets/sprites/props/bush_dark.png",
+  "size": [
+   20,
+   16
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   10,
+   14
+  ],
+  "collide": [
+   -7,
+   -5,
+   14,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "rock": {
+  "png": "res://assets/sprites/props/rock.png",
+  "size": [
+   14,
+   10
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   9
+  ],
+  "collide": [
+   -6,
+   -5,
+   12,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "rock_large": {
+  "png": "res://assets/sprites/props/rock_large.png",
+  "size": [
+   26,
+   20
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   13,
+   18
+  ],
+  "collide": [
+   -11,
+   -9,
+   22,
+   9
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "stump": {
+  "png": "res://assets/sprites/props/stump.png",
+  "size": [
+   14,
+   12
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   10
+  ],
+  "collide": [
+   -4,
+   -4,
+   8,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "mushrooms": {
+  "png": "res://assets/sprites/props/mushrooms.png",
+  "size": [
+   12,
+   10
+  ],
+  "frames": 2,
+  "fps": 1.5,
+  "origin": [
+   6,
+   9
+  ],
+  "collide": null,
+  "light": {
+   "color": [
+    0.5,
+    0.85,
+    1.0
+   ],
+   "energy": 0.45,
+   "scale": 0.35,
+   "offset": [
+    0,
+    -4
+   ]
+  },
+  "ysort": true
+ },
+ "tall_grass": {
+  "png": "res://assets/sprites/props/tall_grass.png",
+  "size": [
+   10,
+   9
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   5,
+   8
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "tall_grass_dark": {
+  "png": "res://assets/sprites/props/tall_grass_dark.png",
+  "size": [
+   10,
+   9
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   5,
+   8
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "house_cottage": {
+  "png": "res://assets/sprites/props/house_cottage.png",
+  "size": [
+   56,
+   54
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   28,
+   54
+  ],
+  "collide": [
+   -27,
+   -40,
+   54,
+   40
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "house_cottage_b": {
+  "png": "res://assets/sprites/props/house_cottage_b.png",
+  "size": [
+   48,
+   50
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   24,
+   50
+  ],
+  "collide": [
+   -23,
+   -36,
+   46,
+   36
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "house_tavern": {
+  "png": "res://assets/sprites/props/house_tavern.png",
+  "size": [
+   80,
+   92
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   40,
+   92
+  ],
+  "collide": [
+   -37,
+   -76,
+   74,
+   76
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "house_narrow": {
+  "png": "res://assets/sprites/props/house_narrow.png",
+  "size": [
+   48,
+   66
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   24,
+   66
+  ],
+  "collide": [
+   -21,
+   -52,
+   42,
+   52
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "forge_ext": {
+  "png": "res://assets/sprites/props/forge_ext.png",
+  "size": [
+   74,
+   60
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   37,
+   60
+  ],
+  "collide": [
+   -36,
+   -46,
+   72,
+   46
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "chapel_ext": {
+  "png": "res://assets/sprites/props/chapel_ext.png",
+  "size": [
+   80,
+   94
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   40,
+   94
+  ],
+  "collide": [
+   -37,
+   -78,
+   74,
+   78
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "tower_distant": {
+  "png": "res://assets/sprites/props/tower_distant.png",
+  "size": [
+   48,
+   132
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   24,
+   131
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "well": {
+  "png": "res://assets/sprites/props/well.png",
+  "size": [
+   34,
+   46
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   17,
+   43
+  ],
+  "collide": [
+   -13,
+   -10,
+   26,
+   10
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "lantern_post": {
+  "png": "res://assets/sprites/props/lantern_post.png",
+  "size": [
+   12,
+   34
+  ],
+  "frames": 3,
+  "fps": 6.0,
+  "origin": [
+   6,
+   32
+  ],
+  "collide": [
+   -2,
+   -2,
+   4,
+   3
+  ],
+  "light": {
+   "color": [
+    1.0,
+    0.72,
+    0.42
+   ],
+   "energy": 0.95,
+   "scale": 0.9,
+   "offset": [
+    -3,
+    -20
+   ]
+  },
+  "ysort": true
+ },
+ "wall_lantern": {
+  "png": "res://assets/sprites/props/wall_lantern.png",
+  "size": [
+   8,
+   12
+  ],
+  "frames": 3,
+  "fps": 6.0,
+  "origin": [
+   4,
+   11
+  ],
+  "collide": null,
+  "light": {
+   "color": [
+    1.0,
+    0.72,
+    0.42
+   ],
+   "energy": 0.8,
+   "scale": 0.7,
+   "offset": [
+    0,
+    -5
+   ]
+  },
+  "ysort": false
+ },
+ "market_stall": {
+  "png": "res://assets/sprites/props/market_stall.png",
+  "size": [
+   46,
+   42
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   23,
+   39
+  ],
+  "collide": [
+   -21,
+   -12,
+   42,
+   12
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "market_stall_b": {
+  "png": "res://assets/sprites/props/market_stall_b.png",
+  "size": [
+   46,
+   42
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   23,
+   39
+  ],
+  "collide": [
+   -21,
+   -12,
+   42,
+   12
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "notice_board": {
+  "png": "res://assets/sprites/props/notice_board.png",
+  "size": [
+   30,
+   34
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   15,
+   32
+  ],
+  "collide": [
+   -12,
+   -3,
+   24,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "signpost": {
+  "png": "res://assets/sprites/props/signpost.png",
+  "size": [
+   24,
+   32
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   12,
+   30
+  ],
+  "collide": [
+   -2,
+   -2,
+   4,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "barrel": {
+  "png": "res://assets/sprites/props/barrel.png",
+  "size": [
+   14,
+   17
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   15
+  ],
+  "collide": [
+   -5,
+   -4,
+   10,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "crate": {
+  "png": "res://assets/sprites/props/crate.png",
+  "size": [
+   16,
+   17
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   8,
+   16
+  ],
+  "collide": [
+   -7,
+   -5,
+   14,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "crate_stack": {
+  "png": "res://assets/sprites/props/crate_stack.png",
+  "size": [
+   16,
+   27
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   8,
+   26
+  ],
+  "collide": [
+   -7,
+   -5,
+   14,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "sack": {
+  "png": "res://assets/sprites/props/sack.png",
+  "size": [
+   12,
+   12
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   6,
+   11
+  ],
+  "collide": [
+   -4,
+   -3,
+   8,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "flower_pot_0": {
+  "png": "res://assets/sprites/props/flower_pot_0.png",
+  "size": [
+   12,
+   13
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   6,
+   12
+  ],
+  "collide": [
+   -3,
+   -2,
+   6,
+   2
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "flower_pot_1": {
+  "png": "res://assets/sprites/props/flower_pot_1.png",
+  "size": [
+   12,
+   13
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   6,
+   12
+  ],
+  "collide": [
+   -3,
+   -2,
+   6,
+   2
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "flower_pot_2": {
+  "png": "res://assets/sprites/props/flower_pot_2.png",
+  "size": [
+   12,
+   13
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   6,
+   12
+  ],
+  "collide": [
+   -3,
+   -2,
+   6,
+   2
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "bench": {
+  "png": "res://assets/sprites/props/bench.png",
+  "size": [
+   26,
+   12
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   13,
+   10
+  ],
+  "collide": [
+   -12,
+   -4,
+   24,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "hay_bale": {
+  "png": "res://assets/sprites/props/hay_bale.png",
+  "size": [
+   20,
+   15
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   10,
+   13
+  ],
+  "collide": [
+   -9,
+   -5,
+   18,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "cart": {
+  "png": "res://assets/sprites/props/cart.png",
+  "size": [
+   36,
+   26
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   18,
+   23
+  ],
+  "collide": [
+   -15,
+   -6,
+   30,
+   6
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "fence": {
+  "png": "res://assets/sprites/props/fence.png",
+  "size": [
+   16,
+   14
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   8,
+   13
+  ],
+  "collide": [
+   -8,
+   -3,
+   16,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "fence_broken": {
+  "png": "res://assets/sprites/props/fence_broken.png",
+  "size": [
+   16,
+   14
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   8,
+   13
+  ],
+  "collide": [
+   -8,
+   -3,
+   16,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "bucket": {
+  "png": "res://assets/sprites/props/bucket.png",
+  "size": [
+   9,
+   9
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   4,
+   8
+  ],
+  "collide": [
+   -3,
+   -2,
+   6,
+   2
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "gate_north": {
+  "png": "res://assets/sprites/props/gate_north.png",
+  "size": [
+   64,
+   40
+  ],
+  "frames": 2,
+  "fps": 0.0,
+  "origin": [
+   32,
+   38
+  ],
+  "collide": [
+   -32,
+   -8,
+   64,
+   8
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "furnace": {
+  "png": "res://assets/sprites/props/furnace.png",
+  "size": [
+   52,
+   54
+  ],
+  "frames": 3,
+  "fps": 5.0,
+  "origin": [
+   26,
+   52
+  ],
+  "collide": [
+   -22,
+   -18,
+   44,
+   18
+  ],
+  "light": {
+   "color": [
+    1.0,
+    0.55,
+    0.25
+   ],
+   "energy": 1.3,
+   "scale": 1.6,
+   "offset": [
+    0,
+    -16
+   ]
+  },
+  "ysort": true
+ },
+ "anvil": {
+  "png": "res://assets/sprites/props/anvil.png",
+  "size": [
+   22,
+   18
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   11,
+   16
+  ],
+  "collide": [
+   -8,
+   -5,
+   16,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "tool_rack": {
+  "png": "res://assets/sprites/props/tool_rack.png",
+  "size": [
+   30,
+   20
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   15,
+   19
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "weapon_rack": {
+  "png": "res://assets/sprites/props/weapon_rack.png",
+  "size": [
+   32,
+   30
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   16,
+   28
+  ],
+  "collide": [
+   -14,
+   -5,
+   28,
+   5
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "quench_barrel": {
+  "png": "res://assets/sprites/props/quench_barrel.png",
+  "size": [
+   14,
+   17
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   15
+  ],
+  "collide": [
+   -5,
+   -4,
+   10,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "coal_pile": {
+  "png": "res://assets/sprites/props/coal_pile.png",
+  "size": [
+   22,
+   12
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   11,
+   10
+  ],
+  "collide": [
+   -9,
+   -4,
+   18,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "workbench": {
+  "png": "res://assets/sprites/props/workbench.png",
+  "size": [
+   34,
+   22
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   17,
+   20
+  ],
+  "collide": [
+   -16,
+   -9,
+   32,
+   9
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "tuning_pin_item": {
+  "png": "res://assets/sprites/props/tuning_pin_item.png",
+  "size": [
+   14,
+   7
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   4
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "cradle": {
+  "png": "res://assets/sprites/props/cradle.png",
+  "size": [
+   20,
+   15
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   10,
+   13
+  ],
+  "collide": [
+   -8,
+   -4,
+   16,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "bellows": {
+  "png": "res://assets/sprites/props/bellows.png",
+  "size": [
+   22,
+   13
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   11,
+   11
+  ],
+  "collide": [
+   -9,
+   -4,
+   18,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "shelf_jar": {
+  "png": "res://assets/sprites/props/shelf_jar.png",
+  "size": [
+   22,
+   24
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   11,
+   23
+  ],
+  "collide": [
+   -10,
+   -4,
+   20,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "forge_plaque": {
+  "png": "res://assets/sprites/props/forge_plaque.png",
+  "size": [
+   40,
+   10
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   20,
+   9
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "pew": {
+  "png": "res://assets/sprites/props/pew.png",
+  "size": [
+   46,
+   18
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   23,
+   16
+  ],
+  "collide": [
+   -23,
+   -9,
+   46,
+   9
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "altar": {
+  "png": "res://assets/sprites/props/altar.png",
+  "size": [
+   48,
+   34
+  ],
+  "frames": 3,
+  "fps": 4.0,
+  "origin": [
+   24,
+   32
+  ],
+  "collide": [
+   -23,
+   -14,
+   46,
+   14
+  ],
+  "light": {
+   "color": [
+    1.0,
+    0.78,
+    0.5
+   ],
+   "energy": 0.9,
+   "scale": 1.1,
+   "offset": [
+    0,
+    -24
+   ]
+  },
+  "ysort": true
+ },
+ "candle_stand": {
+  "png": "res://assets/sprites/props/candle_stand.png",
+  "size": [
+   10,
+   26
+  ],
+  "frames": 3,
+  "fps": 5.0,
+  "origin": [
+   5,
+   24
+  ],
+  "collide": [
+   -3,
+   -2,
+   6,
+   2
+  ],
+  "light": {
+   "color": [
+    1.0,
+    0.75,
+    0.45
+   ],
+   "energy": 0.75,
+   "scale": 0.6,
+   "offset": [
+    0,
+    -23
+   ]
+  },
+  "ysort": true
+ },
+ "bookshelf": {
+  "png": "res://assets/sprites/props/bookshelf.png",
+  "size": [
+   34,
+   40
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   17,
+   39
+  ],
+  "collide": [
+   -16,
+   -6,
+   32,
+   6
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "bookshelf_b": {
+  "png": "res://assets/sprites/props/bookshelf_b.png",
+  "size": [
+   34,
+   40
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   17,
+   39
+  ],
+  "collide": [
+   -16,
+   -6,
+   32,
+   6
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "stained_window": {
+  "png": "res://assets/sprites/props/stained_window.png",
+  "size": [
+   16,
+   42
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   8,
+   41
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "statue_broken": {
+  "png": "res://assets/sprites/props/statue_broken.png",
+  "size": [
+   22,
+   38
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   11,
+   36
+  ],
+  "collide": [
+   -8,
+   -6,
+   16,
+   6
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "archive_door": {
+  "png": "res://assets/sprites/props/archive_door.png",
+  "size": [
+   36,
+   44
+  ],
+  "frames": 2,
+  "fps": 0.0,
+  "origin": [
+   18,
+   43
+  ],
+  "collide": [
+   -14,
+   -6,
+   28,
+   6
+  ],
+  "light": null,
+  "ysort": false
+ },
+ "seal_flame": {
+  "png": "res://assets/sprites/props/seal_flame.png",
+  "size": [
+   18,
+   18
+  ],
+  "frames": 3,
+  "fps": 0.0,
+  "origin": [
+   9,
+   17
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "seal_moon": {
+  "png": "res://assets/sprites/props/seal_moon.png",
+  "size": [
+   18,
+   18
+  ],
+  "frames": 3,
+  "fps": 0.0,
+  "origin": [
+   9,
+   17
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "seal_crown": {
+  "png": "res://assets/sprites/props/seal_crown.png",
+  "size": [
+   18,
+   18
+  ],
+  "frames": 3,
+  "fps": 0.0,
+  "origin": [
+   9,
+   17
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "inscription_plaque": {
+  "png": "res://assets/sprites/props/inscription_plaque.png",
+  "size": [
+   30,
+   18
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   15,
+   17
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "lectern": {
+  "png": "res://assets/sprites/props/lectern.png",
+  "size": [
+   18,
+   26
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   9,
+   24
+  ],
+  "collide": [
+   -6,
+   -4,
+   12,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "donation_box": {
+  "png": "res://assets/sprites/props/donation_box.png",
+  "size": [
+   12,
+   14
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   6,
+   12
+  ],
+  "collide": [
+   -4,
+   -3,
+   8,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "banner_torn": {
+  "png": "res://assets/sprites/props/banner_torn.png",
+  "size": [
+   14,
+   32
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   31
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "papers": {
+  "png": "res://assets/sprites/props/papers.png",
+  "size": [
+   18,
+   10
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   9,
+   8
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "shrine": {
+  "png": "res://assets/sprites/props/shrine.png",
+  "size": [
+   26,
+   32
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   13,
+   30
+  ],
+  "collide": [
+   -9,
+   -6,
+   18,
+   6
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "silhouette": {
+  "png": "res://assets/sprites/props/silhouette.png",
+  "size": [
+   16,
+   30
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   8,
+   29
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "tower_base": {
+  "png": "res://assets/sprites/props/tower_base.png",
+  "size": [
+   112,
+   150
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   56,
+   140
+  ],
+  "collide": [
+   -46,
+   -118,
+   92,
+   118
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "bell": {
+  "png": "res://assets/sprites/props/bell.png",
+  "size": [
+   74,
+   66
+  ],
+  "frames": 3,
+  "fps": 0.0,
+  "origin": [
+   37,
+   64
+  ],
+  "collide": [
+   -30,
+   -10,
+   60,
+   10
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "bell_yoke": {
+  "png": "res://assets/sprites/props/bell_yoke.png",
+  "size": [
+   110,
+   18
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   55,
+   17
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "mechanism": {
+  "png": "res://assets/sprites/props/mechanism.png",
+  "size": [
+   44,
+   48
+  ],
+  "frames": 2,
+  "fps": 0.0,
+  "origin": [
+   22,
+   46
+  ],
+  "collide": [
+   -18,
+   -10,
+   36,
+   10
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "chains": {
+  "png": "res://assets/sprites/props/chains.png",
+  "size": [
+   5,
+   40
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   2,
+   39
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "pillar": {
+  "png": "res://assets/sprites/props/pillar.png",
+  "size": [
+   12,
+   60
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   6,
+   58
+  ],
+  "collide": [
+   -5,
+   -4,
+   10,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "window_arch": {
+  "png": "res://assets/sprites/props/window_arch.png",
+  "size": [
+   30,
+   46
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   15,
+   45
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ },
+ "desk": {
+  "png": "res://assets/sprites/props/desk.png",
+  "size": [
+   34,
+   24
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   17,
+   22
+  ],
+  "collide": [
+   -16,
+   -8,
+   32,
+   8
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "chair": {
+  "png": "res://assets/sprites/props/chair.png",
+  "size": [
+   14,
+   20
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   18
+  ],
+  "collide": [
+   -5,
+   -3,
+   10,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "stairs_down": {
+  "png": "res://assets/sprites/props/stairs_down.png",
+  "size": [
+   34,
+   26
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   17,
+   25
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": false
+ }
+}

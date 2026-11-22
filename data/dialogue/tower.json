@@ -1,0 +1,140 @@
+{
+	"_about": "The bell tower: Orin's echo and the final choice.",
+
+	"tower_bell": [
+		["narrator", "The great bell hangs above you, cracked from shoulder to lip. Blue light pulses deep inside it, slow as breathing."],
+		["narrator", "Around its waist, thirteen marks. Twelve are dull bronze. The last one glows faintly blue."],
+		["rowan", "Like it's waiting for something."]
+	],
+
+	"tower_desk": [
+		["narrator", "Orin's desk. Candle stubs, ink, and a stack of notes in his cramped, careful hand."],
+		{"event": "open_document", "args": ["orin_notes"]},
+		{"if": ["read_orin_notes", "learned_village_song"], "say": "rowan", "text": "He taught me the song. At the well, when I was small. That's why I knew how it ended."},
+		{"if": ["read_orin_notes", "!learned_village_song"], "say": "rowan", "text": "He taught me a song once? I don't remember it. Somebody in Dawnmere must."}
+	],
+
+	"tower_chair": [
+		["narrator", "Orin's chair. The cushion still holds his shape, as if he only stood up a moment ago."]
+	],
+
+	"tower_window": [
+		["narrator", "Far below, Dawnmere's lanterns burn in a small, brave ring. Beyond them, the mist is a grey tide, rising."]
+	],
+
+	"tower_memories_echo": [
+		["narrator", "The bell's light spills out, and you see them: memories, crowded inside the bronze like moths in a jar."],
+		["narrator", "A girl laughing loud enough to fill the tower. A woman singing over a cradle. Two young people carving names into a well."],
+		["narrator", "A young monk tearing pages from a book, crying. A boy in borrowed armour, guarding a road."],
+		["rowan", "Everything Dawnmere gave away. It's all still in there."]
+	],
+
+	"tower_mechanism": [
+		["narrator", "The bell's mechanism: a great iron wheel, cracked and jammed on its own broken teeth. In the hub, an empty slot."],
+		["rowan", "Shaped for the tuning pin."],
+		{"choice": [
+			{"text": "Set the tuning pin.", "goto": "set"},
+			{"text": "Not yet.", "goto": "wait"}
+		]},
+		{"label": "wait"},
+		{"end": true},
+		{"label": "set"},
+		{"event": "install_pin", "hide": true, "wait": 0.4},
+		{"set": {"pin_installed": true}},
+		["narrator", "The pin slides home. Iron grinds against iron, and the whole tower shudders awake."],
+		{"event": "bell_resonate", "hide": true, "wait": 0.6},
+		{"event": "orin_appear", "hide": true, "wait": 0.5},
+		{"run": "orin"}
+	],
+
+	"orin": [
+		["orin", "Rowan."],
+		["rowan", "Orin?"],
+		["orin", "You've grown."],
+		["rowan", "You haven't."],
+		["orin", "That's kind of you."],
+		{"wait": 0.9},
+		["orin", "I suppose there are advantages to being a memory."],
+		["rowan", "What happened to you?"],
+		["orin", "I tried to stop the bell."],
+		["rowan", "Because of what it takes?"],
+		["orin", "Because I finally remembered what it had already taken."],
+		{"event": "orin_look_bell", "wait": 0.6},
+		["orin", "My daughter had a laugh that could fill this whole tower."],
+		["orin", "I remember knowing that."],
+		{"wait": 1.1},
+		["orin", "But I cannot remember the sound."],
+		["rowan", "Then why keep ringing it?"],
+		["orin", "Because every night I was given a choice."],
+		["orin", "Let the mist find the village..."],
+		["orin", "...or let the bell take something small enough that we could pretend nothing had changed."],
+		["rowan", "A memory isn't something small."],
+		["orin", "No."],
+		["orin", "I understand that now."],
+		{"set": {"met_orin_echo": true}},
+		{"label": "hub"},
+		{"choice": [
+			{"text": "Mara asked about her lullaby.", "if": "promised_mara", "once": true, "id": "lullaby", "goto": "lullaby"},
+			{"text": "Whose voice did the bell borrow?", "once": true, "id": "voice", "goto": "voice"},
+			{"text": "Why me? Why the letter?", "once": true, "id": "why", "goto": "why"},
+			{"text": "What happens now?", "goto": "now"}
+		]},
+		{"label": "lullaby"},
+		{"set": {"asked_orin_lullaby": true}},
+		["orin", "It's in here. With all the others. It went the night her boy had the fever. I let the bell take it, because I thought she'd rather have him well than have the song."],
+		["orin", "I was right. And I was wrong. Both at once. That is the bell's whole trick."],
+		{"goto": "hub"},
+		{"label": "voice"},
+		{"set": {"asked_orin_voice": true}},
+		["orin", "...The Sentinel told you to ask that. He always was the cleverest of us."],
+		["orin", "The village's. Before the bell, everyone gathered at dusk and sang. Thirteen notes. The mist can't take hold of a village that's holding on to itself."],
+		["orin", "But singing every night, in the cold, all of us... it was hard. So we cast a bell to sing for us. And a bell has no memories of its own to spend."],
+		{"goto": "hub"},
+		{"label": "why"},
+		{"set": {"asked_orin_why": true}},
+		["orin", "Because you were away. The bell couldn't reach you. You're the only one in Dawnmere who still has all of yourself."],
+		["orin", "I taught you the old song once. At the well. You were seven, and you sang it flat."],
+		{"if": "learned_village_song", "say": "rowan", "text": "I remember. Pip hummed it, and I knew how it ended."},
+		{"if": "!learned_village_song", "say": "rowan", "text": "I don't remember that."},
+		{"if": "!learned_village_song", "say": "orin", "text": "No. Perhaps someone else in Dawnmere still does."},
+		{"goto": "hub"},
+		{"label": "now"},
+		{"run": "orin_decide"}
+	],
+
+	"orin_after": [
+		["orin", "The bell is still listening, Rowan. So am I."],
+		{"run": "orin_decide"}
+	],
+
+	"orin_decide": [
+		{"event": "bell_resonate", "hide": true, "wait": 0.3},
+		{"event": "show_vista", "hide": true},
+		["orin", "The old mechanism can be repaired."],
+		["orin", "One more toll will turn the mist away."],
+		["rowan", "And whose memory will it take?"],
+		["orin", "Yours, if you offer it."],
+		{"if": ["learned_village_song", "read_bellkeeper_ledger", "has_tuning_pin"], "say": "rowan", "text": "There's another way. Thirteen marks. Thirteen notes. The pin can tune it."},
+		{"if": ["learned_village_song", "read_bellkeeper_ledger", "has_tuning_pin"], "say": "orin", "text": "...You remember the song. Then the last mark isn't a toll at all. It's the end of the tune. The note that gives back."},
+		{"choice": [
+			{"text": "Ring the bell. Pay the price.", "goto": "keeper"},
+			{"text": "Break the bell. End the bargain.", "goto": "promise"},
+			{"text": "Retune the bell. Sing the thirteenth note.", "if": ["learned_village_song", "read_bellkeeper_ledger", "has_tuning_pin"], "goto": "chorus"}
+		]},
+		{"label": "keeper"},
+		["orin", "Then let it be the last thing you ever give it. And Rowan... thank you for coming home."],
+		{"set": {"ending_selected": "keeper"}},
+		{"event": "ending", "args": ["keeper"]},
+		{"end": true},
+		{"label": "promise"},
+		["orin", "They'll be frightened. They'll be cold. But they'll be themselves."],
+		["orin", "Give them a reason to remember why. And Rowan... thank you for coming home."],
+		{"set": {"ending_selected": "promise"}},
+		{"event": "ending", "args": ["promise"]},
+		{"end": true},
+		{"label": "chorus"},
+		["orin", "Thirteen notes. Sing it flat, like you used to. The bell won't mind."],
+		{"set": {"ending_selected": "chorus"}},
+		{"event": "ending", "args": ["chorus"]}
+	]
+}

@@ -1,0 +1,39 @@
+{
+	"letter": {
+		"title": "A Letter",
+		"pages": [
+			"Rowan,\n\nCome home before the thirteenth toll.\nThere is something I need you to remember.\n\n[right]- O.[/right]"
+		]
+	},
+	"notice": {
+		"title": "Village Notice Board",
+		"pages": [
+			"[color=#6a4614]BY ORDER OF THE BELLKEEPER[/color]\nAll folk indoors before the toll. Lanterns lit. Shutters fast. Do not answer the mist.\n\n[color=#6a4614]LOST[/color] - one pair of good boots, and the memory of where I put them. Ask for Tobin.\n\n[color=#6a4614]FOUND[/color] - a child's wooden horse, painted blue. Nobody remembers whose.",
+			"[color=#6a4614]HARVEST MOOT[/color] postponed until somebody remembers what we decided last time.\n\nTo whoever keeps leaving apples on the chapel steps: Brother Alden thanks you, and asks you to stop.\n\n[color=#7a6650]Someone has scratched a small bell into the corner of the board, and crossed it out.[/color]"
+		]
+	},
+	"ledger": {
+		"title": "The Bellkeeper's Ledger",
+		"pages": [
+			"[color=#7a6650]The first year.[/color]\n\nTo hide Dawnmere from the Hollow Mist, the bell must be given that which the mist cannot take.\n\nThe mist takes roads, and warmth, and the living who wander into it. It cannot take what is remembered.",
+			"[color=#7a6650]The third year.[/color]\n\nSteel has no memory. Stone has no grief. Therefore the toll must be paid by the living.\n\n[color=#7a6650]The rest of the page is water-stained. One line survives:[/color]\n...easier than gathering in the cold, every night, every one of us...",
+			"[color=#7a6650]The ninth year.[/color]\n\nOne toll. One cherished memory. The village remains unseen.\n\n[color=#7a6650]Several pages after this one have been cut out with a careful blade.[/color]",
+			"[color=#7a6650]The last entry, in a newer, shakier hand.[/color]\n\nWe called it protection because we were too frightened to call it a bargain.\n\n[color=#7a6650]In the margin, thirteen small marks rise and fall like a tune. Beneath them:[/color] the song before the bell.",
+			{"text": "[color=#7a6650]The thirteen marks, copied large in the margin.[/color]\n\nTwelve are pressed hard into the page, as if by someone counting tolls.\n\nThe thirteenth is drawn gently, and circled.", "image": "res://assets/sprites/fx/song_marks_ink.png"}
+		]
+	},
+	"song": {
+		"title": "The Gathering Song",
+		"pages": [
+			{"text": "Pip hums it again, slowly, and you follow the ledger's marks with your finger.\n\nThirteen notes. Up, and up, and down. A rest. And home.\n\nIt is not a lullaby. It is a [color=#6a4614]calling[/color]: a tune for everyone to sing at once, so that no one has to carry it alone.", "image": "res://assets/sprites/fx/song_marks_ink.png"}
+		]
+	},
+	"orin_notes": {
+		"title": "Orin's Notes",
+		"pages": [
+			"Night 4,381.\nGave it the smell of rain on the forge roof. It took it without complaint. Mara was spared one more night.\n\n[right]- O.[/right]",
+			"Night 4,402.\nI can no longer recall my daughter's laugh. I wrote that down so I would know I had lost it.\n\n[color=#7a6650]Below, in a shakier hand:[/color]\nI had a daughter.",
+			"Night 4,411.\nIf I stop the bell, the mist comes. If I keep feeding it, soon there will be nobody left to feed it.\n\nI have written to Rowan. Rowan was away; the bell could not reach them. I taught Rowan the old song once, at the well, before I knew what it was for.\n\nPerhaps it is still in there."
+		]
+	}
+}

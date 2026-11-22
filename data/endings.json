@@ -1,0 +1,75 @@
+{
+	"_about": "Ending narration and the 'What Dawnmere remembers' epilogue. Epilogue lines are shown when their ending matches (or is omitted) and their condition holds. Within a group, only the first matching line is shown.",
+	"endings": {
+		"keeper": {
+			"title": "THE KEEPER",
+			"lines": [
+				"Dawnmere slept safely that night.",
+				"At sunrise, the villagers heard the bell once again.",
+				"And somewhere in the village, someone had forgotten a kindness they would never know to miss."
+			]
+		},
+		"promise": {
+			"title": "THE UNBROKEN PROMISE",
+			"lines": [
+				"For the first time in centuries, Dawnmere faced the darkness without a bell.",
+				"No one knew what the morning would bring.",
+				"But everyone remembered why they had chosen to see it."
+			]
+		},
+		"chorus": {
+			"title": "THE CHORUS",
+			"lines": [
+				"The bell rang one final time.",
+				"Not to take.",
+				"But to return what it could.",
+				"And that night, Dawnmere learned a different way to stand against the dark."
+			]
+		}
+	},
+	"epilogue": [
+		{"group": "orin", "ending": "keeper", "text": "You don't remember Orin. You keep an old chair by your window anyway, and you don't know why it makes you feel safe."},
+		{"group": "orin", "ending": "promise", "text": "Orin's echo went quiet with the bell. You remember all of him, every flat note he ever sang."},
+		{"group": "orin", "ending": "chorus", "text": "When the bell rang the thirteenth time, the tower filled with a girl's laughter. Somewhere inside it, an old man was laughing too."},
+
+		{"group": "mara", "ending": "chorus", "if": "asked_orin_lullaby", "text": "Mara woke humming. She didn't have the words yet. She sang it anyway, badly, down by the river, until her son came home to hear it."},
+		{"group": "mara", "ending": "chorus", "text": "Mara's lullaby came back to her the way a smell does: all at once, and from nowhere."},
+		{"group": "mara", "ending": "keeper", "if": "told_mara_truth", "text": "Mara knows where her song went now. She has started writing new ones. They are terrible. Her son loves them."},
+		{"group": "mara", "ending": "keeper", "text": "Mara still can't remember the lullaby. Some nights she stands at the forge door and listens to the bell for a long time."},
+		{"group": "mara", "ending": "promise", "text": "Mara hung her lantern on the broken bell's pin by the forge door, and lit it every night until morning."},
+
+		{"group": "pip", "if": "learned_village_song", "text": "Pip taught the Gathering Song to anyone who would stand still long enough, and several people who wouldn't."},
+		{"group": "pip", "if": "rowan_kind_to_pip", "text": "Pip still hums the old tune. These days, fewer people ask Pip to stop."},
+		{"group": "pip", "text": "Pip kept humming. Somebody had to."},
+
+		{"group": "alden", "text": "Brother Alden began a new record: every name in Dawnmere, written by everyone. It is very long and full of spelling mistakes. He has never been prouder of a book."},
+
+		{"group": "tobin", "ending": "chorus", "if": "echo_well", "text": "Tobin stopped lighting the lantern by the well twice a night. Now he lights it once, and sits with it, and says her name."},
+		{"group": "tobin", "if": "echo_well", "text": "Tobin still lights the lantern by the well twice a night. Some habits are the shape a memory leaves behind."},
+
+		{"group": "sentinel", "if": "sentinel_resolved_peacefully", "text": "The tower road was quiet after that night. Someone had chosen to remember a soldier with no name."},
+		{"group": "sentinel", "if": "sentinel_endured", "text": "Travellers on the tower road say they feel watched. Kindly, the way a good guard watches."},
+
+		{"group": "village", "ending": "keeper", "text": "The bell rang every sundown, twelve times, as it always had. Nobody asked what it cost. Only you knew they should have."},
+		{"group": "village", "ending": "promise", "text": "Every night, Dawnmere lit its lanterns and stood at its doors until the mist went home. Some nights were very long. Nobody faced them alone."},
+		{"group": "village", "ending": "chorus", "text": "At dusk the whole village gathers in the square and sings thirteen notes. The bell rings once at the end, to say: we are still here."}
+	],
+	"credits": [
+		"[color=#e8c86e]THE THIRTEENTH BELL[/color]",
+		"A vertical-slice prototype",
+		"",
+		"[color=#e8c86e]Made in Godot 4[/color]",
+		"",
+		"Design, writing, code, pixel art and sound",
+		"generated for this prototype from scratch",
+		"(see tools/ for the generators)",
+		"",
+		"[color=#e8c86e]Built for[/color]",
+		"two developers learning to make games",
+		"",
+		"[color=#e8c86e]Thank you for playing.[/color]",
+		"",
+		"Every night the bell saves the village.",
+		"Every night, someone forgets why."
+	]
+}

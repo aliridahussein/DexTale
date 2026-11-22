@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/npc/npc.gd" id="1_npc_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/shadow.png" id="2_shadow_png"]
+[ext_resource type="Script" path="res://scripts/interactables/interactable.gd" id="4_interactable_gd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3"]
+size = Vector2(10, 6)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5"]
+radius = 12.0
+
+[node name="NPC" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_npc_gd")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+texture = ExtResource("2_shadow_png")
+position = Vector2(0, -1)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+offset = Vector2(0, -12)
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_3")
+
+[node name="Talk" type="Area2D" parent="."]
+script = ExtResource("4_interactable_gd")
+prompt = "Talk"
+prompt_offset = Vector2(0, -30)
+
+[node name="Shape" type="CollisionShape2D" parent="Talk"]
+position = Vector2(0, -8)
+shape = SubResource("CircleShape2D_5")

@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://n4rdib1kyq3n"
+path="res://.godot/imported/dawnmere.fnt-d6af76bae9f40bffc4bfb36523ee79b8.fontdata"
+
+[deps]
+
+source_file="res://assets/fonts/dawnmere.fnt"
+dest_files=["res://.godot/imported/dawnmere.fnt-d6af76bae9f40bffc4bfb36523ee79b8.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=1

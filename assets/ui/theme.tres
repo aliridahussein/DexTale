@@ -1,0 +1,131 @@
+[gd_resource type="Theme" format=3]
+
+[ext_resource type="FontFile" path="res://assets/fonts/dawnmere.fnt" id="1_dawnmere_fnt"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/panel_dark.png" id="2_panel_dark_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/slider_grabber.png" id="3_slider_grabber_png"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4"]
+texture = ExtResource("2_panel_dark_png")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6"]
+bg_color = Color(0.0, 0.0, 0.0, 0.0)
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7"]
+bg_color = Color(0.35, 0.24, 0.1, 0.45)
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 3.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.76863, 0.60392, 0.24314, 1.0)
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 3.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_9"]
+bg_color = Color(0.55, 0.38, 0.12, 0.6)
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 3.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_10"]
+bg_color = Color(0.10196, 0.07843, 0.13333, 1.0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35294, 0.24314, 0.08627, 1.0)
+content_margin_left = 0.0
+content_margin_top = 2.0
+content_margin_right = 0.0
+content_margin_bottom = 2.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11"]
+bg_color = Color(0.54902, 0.40784, 0.14902, 1.0)
+content_margin_left = 0.0
+content_margin_top = 2.0
+content_margin_right = 0.0
+content_margin_bottom = 2.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_12"]
+bg_color = Color(0.0, 0.0, 0.0, 0.15)
+content_margin_left = 1.0
+content_margin_top = 0.0
+content_margin_right = 1.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13"]
+bg_color = Color(0.54902, 0.40784, 0.14902, 1.0)
+content_margin_left = 1.0
+content_margin_top = 0.0
+content_margin_right = 1.0
+content_margin_bottom = 0.0
+
+[resource]
+default_font = ExtResource("1_dawnmere_fnt")
+default_font_size = 9
+Button/colors/font_color = Color(0.81176, 0.76078, 0.67843, 1.0)
+Button/colors/font_hover_color = Color(0.97255, 0.9098, 0.66667, 1.0)
+Button/colors/font_focus_color = Color(0.97255, 0.9098, 0.66667, 1.0)
+Button/colors/font_pressed_color = Color(1.0, 0.94902, 0.78431, 1.0)
+Button/colors/font_hover_pressed_color = Color(1.0, 0.94902, 0.78431, 1.0)
+Button/colors/font_disabled_color = Color(0.36863, 0.33725, 0.40784, 1.0)
+Button/colors/font_outline_color = Color(0.0, 0.0, 0.0, 0.0)
+Button/styles/normal = SubResource("StyleBoxFlat_6")
+Button/styles/hover = SubResource("StyleBoxFlat_7")
+Button/styles/pressed = SubResource("StyleBoxFlat_9")
+Button/styles/hover_pressed = SubResource("StyleBoxFlat_9")
+Button/styles/focus = SubResource("StyleBoxFlat_8")
+Button/styles/disabled = SubResource("StyleBoxFlat_6")
+Label/colors/font_color = Color(0.92157, 0.87059, 0.78039, 1.0)
+Label/colors/font_shadow_color = Color(0.02, 0.01, 0.04, 0.85)
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/line_spacing = 2
+RichTextLabel/colors/default_color = Color(0.92157, 0.87059, 0.78039, 1.0)
+RichTextLabel/colors/font_shadow_color = Color(0.02, 0.01, 0.04, 0.85)
+RichTextLabel/constants/shadow_offset_x = 1
+RichTextLabel/constants/shadow_offset_y = 1
+RichTextLabel/constants/line_separation = 2
+RichTextLabel/styles/normal = SubResource("StyleBoxEmpty_5")
+RichTextLabel/styles/focus = SubResource("StyleBoxEmpty_5")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_4")
+Panel/styles/panel = SubResource("StyleBoxTexture_4")
+HSlider/styles/slider = SubResource("StyleBoxFlat_10")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_11")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_11")
+HSlider/styles/focus = SubResource("StyleBoxFlat_8")
+HSlider/icons/grabber = ExtResource("3_slider_grabber_png")
+HSlider/icons/grabber_highlight = ExtResource("3_slider_grabber_png")
+HSlider/icons/grabber_disabled = ExtResource("3_slider_grabber_png")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_12")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_13")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_13")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_13")

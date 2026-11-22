@@ -1,0 +1,329 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/bell_tower.gd" id="1_bell_tower_gd"]
+[ext_resource type="TileSet" path="res://assets/tilesets/world_tileset.tres" id="2_world_tileset_tres"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/light_radial.png" id="3_light_radial_png"]
+[ext_resource type="Script" path="res://scripts/world/flicker_light.gd" id="4_flicker_light_gd"]
+[ext_resource type="PackedScene" path="res://scenes/props/window_arch.tscn" id="5_window_arch_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/bell_yoke.tscn" id="6_bell_yoke_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/chains.tscn" id="7_chains_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/bell.tscn" id="8_bell_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/pillar.tscn" id="9_pillar_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/mechanism.tscn" id="10_mechanism_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/desk.tscn" id="11_desk_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/chair.tscn" id="12_chair_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/candle_stand.tscn" id="13_candle_stand_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/stairs_down.tscn" id="14_stairs_down_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/papers.tscn" id="15_papers_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/characters/player.tscn" id="16_player_tscn"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/characters/orin.tres" id="17_orin_tres"]
+[ext_resource type="PackedScene" path="res://scenes/characters/npc.tscn" id="18_npc_tscn"]
+[ext_resource type="Script" path="res://scripts/interactables/interactable.gd" id="19_interactable_gd"]
+[ext_resource type="Script" path="res://scripts/interactables/echo_point.gd" id="22_echo_point_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/echo_crowd.png" id="23_echo_crowd_png"]
+[ext_resource type="Script" path="res://scripts/interactables/area_exit.gd" id="28_area_exit_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/light_shaft.png" id="30_light_shaft_png"]
+[ext_resource type="Script" path="res://scripts/world/light_shaft.gd" id="31_light_shaft_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/px1.png" id="32_px1_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/mote.png" id="35_mote_png"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_20"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_21"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_24"]
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_25"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_26"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_27"]
+radius = 12.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_29"]
+size = Vector2(24, 10)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_33"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_34"]
+offsets = PackedFloat32Array(0.0, 0.4, 1.0)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.5, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_36"]
+offsets = PackedFloat32Array(0.0, 0.3, 1.0)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.9, 1, 1, 1, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_37"]
+size = Vector2(16, 288)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_38"]
+size = Vector2(16, 288)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_39"]
+size = Vector2(320, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40"]
+size = Vector2(320, 16)
+
+[node name="BellTower" type="Node2D"]
+script = ExtResource("1_bell_tower_gd")
+area_id = "bell_tower"
+bounds = Rect2(0, 0, 320, 256)
+display_name = "The Bell Tower"
+music = "tower"
+ambience = "tower_wind"
+reverb = 0.75
+footstep_surface = "wood"
+
+[node name="Ambient" type="CanvasModulate" parent="."]
+color = Color(0.32, 0.35, 0.5, 1.0)
+
+[node name="Ground" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 2, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 3, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 4, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 5, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 6, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 7, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 8, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 9, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 10, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 11, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 12, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 13, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 14, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 15, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 16, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 17, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 18, 0, 0, 0, 0, 0, 15, 0, 6, 0, 0, 0, 19, 0, 0, 0, 0, 0, 11, 0, 6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 1, 0, 0, 0, 15, 0, 2, 0, 0, 0, 2, 0, 1, 0, 0, 0, 15, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 15, 0, 2, 0, 0, 0, 4, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 6, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 7, 0, 1, 0, 0, 0, 15, 0, 2, 0, 0, 0, 8, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 9, 0, 1, 0, 0, 0, 15, 0, 2, 0, 0, 0, 10, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 11, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 12, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 13, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 14, 0, 1, 0, 0, 0, 15, 0, 2, 0, 0, 0, 15, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 16, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 17, 0, 1, 0, 0, 0, 15, 0, 2, 0, 0, 0, 18, 0, 1, 0, 0, 0, 15, 0, 2, 0, 0, 0, 19, 0, 1, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 2, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 2, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 3, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 4, 0, 2, 0, 0, 0, 2, 0, 3, 0, 0, 0, 5, 0, 2, 0, 0, 0, 2, 0, 3, 0, 0, 0, 6, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 7, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 8, 0, 2, 0, 0, 0, 2, 0, 3, 0, 0, 0, 9, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 10, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 11, 0, 2, 0, 0, 0, 2, 0, 3, 0, 0, 0, 12, 0, 2, 0, 0, 0, 2, 0, 3, 0, 0, 0, 13, 0, 2, 0, 0, 0, 2, 0, 3, 0, 0, 0, 14, 0, 2, 0, 0, 0, 2, 0, 3, 0, 0, 0, 15, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 16, 0, 2, 0, 0, 0, 2, 0, 3, 0, 0, 0, 17, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 18, 0, 2, 0, 0, 0, 1, 0, 3, 0, 0, 0, 19, 0, 2, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 3, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 3, 0, 0, 0, 14, 0, 1, 0, 0, 0, 2, 0, 3, 0, 0, 0, 15, 0, 1, 0, 0, 0, 3, 0, 3, 0, 0, 0, 14, 0, 1, 0, 0, 0, 4, 0, 3, 0, 0, 0, 14, 0, 1, 0, 0, 0, 5, 0, 3, 0, 0, 0, 14, 0, 1, 0, 0, 0, 6, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 7, 0, 3, 0, 0, 0, 15, 0, 1, 0, 0, 0, 8, 0, 3, 0, 0, 0, 14, 0, 1, 0, 0, 0, 9, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 10, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 11, 0, 3, 0, 0, 0, 15, 0, 1, 0, 0, 0, 12, 0, 3, 0, 0, 0, 14, 0, 1, 0, 0, 0, 13, 0, 3, 0, 0, 0, 15, 0, 1, 0, 0, 0, 14, 0, 3, 0, 0, 0, 15, 0, 1, 0, 0, 0, 15, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 16, 0, 3, 0, 0, 0, 14, 0, 1, 0, 0, 0, 17, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 18, 0, 3, 0, 0, 0, 15, 0, 1, 0, 0, 0, 19, 0, 3, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 4, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 4, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 4, 0, 0, 0, 15, 0, 1, 0, 0, 0, 3, 0, 4, 0, 0, 0, 15, 0, 1, 0, 0, 0, 4, 0, 4, 0, 0, 0, 15, 0, 1, 0, 0, 0, 5, 0, 4, 0, 0, 0, 0, 0, 2, 0, 0, 0, 6, 0, 4, 0, 0, 0, 14, 0, 1, 0, 0, 0, 7, 0, 4, 0, 0, 0, 14, 0, 1, 0, 0, 0, 8, 0, 4, 0, 0, 0, 14, 0, 1, 0, 0, 0, 9, 0, 4, 0, 0, 0, 14, 0, 1, 0, 0, 0, 10, 0, 4, 0, 0, 0, 14, 0, 1, 0, 0, 0, 11, 0, 4, 0, 0, 0, 15, 0, 1, 0, 0, 0, 12, 0, 4, 0, 0, 0, 15, 0, 1, 0, 0, 0, 13, 0, 4, 0, 0, 0, 15, 0, 1, 0, 0, 0, 14, 0, 4, 0, 0, 0, 14, 0, 1, 0, 0, 0, 15, 0, 4, 0, 0, 0, 0, 0, 2, 0, 0, 0, 16, 0, 4, 0, 0, 0, 0, 0, 2, 0, 0, 0, 17, 0, 4, 0, 0, 0, 0, 0, 2, 0, 0, 0, 18, 0, 4, 0, 0, 0, 15, 0, 1, 0, 0, 0, 19, 0, 4, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 5, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 5, 0, 0, 0, 14, 0, 1, 0, 0, 0, 2, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 3, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 4, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 5, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 6, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 7, 0, 5, 0, 0, 0, 0, 0, 2, 0, 0, 0, 8, 0, 5, 0, 0, 0, 14, 0, 1, 0, 0, 0, 9, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 10, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 11, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 12, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 13, 0, 5, 0, 0, 0, 0, 0, 2, 0, 0, 0, 14, 0, 5, 0, 0, 0, 14, 0, 1, 0, 0, 0, 15, 0, 5, 0, 0, 0, 14, 0, 1, 0, 0, 0, 16, 0, 5, 0, 0, 0, 14, 0, 1, 0, 0, 0, 17, 0, 5, 0, 0, 0, 15, 0, 1, 0, 0, 0, 18, 0, 5, 0, 0, 0, 0, 0, 2, 0, 0, 0, 19, 0, 5, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 6, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 6, 0, 0, 0, 15, 0, 1, 0, 0, 0, 2, 0, 6, 0, 0, 0, 14, 0, 1, 0, 0, 0, 3, 0, 6, 0, 0, 0, 15, 0, 1, 0, 0, 0, 4, 0, 6, 0, 0, 0, 14, 0, 1, 0, 0, 0, 5, 0, 6, 0, 0, 0, 15, 0, 1, 0, 0, 0, 6, 0, 6, 0, 0, 0, 0, 0, 2, 0, 0, 0, 7, 0, 6, 0, 0, 0, 15, 0, 1, 0, 0, 0, 8, 0, 6, 0, 0, 0, 0, 0, 2, 0, 0, 0, 9, 0, 6, 0, 0, 0, 14, 0, 1, 0, 0, 0, 10, 0, 6, 0, 0, 0, 14, 0, 1, 0, 0, 0, 11, 0, 6, 0, 0, 0, 15, 0, 1, 0, 0, 0, 12, 0, 6, 0, 0, 0, 0, 0, 2, 0, 0, 0, 13, 0, 6, 0, 0, 0, 15, 0, 1, 0, 0, 0, 14, 0, 6, 0, 0, 0, 14, 0, 1, 0, 0, 0, 15, 0, 6, 0, 0, 0, 14, 0, 1, 0, 0, 0, 16, 0, 6, 0, 0, 0, 14, 0, 1, 0, 0, 0, 17, 0, 6, 0, 0, 0, 14, 0, 1, 0, 0, 0, 18, 0, 6, 0, 0, 0, 15, 0, 1, 0, 0, 0, 19, 0, 6, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 7, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 7, 0, 0, 0, 15, 0, 1, 0, 0, 0, 2, 0, 7, 0, 0, 0, 15, 0, 1, 0, 0, 0, 3, 0, 7, 0, 0, 0, 14, 0, 1, 0, 0, 0, 4, 0, 7, 0, 0, 0, 14, 0, 1, 0, 0, 0, 5, 0, 7, 0, 0, 0, 0, 0, 2, 0, 0, 0, 6, 0, 7, 0, 0, 0, 15, 0, 1, 0, 0, 0, 7, 0, 7, 0, 0, 0, 0, 0, 2, 0, 0, 0, 8, 0, 7, 0, 0, 0, 14, 0, 1, 0, 0, 0, 9, 0, 7, 0, 0, 0, 15, 0, 1, 0, 0, 0, 10, 0, 7, 0, 0, 0, 0, 0, 2, 0, 0, 0, 11, 0, 7, 0, 0, 0, 0, 0, 2, 0, 0, 0, 12, 0, 7, 0, 0, 0, 14, 0, 1, 0, 0, 0, 13, 0, 7, 0, 0, 0, 14, 0, 1, 0, 0, 0, 14, 0, 7, 0, 0, 0, 15, 0, 1, 0, 0, 0, 15, 0, 7, 0, 0, 0, 0, 0, 2, 0, 0, 0, 16, 0, 7, 0, 0, 0, 0, 0, 2, 0, 0, 0, 17, 0, 7, 0, 0, 0, 15, 0, 1, 0, 0, 0, 18, 0, 7, 0, 0, 0, 0, 0, 2, 0, 0, 0, 19, 0, 7, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 8, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 8, 0, 0, 0, 14, 0, 1, 0, 0, 0, 2, 0, 8, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 8, 0, 0, 0, 0, 0, 2, 0, 0, 0, 4, 0, 8, 0, 0, 0, 0, 0, 2, 0, 0, 0, 5, 0, 8, 0, 0, 0, 15, 0, 1, 0, 0, 0, 6, 0, 8, 0, 0, 0, 15, 0, 1, 0, 0, 0, 7, 0, 8, 0, 0, 0, 14, 0, 1, 0, 0, 0, 8, 0, 8, 0, 0, 0, 15, 0, 1, 0, 0, 0, 9, 0, 8, 0, 0, 0, 0, 0, 2, 0, 0, 0, 10, 0, 8, 0, 0, 0, 15, 0, 1, 0, 0, 0, 11, 0, 8, 0, 0, 0, 14, 0, 1, 0, 0, 0, 12, 0, 8, 0, 0, 0, 14, 0, 1, 0, 0, 0, 13, 0, 8, 0, 0, 0, 15, 0, 1, 0, 0, 0, 14, 0, 8, 0, 0, 0, 0, 0, 2, 0, 0, 0, 15, 0, 8, 0, 0, 0, 14, 0, 1, 0, 0, 0, 16, 0, 8, 0, 0, 0, 14, 0, 1, 0, 0, 0, 17, 0, 8, 0, 0, 0, 14, 0, 1, 0, 0, 0, 18, 0, 8, 0, 0, 0, 15, 0, 1, 0, 0, 0, 19, 0, 8, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 9, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 9, 0, 0, 0, 15, 0, 1, 0, 0, 0, 3, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 4, 0, 9, 0, 0, 0, 14, 0, 1, 0, 0, 0, 5, 0, 9, 0, 0, 0, 15, 0, 1, 0, 0, 0, 6, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 7, 0, 9, 0, 0, 0, 15, 0, 1, 0, 0, 0, 8, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 9, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 10, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 11, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 12, 0, 9, 0, 0, 0, 15, 0, 1, 0, 0, 0, 13, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 14, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 15, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 16, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 17, 0, 9, 0, 0, 0, 15, 0, 1, 0, 0, 0, 18, 0, 9, 0, 0, 0, 0, 0, 2, 0, 0, 0, 19, 0, 9, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 10, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 10, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 10, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 10, 0, 0, 0, 15, 0, 1, 0, 0, 0, 4, 0, 10, 0, 0, 0, 15, 0, 1, 0, 0, 0, 5, 0, 10, 0, 0, 0, 14, 0, 1, 0, 0, 0, 6, 0, 10, 0, 0, 0, 14, 0, 1, 0, 0, 0, 7, 0, 10, 0, 0, 0, 14, 0, 1, 0, 0, 0, 8, 0, 10, 0, 0, 0, 14, 0, 1, 0, 0, 0, 9, 0, 10, 0, 0, 0, 15, 0, 1, 0, 0, 0, 10, 0, 10, 0, 0, 0, 14, 0, 1, 0, 0, 0, 11, 0, 10, 0, 0, 0, 0, 0, 2, 0, 0, 0, 12, 0, 10, 0, 0, 0, 0, 0, 2, 0, 0, 0, 13, 0, 10, 0, 0, 0, 14, 0, 1, 0, 0, 0, 14, 0, 10, 0, 0, 0, 15, 0, 1, 0, 0, 0, 15, 0, 10, 0, 0, 0, 0, 0, 2, 0, 0, 0, 16, 0, 10, 0, 0, 0, 15, 0, 1, 0, 0, 0, 17, 0, 10, 0, 0, 0, 0, 0, 2, 0, 0, 0, 18, 0, 10, 0, 0, 0, 15, 0, 1, 0, 0, 0, 19, 0, 10, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 11, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 11, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 11, 0, 0, 0, 15, 0, 1, 0, 0, 0, 3, 0, 11, 0, 0, 0, 15, 0, 1, 0, 0, 0, 4, 0, 11, 0, 0, 0, 15, 0, 1, 0, 0, 0, 5, 0, 11, 0, 0, 0, 14, 0, 1, 0, 0, 0, 6, 0, 11, 0, 0, 0, 15, 0, 1, 0, 0, 0, 7, 0, 11, 0, 0, 0, 15, 0, 1, 0, 0, 0, 8, 0, 11, 0, 0, 0, 0, 0, 2, 0, 0, 0, 9, 0, 11, 0, 0, 0, 14, 0, 1, 0, 0, 0, 10, 0, 11, 0, 0, 0, 0, 0, 2, 0, 0, 0, 11, 0, 11, 0, 0, 0, 0, 0, 2, 0, 0, 0, 12, 0, 11, 0, 0, 0, 0, 0, 2, 0, 0, 0, 13, 0, 11, 0, 0, 0, 0, 0, 2, 0, 0, 0, 14, 0, 11, 0, 0, 0, 15, 0, 1, 0, 0, 0, 15, 0, 11, 0, 0, 0, 15, 0, 1, 0, 0, 0, 16, 0, 11, 0, 0, 0, 0, 0, 2, 0, 0, 0, 17, 0, 11, 0, 0, 0, 14, 0, 1, 0, 0, 0, 18, 0, 11, 0, 0, 0, 15, 0, 1, 0, 0, 0, 19, 0, 11, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 12, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 12, 0, 0, 0, 14, 0, 1, 0, 0, 0, 2, 0, 12, 0, 0, 0, 15, 0, 1, 0, 0, 0, 3, 0, 12, 0, 0, 0, 15, 0, 1, 0, 0, 0, 4, 0, 12, 0, 0, 0, 15, 0, 1, 0, 0, 0, 5, 0, 12, 0, 0, 0, 15, 0, 1, 0, 0, 0, 6, 0, 12, 0, 0, 0, 0, 0, 2, 0, 0, 0, 7, 0, 12, 0, 0, 0, 0, 0, 2, 0, 0, 0, 8, 0, 12, 0, 0, 0, 15, 0, 1, 0, 0, 0, 9, 0, 12, 0, 0, 0, 14, 0, 1, 0, 0, 0, 10, 0, 12, 0, 0, 0, 15, 0, 1, 0, 0, 0, 11, 0, 12, 0, 0, 0, 15, 0, 1, 0, 0, 0, 12, 0, 12, 0, 0, 0, 15, 0, 1, 0, 0, 0, 13, 0, 12, 0, 0, 0, 14, 0, 1, 0, 0, 0, 14, 0, 12, 0, 0, 0, 14, 0, 1, 0, 0, 0, 15, 0, 12, 0, 0, 0, 15, 0, 1, 0, 0, 0, 16, 0, 12, 0, 0, 0, 14, 0, 1, 0, 0, 0, 17, 0, 12, 0, 0, 0, 14, 0, 1, 0, 0, 0, 18, 0, 12, 0, 0, 0, 14, 0, 1, 0, 0, 0, 19, 0, 12, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 13, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 13, 0, 0, 0, 15, 0, 1, 0, 0, 0, 2, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 4, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 5, 0, 13, 0, 0, 0, 14, 0, 1, 0, 0, 0, 6, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 7, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 8, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 9, 0, 13, 0, 0, 0, 14, 0, 1, 0, 0, 0, 10, 0, 13, 0, 0, 0, 14, 0, 1, 0, 0, 0, 11, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 12, 0, 13, 0, 0, 0, 15, 0, 1, 0, 0, 0, 13, 0, 13, 0, 0, 0, 14, 0, 1, 0, 0, 0, 14, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 15, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 16, 0, 13, 0, 0, 0, 14, 0, 1, 0, 0, 0, 17, 0, 13, 0, 0, 0, 0, 0, 2, 0, 0, 0, 18, 0, 13, 0, 0, 0, 15, 0, 1, 0, 0, 0, 19, 0, 13, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 14, 0, 0, 0, 13, 0, 6, 0, 0, 0, 1, 0, 14, 0, 0, 0, 14, 0, 1, 0, 0, 0, 2, 0, 14, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 14, 0, 0, 0, 0, 0, 2, 0, 0, 0, 4, 0, 14, 0, 0, 0, 0, 0, 2, 0, 0, 0, 5, 0, 14, 0, 0, 0, 14, 0, 1, 0, 0, 0, 6, 0, 14, 0, 0, 0, 15, 0, 1, 0, 0, 0, 7, 0, 14, 0, 0, 0, 14, 0, 1, 0, 0, 0, 8, 0, 14, 0, 0, 0, 14, 0, 1, 0, 0, 0, 9, 0, 14, 0, 0, 0, 14, 0, 1, 0, 0, 0, 10, 0, 14, 0, 0, 0, 15, 0, 1, 0, 0, 0, 11, 0, 14, 0, 0, 0, 14, 0, 1, 0, 0, 0, 12, 0, 14, 0, 0, 0, 0, 0, 2, 0, 0, 0, 13, 0, 14, 0, 0, 0, 15, 0, 1, 0, 0, 0, 14, 0, 14, 0, 0, 0, 14, 0, 1, 0, 0, 0, 15, 0, 14, 0, 0, 0, 14, 0, 1, 0, 0, 0, 16, 0, 14, 0, 0, 0, 0, 0, 2, 0, 0, 0, 17, 0, 14, 0, 0, 0, 15, 0, 1, 0, 0, 0, 18, 0, 14, 0, 0, 0, 15, 0, 1, 0, 0, 0, 19, 0, 14, 0, 0, 0, 3, 0, 7, 0, 0, 0, 0, 0, 15, 0, 0, 0, 11, 0, 6, 0, 0, 0, 1, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 2, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 3, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 4, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 5, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 6, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 7, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 8, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 9, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 10, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 11, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 12, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 13, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 14, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 15, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 16, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 17, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 18, 0, 15, 0, 0, 0, 12, 0, 6, 0, 0, 0, 19, 0, 15, 0, 0, 0, 11, 0, 6, 0, 0, 0)
+tile_set = ExtResource("2_world_tileset_tres")
+
+[node name="Backdrop" type="Node2D" parent="."]
+
+[node name="Overlay" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray(0, 0)
+tile_set = ExtResource("2_world_tileset_tres")
+
+[node name="Decals" type="Node2D" parent="."]
+
+[node name="Encounter" type="Node2D" parent="."]
+
+[node name="Objects" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Interactions" type="Node2D" parent="."]
+
+[node name="Triggers" type="Node2D" parent="."]
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="Lights" type="Node2D" parent="."]
+
+[node name="Effects" type="Node2D" parent="."]
+z_index = 6
+
+[node name="WindowW" parent="Objects" instance=ExtResource("5_window_arch_tscn")]
+position = Vector2(48, 46)
+
+[node name="WindowE" parent="Objects" instance=ExtResource("5_window_arch_tscn")]
+position = Vector2(272, 46)
+
+[node name="Yoke" parent="Objects" instance=ExtResource("6_bell_yoke_tscn")]
+position = Vector2(160, 56)
+
+[node name="ChainL" parent="Objects" instance=ExtResource("7_chains_tscn")]
+position = Vector2(112, 96)
+
+[node name="ChainR" parent="Objects" instance=ExtResource("7_chains_tscn")]
+position = Vector2(208, 96)
+
+[node name="Bell" parent="Objects" instance=ExtResource("8_bell_tscn")]
+position = Vector2(160, 118)
+
+[node name="PillarW" parent="Objects" instance=ExtResource("9_pillar_tscn")]
+position = Vector2(72, 132)
+
+[node name="PillarE" parent="Objects" instance=ExtResource("9_pillar_tscn")]
+position = Vector2(268, 132)
+
+[node name="Mechanism" parent="Objects" instance=ExtResource("10_mechanism_tscn")]
+position = Vector2(224, 168)
+
+[node name="Desk" parent="Objects" instance=ExtResource("11_desk_tscn")]
+position = Vector2(62, 212)
+
+[node name="Chair" parent="Objects" instance=ExtResource("12_chair_tscn")]
+position = Vector2(92, 206)
+
+[node name="Candle" parent="Objects" instance=ExtResource("13_candle_stand_tscn")]
+position = Vector2(34, 208)
+
+[node name="Stairs" parent="Decals" instance=ExtResource("14_stairs_down_tscn")]
+position = Vector2(160, 252)
+z_index = -1
+
+[node name="Papers" parent="Decals" instance=ExtResource("15_papers_tscn")]
+position = Vector2(120, 230)
+z_index = -1
+
+[node name="Player" parent="Objects" instance=ExtResource("16_player_tscn")]
+position = Vector2(160, 222)
+
+[node name="Orin" parent="Objects" instance=ExtResource("18_npc_tscn")]
+position = Vector2(160, 156)
+sprite_frames = ExtResource("17_orin_tres")
+npc_id = "orin"
+conversation = "orin_after"
+facing_name = "down"
+spectral = true
+present_when = "orin_appeared"
+
+[node name="MechanismUse" type="Area2D" parent="Interactions"]
+position = Vector2(224, 172)
+script = ExtResource("19_interactable_gd")
+prompt = "Inspect"
+conversation_id = "tower_mechanism"
+prompt_offset = Vector2(0, -50)
+hidden_when = "orin_appeared"
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/MechanismUse"]
+shape = SubResource("CircleShape2D_20")
+
+[node name="BellLook" type="Area2D" parent="Interactions"]
+position = Vector2(160, 124)
+script = ExtResource("19_interactable_gd")
+prompt = "Inspect"
+conversation_id = "tower_bell"
+prompt_offset = Vector2(0, -70)
+hidden_when = "orin_appeared"
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/BellLook"]
+shape = SubResource("CircleShape2D_21")
+
+[node name="BellEcho" type="Area2D" parent="Interactions"]
+position = Vector2(160, 124)
+script = ExtResource("22_echo_point_gd")
+reveal_texture = ExtResource("23_echo_crowd_png")
+echo_id = "tower_memories"
+conversation_id = "tower_memories_echo"
+hidden_when = "orin_appeared"
+reveal_offset = Vector2(-48, -96)
+hint_offset = Vector2(0, -84)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/BellEcho"]
+shape = SubResource("CircleShape2D_24")
+
+[node name="DeskRead" type="Area2D" parent="Interactions"]
+position = Vector2(62, 216)
+script = ExtResource("19_interactable_gd")
+prompt = "Read"
+conversation_id = "tower_desk"
+prompt_offset = Vector2(0, -30)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/DeskRead"]
+shape = SubResource("CircleShape2D_25")
+
+[node name="ChairLook" type="Area2D" parent="Interactions"]
+position = Vector2(92, 210)
+script = ExtResource("19_interactable_gd")
+prompt = "Inspect"
+conversation_id = "tower_chair"
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/ChairLook"]
+shape = SubResource("CircleShape2D_26")
+
+[node name="WindowLook" type="Area2D" parent="Interactions"]
+position = Vector2(48, 58)
+script = ExtResource("19_interactable_gd")
+prompt = "Look"
+conversation_id = "tower_window"
+prompt_offset = Vector2(0, -46)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/WindowLook"]
+shape = SubResource("CircleShape2D_27")
+
+[node name="ToPath" type="Area2D" parent="Triggers"]
+position = Vector2(160, 246)
+script = ExtResource("28_area_exit_gd")
+target_area = "mist_path"
+target_spawn = "from_tower"
+
+[node name="Shape" type="CollisionShape2D" parent="Triggers/ToPath"]
+shape = SubResource("RectangleShape2D_29")
+
+[node name="default" type="Marker2D" parent="Spawns"]
+position = Vector2(160, 222)
+metadata/facing = "up"
+
+[node name="from_path" type="Marker2D" parent="Spawns"]
+position = Vector2(160, 222)
+metadata/facing = "up"
+
+[node name="BellGlow" type="PointLight2D" parent="Lights"]
+position = Vector2(160, 100)
+color = Color(0.41569, 0.81569, 1.0, 1.0)
+energy = 0.9
+texture = ExtResource("3_light_radial_png")
+texture_scale = 1.25
+
+[node name="MoonW" type="Sprite2D" parent="Effects"]
+position = Vector2(48, 36)
+rotation = -0.24435
+scale = Vector2(1.1, 1.9)
+texture = ExtResource("30_light_shaft_png")
+offset = Vector2(0, 64)
+modulate = Color(0.60392, 0.72157, 1.0, 1.0)
+script = ExtResource("31_light_shaft_gd")
+base_alpha = 0.11
+
+[node name="MoonE" type="Sprite2D" parent="Effects"]
+position = Vector2(272, 36)
+rotation = 0.24435
+scale = Vector2(1.1, 1.9)
+texture = ExtResource("30_light_shaft_png")
+offset = Vector2(0, 64)
+modulate = Color(0.60392, 0.72157, 1.0, 1.0)
+script = ExtResource("31_light_shaft_gd")
+base_alpha = 0.11
+
+[node name="Dust" type="CPUParticles2D" parent="Effects"]
+position = Vector2(160, 150)
+texture = ExtResource("32_px1_png")
+material = SubResource("CanvasItemMaterial_33")
+color_ramp = SubResource("Gradient_34")
+amount = 26
+lifetime = 9.0
+emission_shape = 3
+emission_rect_extents = Vector2(140, 90)
+direction = Vector2(0, 1)
+spread = 180.0
+gravity = Vector2(0, 0.6)
+initial_velocity_min = 1.0
+initial_velocity_max = 3.0
+color = Color(0.84706, 0.87843, 1.0, 1.0)
+
+[node name="BellMotes" type="CPUParticles2D" parent="Effects"]
+position = Vector2(160, 100)
+texture = ExtResource("35_mote_png")
+material = SubResource("CanvasItemMaterial_33")
+color_ramp = SubResource("Gradient_36")
+amount = 18
+lifetime = 3.2
+emission_shape = 3
+emission_rect_extents = Vector2(26, 12)
+direction = Vector2(0, -1)
+spread = 60.0
+gravity = Vector2(0, -6)
+initial_velocity_min = 3.0
+initial_velocity_max = 8.0
+color = Color(0.54118, 0.87843, 1.0, 1.0)
+
+[node name="Bounds" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(-8, 128)
+shape = SubResource("RectangleShape2D_37")
+
+[node name="Right" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(328, 128)
+shape = SubResource("RectangleShape2D_38")
+
+[node name="Top" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(160, -8)
+shape = SubResource("RectangleShape2D_39")
+
+[node name="Bottom" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(160, 264)
+shape = SubResource("RectangleShape2D_40")

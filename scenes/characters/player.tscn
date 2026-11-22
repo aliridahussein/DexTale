@@ -1,0 +1,92 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/shadow.png" id="2_shadow_png"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/characters/rowan.tres" id="3_rowan_tres"]
+[ext_resource type="Script" path="res://scripts/player/player_echo.gd" id="7_player_echo_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/mote.png" id="10_mote_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/ring.png" id="11_ring_png"]
+[ext_resource type="Script" path="res://scripts/player/game_camera.gd" id="12_game_camera_gd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4"]
+size = Vector2(10, 6)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6"]
+radius = 46.0
+
+[sub_resource type="Gradient" id="Gradient_8"]
+offsets = PackedFloat32Array(0, 0.3, 1)
+colors = PackedColorArray(0.75, 0.85, 1, 0, 0.75, 0.85, 1, 1, 0.6, 0.55, 1, 0)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_9"]
+blend_mode = 1
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+motion_mode = 1
+script = ExtResource("1_player_gd")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+texture = ExtResource("2_shadow_png")
+position = Vector2(0, -1)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("3_rowan_tres")
+animation = &"idle_down"
+offset = Vector2(0, -12)
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_4")
+
+[node name="InteractionSensor" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="Shape" type="CollisionShape2D" parent="InteractionSensor"]
+position = Vector2(0, -6)
+shape = SubResource("CircleShape2D_5")
+
+[node name="EchoSensor" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="Shape" type="CollisionShape2D" parent="EchoSensor"]
+position = Vector2(0, -6)
+shape = SubResource("CircleShape2D_6")
+
+[node name="Echo" type="Node2D" parent="."]
+position = Vector2(0, -10)
+script = ExtResource("7_player_echo_gd")
+
+[node name="Motes" type="CPUParticles2D" parent="Echo"]
+material = SubResource("CanvasItemMaterial_9")
+emitting = false
+amount = 26
+lifetime = 1.6
+one_shot = true
+explosiveness = 0.55
+texture = ExtResource("10_mote_png")
+emission_shape = 1
+emission_sphere_radius = 16.0
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, -10)
+initial_velocity_min = 4.0
+initial_velocity_max = 16.0
+color_ramp = SubResource("Gradient_8")
+
+[node name="Ripple" type="Sprite2D" parent="Echo"]
+material = SubResource("CanvasItemMaterial_9")
+visible = false
+texture = ExtResource("11_ring_png")
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(0, -12)
+script = ExtResource("12_game_camera_gd")

@@ -1,0 +1,234 @@
+{
+	"_about": "Village square. Lines are [speaker, text]. Speakers live in data/speakers.json. Format reference: scripts/autoload/dialogue_manager.gd",
+
+	"pip_intro": [
+		{"event": "pip_face_rowan"},
+		["pip", "You're late."],
+		["rowan", "Do I know you?"],
+		["pip", "No. But everyone who comes back to this village is late for something."],
+		["rowan", "That's strangely philosophical."],
+		["pip", "I'm ten. I'm allowed to be strange."],
+		{"event": "pip_face_tower", "wait": 0.5},
+		["pip", "You hear it too, don't you?"],
+		["rowan", "Hear what?"],
+		["pip", "Nothing."],
+		{"wait": 1.0},
+		["pip", "The bell forgot to ring."],
+		["rowan", "Bells don't forget."],
+		{"event": "pip_face_rowan"},
+		["pip", "People do."],
+		{"event": "pip_hum", "hide": true, "wait": 0.3},
+		["pip", "Grandma used to sing that. Except nobody remembers Grandma singing."],
+		{"choice": [
+			{"text": "It's a pretty tune.", "set": {"rowan_kind_to_pip": true}, "goto": "kind"},
+			{"text": "Then how do you know she did?", "goto": "curious"},
+			{"text": "I'm looking for someone.", "goto": "orin"}
+		]},
+		{"label": "kind"},
+		["pip", "It is, isn't it? Nobody else thinks so. Nobody else even hears it."],
+		{"goto": "orin"},
+		{"label": "curious"},
+		["pip", "Because I remember. I'm the only one who does. That's the strange part, not me."],
+		{"label": "orin"},
+		["rowan", "Where's Orin?"],
+		["pip", "At the tower, maybe. He went up yesterday."],
+		["pip", "He said if the bell stopped, we shouldn't be afraid of what comes out of the mist."],
+		["rowan", "Then what should we be afraid of?"],
+		["pip", "He didn't say."],
+		{"wait": 0.7},
+		["pip", "Before he went up, he was at the forge, shouting at Mara about iron and tuning and... I stopped listening."],
+		["pip", "Mara's on the west side of the square. Follow the smoke. And the swearing."],
+		{"set": {"met_pip": true, "pip_mentioned_mara": true}}
+	],
+
+	"pip": [
+		{"if": "!met_pip", "run": "pip_intro"},
+		{"if": ["saw_song_marks", "!learned_village_song"], "run": "pip_song"},
+		{"if": "learned_village_song", "goto": "after_song"},
+		{"if": "read_bellkeeper_ledger", "goto": "after_ledger"},
+		{"if": "has_tuning_pin", "goto": "after_pin"},
+		{"if": "spoke_to_mara", "goto": "after_mara"},
+		["pip", "Mara's forge is on the west side. Follow the smoke. And the swearing."],
+		{"end": true},
+
+		{"label": "after_mara"},
+		["pip", "Did Mara yell at you? She yells at everybody. It means she likes you. Or that you're standing too close to the anvil."],
+		{"end": true},
+
+		{"label": "after_pin"},
+		{"if": "chose_pip_pin", "goto": "after_pin_again"},
+		{"set": {"chose_pip_pin": true}},
+		["pip", "Is that the bell's pin? Can I hold it?"],
+		{"choice": [
+			{"text": "Carefully.", "set": {"pip_held_pin": true}, "goto": "hold"},
+			{"text": "Not a chance.", "goto": "nohold"}
+		]},
+		{"label": "hold"},
+		["pip", "It's cold. Colder than iron should be. Like it's been somewhere."],
+		{"goto": "chapel"},
+		{"label": "nohold"},
+		["pip", "Fine. I didn't want to anyway."],
+		["pip", "...I did, a bit."],
+		{"label": "chapel"},
+		["pip", "Brother Alden says the chapel keeps everything worth keeping. Maybe it keeps whatever that pin is for."],
+		{"end": true},
+		{"label": "after_pin_again"},
+		["pip", "The chapel's east of the square. Alden's the one who looks like a worried candle."],
+		{"end": true},
+
+		{"label": "after_ledger"},
+		["pip", "You look like you've been reading. You get a face. Grandma got the same face."],
+		{"end": true},
+
+		{"label": "after_song"},
+		{"event": "pip_hum", "hide": true},
+		["pip", "I'll keep humming it. Somebody should."],
+		{"if": "gate_unlocked", "say": "pip", "text": "Bring Orin home, if you can. Or bring home whatever's left of him."}
+	],
+
+	"pip_song": [
+		["pip", "You're doing the face again."],
+		["rowan", "The song you hum. Your grandmother's. Can you hum it once more? Slowly?"],
+		["pip", "...Why?"],
+		["rowan", "Because I think I've seen it written down."],
+		{"event": "pip_hum", "args": [1.0], "hide": true, "wait": 0.4},
+		{"event": "open_document", "args": ["song"]},
+		["rowan", "Wait. I know how it ends.{p} I don't know how I know."],
+		["pip", "You look like you've seen a ghost."],
+		["rowan", "I've seen what ghosts remember."],
+		["pip", "That's worse, isn't it?"],
+		{"choice": [
+			{"text": "A little.", "goto": "honest"},
+			{"text": "It might be better.", "goto": "hope"}
+		]},
+		{"label": "honest"},
+		["pip", "I knew it. I always know."],
+		{"goto": "rest"},
+		{"label": "hope"},
+		["pip", "Better? Huh. Nobody's used that word around here in ages."],
+		{"label": "rest"},
+		["rowan", "It isn't a lullaby. It's a calling. Everyone sang it together, once. Before there was a bell."],
+		["pip", "Everyone? Even Mara? She can't sing. I've heard her try."],
+		["rowan", "Even Mara."],
+		["pip", "...Then I'll teach her. If you think it matters."],
+		["rowan", "I think it might be the only thing that does."],
+		{"set": {"learned_village_song": true}},
+		{"event": "toast", "args": ["Learned: The Gathering Song", "song"]}
+	],
+
+	"tobin": [
+		{"if": "echo_well", "goto": "elsie"},
+		{"if": "talked_tobin", "goto": "again"},
+		["tobin", "Evening. Or is it? I lit this one already, didn't I. Or I meant to."],
+		["rowan", "You're the lamplighter?"],
+		["tobin", "Tobin. Thirty years on the lanterns. You'd think I'd remember which ones I've done."],
+		["tobin", "I keep lighting the one by the well, though. Twice a night, sometimes. Never knew why."],
+		{"set": {"talked_tobin": true}},
+		{"end": true},
+		{"label": "again"},
+		{"if": "gate_unlocked", "say": "tobin", "text": "You're going up the tower road? Take a lantern. Take two. Take mine, if you're daft enough to need it."},
+		{"if": "!gate_unlocked", "say": "tobin", "text": "Mind the mist by the gate. It's been leaning on the wall all evening, like it's waiting to be let in."},
+		{"end": true},
+		{"label": "elsie"},
+		{"if": "tobin_elsie", "goto": "elsie_again"},
+		["rowan", "Tobin. Does the name Elsie mean anything to you?"],
+		{"wait": 0.8},
+		["tobin", "Elsie?"],
+		["tobin", "...No. No, I don't know an Elsie."],
+		["tobin", "Funny. My hands went cold just now."],
+		{"wait": 0.6},
+		["tobin", "Well. The one by the well won't light itself."],
+		{"set": {"tobin_elsie": true}},
+		{"end": true},
+		{"label": "elsie_again"},
+		["tobin", "Habit, that lantern. Just habit. Good night to you."]
+	],
+
+	"cat": [
+		{"set": {"cat_pets": "+1"}},
+		{"if": "cat_pets>=3", "goto": "many"},
+		{"if": "cat_pets>=2", "goto": "two"},
+		["narrator", "The cat regards you with deep suspicion, then permits exactly one scratch behind the ear."],
+		{"end": true},
+		{"label": "two"},
+		["narrator", "The cat leans into your hand. It has decided you are furniture, which is a kind of trust."],
+		{"end": true},
+		{"label": "many"},
+		["narrator", "The cat purrs like a small, warm engine. Whatever the bell takes, it hasn't taken this."]
+	],
+
+	"village_well": [
+		["rowan", "Someone carved two names into the stone."],
+		{"if": "echo_well", "goto": "heard"},
+		["rowan", "The first says TOBIN. The second has been worn away, like something kept rubbing at it."],
+		{"if": "!used_echo", "say": "narrator", "text": "The stone feels colder than it should. Some places remember more than they show. (Stand close and press F to listen.)"},
+		{"end": true},
+		{"label": "heard"},
+		["rowan", "TOBIN, and ELSIE. Hard to see. Easy to know, once you've heard it."]
+	],
+
+	"village_well_echo": [
+		["voice", "[wave amp=12 freq=3]You promised you'd wait for me.[/wave]"],
+		{"wait": 0.4},
+		["rowan", "TOBIN... and ELSIE. The second name came back, just for a moment."],
+		["rowan", "Somebody made a promise here. Somebody else forgot it."]
+	],
+
+	"village_notice": [
+		{"event": "open_document", "args": ["notice"]}
+	],
+
+	"village_signpost": [
+		["narrator", "WEST: the forge. EAST: the chapel. NORTH: the tower road."],
+		["narrator", "Someone has carved a fourth arm, pointing at nothing. It just says: HOME?"]
+	],
+
+	"village_stall": [
+		["narrator", "A fruit stall, abandoned mid-sale. A sign leans against the apples: BACK BEFORE THE BELL."],
+		["rowan", "It's dated last week."]
+	],
+
+	"village_gate": [
+		{"if": "has_gate_key", "goto": "open"},
+		["narrator", "The north gate is chained shut. The lock is stamped with a small bell."],
+		["narrator", "Beyond the bars, the tower road disappears into mist."],
+		{"if": "!has_gate_key", "say": "rowan", "text": "Orin would have had a key. Orin had a key for everything."},
+		{"end": true},
+		{"label": "open"},
+		["rowan", "A bell on the lock. A bell on the key. Of course."],
+		{"event": "gate_open", "hide": true},
+		{"set": {"gate_unlocked": true}},
+		["narrator", "The chain slides free. The gate swings inward, and the mist leans in to meet you."]
+	],
+
+	"village_door_nw": [
+		["narrator", "You knock. From inside, a muffled voice: “We're not buying any!”"],
+		["rowan", "I'm not selling anything."],
+		["narrator", "“Then we're definitely not buying it.”"]
+	],
+
+	"village_door_ne": [
+		["narrator", "Shutters drawn. Someone inside is humming, badly, and stops the moment you knock."]
+	],
+
+	"village_door_sw": [
+		["narrator", "A note is pinned to the door: OUT. Under it, in older ink: IN. Under that, older still: WHO?"]
+	],
+
+	"village_tavern": [
+		["narrator", "The Lantern and Last Orders. Closed. A sign hangs on the door:"],
+		["narrator", "GONE TO BED EARLY. BELL'S BROKEN. DON'T ASK."]
+	],
+
+	"village_cart": [
+		["narrator", "A cart packed for a journey nobody took. The apples on top have started to wrinkle."]
+	],
+
+	"village_leave": [
+		{"if": "has_tuning_pin", "goto": "later"},
+		["rowan", "Not yet. Orin's letter brought me home for a reason."],
+		{"end": true},
+		{"label": "later"},
+		["rowan", "If I turn back now, the mist gets the village. I didn't walk all this way for that."]
+	]
+}

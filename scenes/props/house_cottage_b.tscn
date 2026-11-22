@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/props/house_cottage_b.png" id="1_house_cottage_b_png"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
+size = Vector2(46, 36)
+
+[node name="HouseCottageB" type="StaticBody2D"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_house_cottage_b_png")
+centered = false
+offset = Vector2(-24, -50)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -18)
+shape = SubResource("RectangleShape2D_2")

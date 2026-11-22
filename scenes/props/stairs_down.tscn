@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/props/stairs_down.png" id="1_stairs_down_png"]
+
+[node name="StairsDown" type="Node2D"]
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_stairs_down_png")
+centered = false
+offset = Vector2(-17, -25)

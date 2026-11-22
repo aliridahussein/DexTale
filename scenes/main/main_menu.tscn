@@ -1,0 +1,258 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_main_menu_gd"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/vista_dusk.png" id="2_vista_dusk_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/light_radial.png" id="4_light_radial_png"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/mist_band_b.png" id="5_mist_band_b_png"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/mist_band_a.png" id="6_mist_band_a_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/logo.png" id="7_logo_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/panel_dark.png" id="8_panel_dark_png"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3"]
+blend_mode = 1
+
+[node name="MainMenu" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main_menu_gd")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_vista_dusk_png")
+
+[node name="TowerGlow" type="TextureRect" parent="."]
+unique_name_in_owner = true
+offset_left = 372.0
+offset_top = 66.0
+offset_right = 412.0
+offset_bottom = 106.0
+material = SubResource("CanvasItemMaterial_3")
+expand_mode = 1
+texture = ExtResource("4_light_radial_png")
+modulate = Color(0.5, 0.85, 1.0, 0.45)
+
+[node name="MistB" type="Control" parent="."]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 166.0
+offset_right = 960.0
+offset_bottom = 216.0
+mouse_filter = 2
+
+[node name="A" type="TextureRect" parent="MistB"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 480.0
+offset_bottom = 50.0
+texture = ExtResource("5_mist_band_b_png")
+mouse_filter = 2
+
+[node name="B" type="TextureRect" parent="MistB"]
+offset_left = 480.0
+offset_top = 0.0
+offset_right = 960.0
+offset_bottom = 50.0
+texture = ExtResource("5_mist_band_b_png")
+mouse_filter = 2
+
+[node name="MistA" type="Control" parent="."]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 196.0
+offset_right = 960.0
+offset_bottom = 256.0
+mouse_filter = 2
+
+[node name="A" type="TextureRect" parent="MistA"]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 480.0
+offset_bottom = 60.0
+texture = ExtResource("6_mist_band_a_png")
+mouse_filter = 2
+
+[node name="B" type="TextureRect" parent="MistA"]
+offset_left = 480.0
+offset_top = 0.0
+offset_right = 960.0
+offset_bottom = 60.0
+texture = ExtResource("6_mist_band_a_png")
+mouse_filter = 2
+
+[node name="Logo" type="TextureRect" parent="."]
+unique_name_in_owner = true
+offset_left = 104.0
+offset_top = 22.0
+offset_right = 375.0
+offset_bottom = 90.0
+texture = ExtResource("7_logo_png")
+
+[node name="Tagline" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 98.0
+offset_right = 480.0
+offset_bottom = 110.0
+text = "Every night the bell saves the village. Every night, someone forgets why."
+theme_override_colors/font_color = Color(0.78431, 0.73725, 0.84706, 1.0)
+horizontal_alignment = 1
+
+[node name="Menu" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+offset_left = 186.0
+offset_top = 122.0
+offset_right = 294.0
+offset_bottom = 214.0
+theme_override_constants/separation = 0
+
+[node name="NewGame" type="Button" parent="Menu"]
+unique_name_in_owner = true
+text = "New Game"
+
+[node name="Continue" type="Button" parent="Menu"]
+unique_name_in_owner = true
+text = "Continue"
+
+[node name="SettingsBtn" type="Button" parent="Menu"]
+unique_name_in_owner = true
+text = "Settings"
+
+[node name="CreditsBtn" type="Button" parent="Menu"]
+unique_name_in_owner = true
+text = "Credits"
+
+[node name="QuitBtn" type="Button" parent="Menu"]
+unique_name_in_owner = true
+text = "Quit"
+
+[node name="SaveInfo" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 222.0
+offset_right = 480.0
+offset_bottom = 234.0
+text = ""
+theme_override_colors/font_color = Color(0.60392, 0.55686, 0.66667, 1.0)
+horizontal_alignment = 1
+
+[node name="Version" type="Label" parent="."]
+offset_left = 5.0
+offset_top = 255.0
+offset_right = 225.0
+offset_bottom = 267.0
+text = "v0.1 - prototype"
+theme_override_colors/font_color = Color(0.43137, 0.39216, 0.5098, 1.0)
+
+[node name="Hint" type="Label" parent="."]
+offset_left = 255.0
+offset_top = 255.0
+offset_right = 475.0
+offset_bottom = 267.0
+text = "Arrows/WASD + Enter    F11: fullscreen"
+theme_override_colors/font_color = Color(0.43137, 0.39216, 0.5098, 1.0)
+horizontal_alignment = 2
+
+[node name="Credits" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+
+[node name="Dim" type="ColorRect" parent="Credits"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.01, 0.04, 0.7)
+
+[node name="Panel" type="NinePatchRect" parent="Credits"]
+offset_left = 70.0
+offset_top = 20.0
+offset_right = 410.0
+offset_bottom = 250.0
+texture = ExtResource("8_panel_dark_png")
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="CreditsText" type="RichTextLabel" parent="Credits/Panel"]
+unique_name_in_owner = true
+offset_left = 14.0
+offset_top = 12.0
+offset_right = 326.0
+offset_bottom = 198.0
+bbcode_enabled = true
+scroll_active = false
+
+[node name="CreditsBack" type="Button" parent="Credits/Panel"]
+unique_name_in_owner = true
+offset_left = 130.0
+offset_top = 204.0
+offset_right = 210.0
+offset_bottom = 220.0
+text = "Back"
+
+[node name="Confirm" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+
+[node name="Dim" type="ColorRect" parent="Confirm"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.01, 0.04, 0.7)
+
+[node name="Panel" type="NinePatchRect" parent="Confirm"]
+offset_left = 120.0
+offset_top = 90.0
+offset_right = 360.0
+offset_bottom = 180.0
+texture = ExtResource("8_panel_dark_png")
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="Question" type="Label" parent="Confirm/Panel"]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 228.0
+offset_bottom = 52.0
+text = "Start a new game? Your saved progress will be replaced."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ConfirmYes" type="Button" parent="Confirm/Panel"]
+unique_name_in_owner = true
+offset_left = 40.0
+offset_top = 60.0
+offset_right = 110.0
+offset_bottom = 76.0
+text = "Start"
+
+[node name="ConfirmNo" type="Button" parent="Confirm/Panel"]
+unique_name_in_owner = true
+offset_left = 130.0
+offset_top = 60.0
+offset_right = 200.0
+offset_bottom = 76.0
+text = "Cancel"

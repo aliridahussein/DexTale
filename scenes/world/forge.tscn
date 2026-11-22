@@ -1,0 +1,374 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/forge.gd" id="1_forge_gd"]
+[ext_resource type="TileSet" path="res://assets/tilesets/world_tileset.tres" id="2_world_tileset_tres"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/light_radial.png" id="3_light_radial_png"]
+[ext_resource type="Script" path="res://scripts/world/flicker_light.gd" id="4_flicker_light_gd"]
+[ext_resource type="PackedScene" path="res://scenes/props/furnace.tscn" id="5_furnace_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/forge_plaque.tscn" id="6_forge_plaque_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/tool_rack.tscn" id="7_tool_rack_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/workbench.tscn" id="8_workbench_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/shelf_jar.tscn" id="9_shelf_jar_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/bellows.tscn" id="10_bellows_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/anvil.tscn" id="11_anvil_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/quench_barrel.tscn" id="12_quench_barrel_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/coal_pile.tscn" id="13_coal_pile_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/weapon_rack.tscn" id="14_weapon_rack_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/cradle.tscn" id="15_cradle_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/crate.tscn" id="16_crate_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/crate_stack.tscn" id="17_crate_stack_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/barrel.tscn" id="18_barrel_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/wall_lantern.tscn" id="19_wall_lantern_tscn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props/tuning_pin_item.png" id="20_tuning_pin_item_png"]
+[ext_resource type="PackedScene" path="res://scenes/characters/player.tscn" id="21_player_tscn"]
+[ext_resource type="SpriteFrames" path="res://assets/sprites/characters/mara.tres" id="22_mara_tres"]
+[ext_resource type="PackedScene" path="res://scenes/characters/npc.tscn" id="23_npc_tscn"]
+[ext_resource type="Script" path="res://scripts/interactables/interactable.gd" id="24_interactable_gd"]
+[ext_resource type="Script" path="res://scripts/interactables/echo_point.gd" id="26_echo_point_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/symbol_bell13.png" id="27_symbol_bell13_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/mara.png" id="34_mara_png"]
+[ext_resource type="Script" path="res://scripts/interactables/area_exit.gd" id="39_area_exit_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/px1.png" id="41_px1_png"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_25"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_28"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_29"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_30"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_31"]
+radius = 9.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_32"]
+radius = 10.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_33"]
+radius = 11.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35"]
+atlas = ExtResource("34_mara_png")
+region = Rect2(0, 0, 16, 24)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_36"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_37"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_38"]
+radius = 9.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40"]
+size = Vector2(32, 8)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_42"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_43"]
+offsets = PackedFloat32Array(0.0, 0.6, 1.0)
+colors = PackedColorArray(1, 0.9, 0.5, 1, 1, 0.5, 0.2, 0.9, 0.8, 0.2, 0.1, 0)
+
+[sub_resource type="Gradient" id="Gradient_44"]
+offsets = PackedFloat32Array(0.0, 1.0)
+colors = PackedColorArray(1, 1, 0.7, 1, 1, 0.4, 0.1, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_45"]
+size = Vector2(16, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_46"]
+size = Vector2(16, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_47"]
+size = Vector2(320, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_48"]
+size = Vector2(320, 16)
+
+[node name="Forge" type="Node2D"]
+script = ExtResource("1_forge_gd")
+area_id = "forge"
+bounds = Rect2(0, 0, 320, 224)
+display_name = "Mara's Forge"
+music = ""
+ambience = "forge"
+reverb = 0.15
+footstep_surface = "stone"
+
+[node name="Ambient" type="CanvasModulate" parent="."]
+color = Color(0.58, 0.47, 0.46, 1.0)
+
+[node name="Ground" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 2, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 3, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 5, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 6, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 7, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 8, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 9, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 10, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 11, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 12, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 13, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 14, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 15, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 16, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 17, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 18, 0, 0, 0, 0, 0, 15, 0, 4, 0, 0, 0, 19, 0, 0, 0, 0, 0, 11, 0, 4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 1, 0, 0, 0, 8, 0, 2, 0, 0, 0, 2, 0, 1, 0, 0, 0, 8, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 8, 0, 2, 0, 0, 0, 4, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 5, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 6, 0, 1, 0, 0, 0, 8, 0, 2, 0, 0, 0, 7, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 8, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 9, 0, 1, 0, 0, 0, 8, 0, 2, 0, 0, 0, 10, 0, 1, 0, 0, 0, 8, 0, 2, 0, 0, 0, 11, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 12, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 13, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 14, 0, 1, 0, 0, 0, 8, 0, 2, 0, 0, 0, 15, 0, 1, 0, 0, 0, 8, 0, 2, 0, 0, 0, 16, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 17, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 18, 0, 1, 0, 0, 0, 7, 0, 2, 0, 0, 0, 19, 0, 1, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 2, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 2, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 3, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 4, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 5, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 6, 0, 2, 0, 0, 0, 10, 0, 2, 0, 0, 0, 7, 0, 2, 0, 0, 0, 10, 0, 2, 0, 0, 0, 8, 0, 2, 0, 0, 0, 10, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 10, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 11, 0, 2, 0, 0, 0, 10, 0, 2, 0, 0, 0, 12, 0, 2, 0, 0, 0, 10, 0, 2, 0, 0, 0, 13, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 14, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 15, 0, 2, 0, 0, 0, 10, 0, 2, 0, 0, 0, 16, 0, 2, 0, 0, 0, 10, 0, 2, 0, 0, 0, 17, 0, 2, 0, 0, 0, 10, 0, 2, 0, 0, 0, 18, 0, 2, 0, 0, 0, 9, 0, 2, 0, 0, 0, 19, 0, 2, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 3, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 3, 0, 0, 0, 13, 0, 1, 0, 0, 0, 2, 0, 3, 0, 0, 0, 12, 0, 1, 0, 0, 0, 3, 0, 3, 0, 0, 0, 12, 0, 1, 0, 0, 0, 4, 0, 3, 0, 0, 0, 11, 0, 1, 0, 0, 0, 5, 0, 3, 0, 0, 0, 13, 0, 1, 0, 0, 0, 6, 0, 3, 0, 0, 0, 12, 0, 1, 0, 0, 0, 7, 0, 3, 0, 0, 0, 11, 0, 1, 0, 0, 0, 8, 0, 3, 0, 0, 0, 11, 0, 1, 0, 0, 0, 9, 0, 3, 0, 0, 0, 13, 0, 1, 0, 0, 0, 10, 0, 3, 0, 0, 0, 11, 0, 1, 0, 0, 0, 11, 0, 3, 0, 0, 0, 12, 0, 1, 0, 0, 0, 12, 0, 3, 0, 0, 0, 11, 0, 1, 0, 0, 0, 13, 0, 3, 0, 0, 0, 12, 0, 1, 0, 0, 0, 14, 0, 3, 0, 0, 0, 12, 0, 1, 0, 0, 0, 15, 0, 3, 0, 0, 0, 11, 0, 1, 0, 0, 0, 16, 0, 3, 0, 0, 0, 11, 0, 1, 0, 0, 0, 17, 0, 3, 0, 0, 0, 13, 0, 1, 0, 0, 0, 18, 0, 3, 0, 0, 0, 11, 0, 1, 0, 0, 0, 19, 0, 3, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 4, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 4, 0, 0, 0, 11, 0, 1, 0, 0, 0, 2, 0, 4, 0, 0, 0, 11, 0, 1, 0, 0, 0, 3, 0, 4, 0, 0, 0, 11, 0, 1, 0, 0, 0, 4, 0, 4, 0, 0, 0, 12, 0, 1, 0, 0, 0, 5, 0, 4, 0, 0, 0, 12, 0, 1, 0, 0, 0, 6, 0, 4, 0, 0, 0, 13, 0, 1, 0, 0, 0, 7, 0, 4, 0, 0, 0, 12, 0, 1, 0, 0, 0, 8, 0, 4, 0, 0, 0, 12, 0, 1, 0, 0, 0, 9, 0, 4, 0, 0, 0, 11, 0, 1, 0, 0, 0, 10, 0, 4, 0, 0, 0, 13, 0, 1, 0, 0, 0, 11, 0, 4, 0, 0, 0, 13, 0, 1, 0, 0, 0, 12, 0, 4, 0, 0, 0, 11, 0, 1, 0, 0, 0, 13, 0, 4, 0, 0, 0, 13, 0, 1, 0, 0, 0, 14, 0, 4, 0, 0, 0, 12, 0, 1, 0, 0, 0, 15, 0, 4, 0, 0, 0, 12, 0, 1, 0, 0, 0, 16, 0, 4, 0, 0, 0, 11, 0, 1, 0, 0, 0, 17, 0, 4, 0, 0, 0, 12, 0, 1, 0, 0, 0, 18, 0, 4, 0, 0, 0, 12, 0, 1, 0, 0, 0, 19, 0, 4, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 2, 0, 5, 0, 0, 0, 12, 0, 1, 0, 0, 0, 3, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 4, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 5, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 6, 0, 5, 0, 0, 0, 13, 0, 1, 0, 0, 0, 7, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 8, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 9, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 10, 0, 5, 0, 0, 0, 12, 0, 1, 0, 0, 0, 11, 0, 5, 0, 0, 0, 12, 0, 1, 0, 0, 0, 12, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 13, 0, 5, 0, 0, 0, 13, 0, 1, 0, 0, 0, 14, 0, 5, 0, 0, 0, 13, 0, 1, 0, 0, 0, 15, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 16, 0, 5, 0, 0, 0, 12, 0, 1, 0, 0, 0, 17, 0, 5, 0, 0, 0, 13, 0, 1, 0, 0, 0, 18, 0, 5, 0, 0, 0, 11, 0, 1, 0, 0, 0, 19, 0, 5, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 6, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 6, 0, 0, 0, 13, 0, 1, 0, 0, 0, 2, 0, 6, 0, 0, 0, 11, 0, 1, 0, 0, 0, 3, 0, 6, 0, 0, 0, 12, 0, 1, 0, 0, 0, 4, 0, 6, 0, 0, 0, 13, 0, 1, 0, 0, 0, 5, 0, 6, 0, 0, 0, 12, 0, 1, 0, 0, 0, 6, 0, 6, 0, 0, 0, 11, 0, 1, 0, 0, 0, 7, 0, 6, 0, 0, 0, 12, 0, 1, 0, 0, 0, 8, 0, 6, 0, 0, 0, 12, 0, 1, 0, 0, 0, 9, 0, 6, 0, 0, 0, 11, 0, 1, 0, 0, 0, 10, 0, 6, 0, 0, 0, 11, 0, 1, 0, 0, 0, 11, 0, 6, 0, 0, 0, 12, 0, 1, 0, 0, 0, 12, 0, 6, 0, 0, 0, 13, 0, 1, 0, 0, 0, 13, 0, 6, 0, 0, 0, 12, 0, 1, 0, 0, 0, 14, 0, 6, 0, 0, 0, 11, 0, 1, 0, 0, 0, 15, 0, 6, 0, 0, 0, 11, 0, 1, 0, 0, 0, 16, 0, 6, 0, 0, 0, 11, 0, 1, 0, 0, 0, 17, 0, 6, 0, 0, 0, 12, 0, 1, 0, 0, 0, 18, 0, 6, 0, 0, 0, 13, 0, 1, 0, 0, 0, 19, 0, 6, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 7, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 7, 0, 0, 0, 13, 0, 1, 0, 0, 0, 2, 0, 7, 0, 0, 0, 13, 0, 1, 0, 0, 0, 3, 0, 7, 0, 0, 0, 11, 0, 1, 0, 0, 0, 4, 0, 7, 0, 0, 0, 11, 0, 1, 0, 0, 0, 5, 0, 7, 0, 0, 0, 11, 0, 1, 0, 0, 0, 6, 0, 7, 0, 0, 0, 11, 0, 1, 0, 0, 0, 7, 0, 7, 0, 0, 0, 12, 0, 1, 0, 0, 0, 8, 0, 7, 0, 0, 0, 12, 0, 1, 0, 0, 0, 9, 0, 7, 0, 0, 0, 11, 0, 1, 0, 0, 0, 10, 0, 7, 0, 0, 0, 13, 0, 1, 0, 0, 0, 11, 0, 7, 0, 0, 0, 12, 0, 1, 0, 0, 0, 12, 0, 7, 0, 0, 0, 12, 0, 1, 0, 0, 0, 13, 0, 7, 0, 0, 0, 12, 0, 1, 0, 0, 0, 14, 0, 7, 0, 0, 0, 11, 0, 1, 0, 0, 0, 15, 0, 7, 0, 0, 0, 11, 0, 1, 0, 0, 0, 16, 0, 7, 0, 0, 0, 11, 0, 1, 0, 0, 0, 17, 0, 7, 0, 0, 0, 11, 0, 1, 0, 0, 0, 18, 0, 7, 0, 0, 0, 13, 0, 1, 0, 0, 0, 19, 0, 7, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 8, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 8, 0, 0, 0, 13, 0, 1, 0, 0, 0, 2, 0, 8, 0, 0, 0, 11, 0, 1, 0, 0, 0, 3, 0, 8, 0, 0, 0, 11, 0, 1, 0, 0, 0, 4, 0, 8, 0, 0, 0, 13, 0, 1, 0, 0, 0, 5, 0, 8, 0, 0, 0, 12, 0, 1, 0, 0, 0, 6, 0, 8, 0, 0, 0, 12, 0, 1, 0, 0, 0, 7, 0, 8, 0, 0, 0, 13, 0, 1, 0, 0, 0, 8, 0, 8, 0, 0, 0, 12, 0, 1, 0, 0, 0, 9, 0, 8, 0, 0, 0, 11, 0, 1, 0, 0, 0, 10, 0, 8, 0, 0, 0, 13, 0, 1, 0, 0, 0, 11, 0, 8, 0, 0, 0, 12, 0, 1, 0, 0, 0, 12, 0, 8, 0, 0, 0, 13, 0, 1, 0, 0, 0, 13, 0, 8, 0, 0, 0, 11, 0, 1, 0, 0, 0, 14, 0, 8, 0, 0, 0, 12, 0, 1, 0, 0, 0, 15, 0, 8, 0, 0, 0, 11, 0, 1, 0, 0, 0, 16, 0, 8, 0, 0, 0, 13, 0, 1, 0, 0, 0, 17, 0, 8, 0, 0, 0, 11, 0, 1, 0, 0, 0, 18, 0, 8, 0, 0, 0, 12, 0, 1, 0, 0, 0, 19, 0, 8, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 9, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 9, 0, 0, 0, 11, 0, 1, 0, 0, 0, 2, 0, 9, 0, 0, 0, 13, 0, 1, 0, 0, 0, 3, 0, 9, 0, 0, 0, 11, 0, 1, 0, 0, 0, 4, 0, 9, 0, 0, 0, 13, 0, 1, 0, 0, 0, 5, 0, 9, 0, 0, 0, 11, 0, 1, 0, 0, 0, 6, 0, 9, 0, 0, 0, 11, 0, 1, 0, 0, 0, 7, 0, 9, 0, 0, 0, 13, 0, 1, 0, 0, 0, 8, 0, 9, 0, 0, 0, 13, 0, 1, 0, 0, 0, 9, 0, 9, 0, 0, 0, 13, 0, 1, 0, 0, 0, 10, 0, 9, 0, 0, 0, 11, 0, 1, 0, 0, 0, 11, 0, 9, 0, 0, 0, 13, 0, 1, 0, 0, 0, 12, 0, 9, 0, 0, 0, 12, 0, 1, 0, 0, 0, 13, 0, 9, 0, 0, 0, 12, 0, 1, 0, 0, 0, 14, 0, 9, 0, 0, 0, 13, 0, 1, 0, 0, 0, 15, 0, 9, 0, 0, 0, 11, 0, 1, 0, 0, 0, 16, 0, 9, 0, 0, 0, 12, 0, 1, 0, 0, 0, 17, 0, 9, 0, 0, 0, 11, 0, 1, 0, 0, 0, 18, 0, 9, 0, 0, 0, 11, 0, 1, 0, 0, 0, 19, 0, 9, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 10, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 10, 0, 0, 0, 11, 0, 1, 0, 0, 0, 2, 0, 10, 0, 0, 0, 11, 0, 1, 0, 0, 0, 3, 0, 10, 0, 0, 0, 13, 0, 1, 0, 0, 0, 4, 0, 10, 0, 0, 0, 12, 0, 1, 0, 0, 0, 5, 0, 10, 0, 0, 0, 11, 0, 1, 0, 0, 0, 6, 0, 10, 0, 0, 0, 13, 0, 1, 0, 0, 0, 7, 0, 10, 0, 0, 0, 13, 0, 1, 0, 0, 0, 8, 0, 10, 0, 0, 0, 12, 0, 1, 0, 0, 0, 9, 0, 10, 0, 0, 0, 12, 0, 1, 0, 0, 0, 10, 0, 10, 0, 0, 0, 12, 0, 1, 0, 0, 0, 11, 0, 10, 0, 0, 0, 13, 0, 1, 0, 0, 0, 12, 0, 10, 0, 0, 0, 12, 0, 1, 0, 0, 0, 13, 0, 10, 0, 0, 0, 12, 0, 1, 0, 0, 0, 14, 0, 10, 0, 0, 0, 13, 0, 1, 0, 0, 0, 15, 0, 10, 0, 0, 0, 11, 0, 1, 0, 0, 0, 16, 0, 10, 0, 0, 0, 13, 0, 1, 0, 0, 0, 17, 0, 10, 0, 0, 0, 11, 0, 1, 0, 0, 0, 18, 0, 10, 0, 0, 0, 11, 0, 1, 0, 0, 0, 19, 0, 10, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 11, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 11, 0, 0, 0, 11, 0, 1, 0, 0, 0, 2, 0, 11, 0, 0, 0, 12, 0, 1, 0, 0, 0, 3, 0, 11, 0, 0, 0, 13, 0, 1, 0, 0, 0, 4, 0, 11, 0, 0, 0, 13, 0, 1, 0, 0, 0, 5, 0, 11, 0, 0, 0, 13, 0, 1, 0, 0, 0, 6, 0, 11, 0, 0, 0, 13, 0, 1, 0, 0, 0, 7, 0, 11, 0, 0, 0, 11, 0, 1, 0, 0, 0, 8, 0, 11, 0, 0, 0, 12, 0, 1, 0, 0, 0, 9, 0, 11, 0, 0, 0, 11, 0, 1, 0, 0, 0, 10, 0, 11, 0, 0, 0, 11, 0, 1, 0, 0, 0, 11, 0, 11, 0, 0, 0, 13, 0, 1, 0, 0, 0, 12, 0, 11, 0, 0, 0, 11, 0, 1, 0, 0, 0, 13, 0, 11, 0, 0, 0, 11, 0, 1, 0, 0, 0, 14, 0, 11, 0, 0, 0, 12, 0, 1, 0, 0, 0, 15, 0, 11, 0, 0, 0, 12, 0, 1, 0, 0, 0, 16, 0, 11, 0, 0, 0, 12, 0, 1, 0, 0, 0, 17, 0, 11, 0, 0, 0, 11, 0, 1, 0, 0, 0, 18, 0, 11, 0, 0, 0, 11, 0, 1, 0, 0, 0, 19, 0, 11, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 12, 0, 0, 0, 13, 0, 4, 0, 0, 0, 1, 0, 12, 0, 0, 0, 11, 0, 1, 0, 0, 0, 2, 0, 12, 0, 0, 0, 11, 0, 1, 0, 0, 0, 3, 0, 12, 0, 0, 0, 12, 0, 1, 0, 0, 0, 4, 0, 12, 0, 0, 0, 12, 0, 1, 0, 0, 0, 5, 0, 12, 0, 0, 0, 13, 0, 1, 0, 0, 0, 6, 0, 12, 0, 0, 0, 13, 0, 1, 0, 0, 0, 7, 0, 12, 0, 0, 0, 11, 0, 1, 0, 0, 0, 8, 0, 12, 0, 0, 0, 11, 0, 1, 0, 0, 0, 9, 0, 12, 0, 0, 0, 12, 0, 1, 0, 0, 0, 10, 0, 12, 0, 0, 0, 11, 0, 1, 0, 0, 0, 11, 0, 12, 0, 0, 0, 12, 0, 1, 0, 0, 0, 12, 0, 12, 0, 0, 0, 12, 0, 1, 0, 0, 0, 13, 0, 12, 0, 0, 0, 13, 0, 1, 0, 0, 0, 14, 0, 12, 0, 0, 0, 13, 0, 1, 0, 0, 0, 15, 0, 12, 0, 0, 0, 13, 0, 1, 0, 0, 0, 16, 0, 12, 0, 0, 0, 13, 0, 1, 0, 0, 0, 17, 0, 12, 0, 0, 0, 13, 0, 1, 0, 0, 0, 18, 0, 12, 0, 0, 0, 11, 0, 1, 0, 0, 0, 19, 0, 12, 0, 0, 0, 3, 0, 5, 0, 0, 0, 0, 0, 13, 0, 0, 0, 11, 0, 4, 0, 0, 0, 1, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 2, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 3, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 4, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 5, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 6, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 7, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 8, 0, 13, 0, 0, 0, 14, 0, 4, 0, 0, 0, 9, 0, 13, 0, 0, 0, 13, 0, 1, 0, 0, 0, 10, 0, 13, 0, 0, 0, 11, 0, 1, 0, 0, 0, 11, 0, 13, 0, 0, 0, 4, 0, 5, 0, 0, 0, 12, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 13, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 14, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 15, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 16, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 17, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 18, 0, 13, 0, 0, 0, 12, 0, 4, 0, 0, 0, 19, 0, 13, 0, 0, 0, 11, 0, 4, 0, 0, 0)
+tile_set = ExtResource("2_world_tileset_tres")
+
+[node name="Backdrop" type="Node2D" parent="."]
+
+[node name="Overlay" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray(0, 0)
+tile_set = ExtResource("2_world_tileset_tres")
+
+[node name="Decals" type="Node2D" parent="."]
+
+[node name="Encounter" type="Node2D" parent="."]
+
+[node name="Objects" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Interactions" type="Node2D" parent="."]
+
+[node name="Triggers" type="Node2D" parent="."]
+
+[node name="Spawns" type="Node2D" parent="."]
+
+[node name="Lights" type="Node2D" parent="."]
+
+[node name="Effects" type="Node2D" parent="."]
+z_index = 6
+
+[node name="Furnace" parent="Objects" instance=ExtResource("5_furnace_tscn")]
+position = Vector2(88, 70)
+
+[node name="FamilyPlaque" parent="Objects" instance=ExtResource("6_forge_plaque_tscn")]
+position = Vector2(160, 36)
+
+[node name="ToolRack" parent="Objects" instance=ExtResource("7_tool_rack_tscn")]
+position = Vector2(214, 42)
+
+[node name="Workbench" parent="Objects" instance=ExtResource("8_workbench_tscn")]
+position = Vector2(256, 70)
+
+[node name="Shelf" parent="Objects" instance=ExtResource("9_shelf_jar_tscn")]
+position = Vector2(302, 60)
+
+[node name="Bellows" parent="Objects" instance=ExtResource("10_bellows_tscn")]
+position = Vector2(128, 72)
+
+[node name="Anvil" parent="Objects" instance=ExtResource("11_anvil_tscn")]
+position = Vector2(150, 132)
+
+[node name="QuenchBarrel" parent="Objects" instance=ExtResource("12_quench_barrel_tscn")]
+position = Vector2(118, 120)
+
+[node name="CoalPile" parent="Objects" instance=ExtResource("13_coal_pile_tscn")]
+position = Vector2(40, 102)
+
+[node name="WeaponRack" parent="Objects" instance=ExtResource("14_weapon_rack_tscn")]
+position = Vector2(290, 132)
+
+[node name="Cradle" parent="Objects" instance=ExtResource("15_cradle_tscn")]
+position = Vector2(38, 190)
+
+[node name="Crate" parent="Objects" instance=ExtResource("16_crate_tscn")]
+position = Vector2(296, 186)
+
+[node name="CrateStack" parent="Objects" instance=ExtResource("17_crate_stack_tscn")]
+position = Vector2(278, 196)
+
+[node name="Barrel" parent="Objects" instance=ExtResource("18_barrel_tscn")]
+position = Vector2(24, 74)
+
+[node name="LanternW" parent="Objects" instance=ExtResource("19_wall_lantern_tscn")]
+position = Vector2(48, 40)
+
+[node name="LanternE" parent="Objects" instance=ExtResource("19_wall_lantern_tscn")]
+position = Vector2(240, 40)
+
+[node name="TuningPin" type="Sprite2D" parent="Objects"]
+position = Vector2(252, 71)
+texture = ExtResource("20_tuning_pin_item_png")
+centered = false
+offset = Vector2(-7, -18)
+visible = false
+
+[node name="Player" parent="Objects" instance=ExtResource("21_player_tscn")]
+position = Vector2(160, 196)
+
+[node name="Mara" parent="Objects" instance=ExtResource("23_npc_tscn")]
+position = Vector2(176, 136)
+sprite_frames = ExtResource("22_mara_tres")
+npc_id = "mara"
+conversation = "mara"
+facing_name = "left"
+
+[node name="PinInspect" type="Area2D" parent="Interactions"]
+position = Vector2(252, 76)
+script = ExtResource("24_interactable_gd")
+prompt = "Inspect"
+conversation_id = "forge_pin"
+prompt_offset = Vector2(0, -32)
+requires = "mara_showed_pin"
+hidden_when = "has_tuning_pin"
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/PinInspect"]
+shape = SubResource("CircleShape2D_25")
+
+[node name="PinEcho" type="Area2D" parent="Interactions"]
+position = Vector2(252, 76)
+script = ExtResource("26_echo_point_gd")
+reveal_texture = ExtResource("27_symbol_bell13_png")
+echo_id = "pin_marking"
+conversation_id = "forge_pin_echo"
+requires = "mara_showed_pin"
+hidden_when = "has_tuning_pin"
+sets_flag = "discovered_bell_markings"
+reveal_offset = Vector2(-20, -66)
+hint_offset = Vector2(0, -44)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/PinEcho"]
+shape = SubResource("CircleShape2D_28")
+
+[node name="PlaqueRead" type="Area2D" parent="Interactions"]
+position = Vector2(160, 54)
+script = ExtResource("24_interactable_gd")
+prompt = "Read"
+conversation_id = "forge_plaque"
+prompt_offset = Vector2(0, -30)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/PlaqueRead"]
+shape = SubResource("CircleShape2D_29")
+
+[node name="SwordsLook" type="Area2D" parent="Interactions"]
+position = Vector2(290, 136)
+script = ExtResource("24_interactable_gd")
+prompt = "Inspect"
+conversation_id = "forge_swords"
+prompt_offset = Vector2(0, -36)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/SwordsLook"]
+shape = SubResource("CircleShape2D_30")
+
+[node name="BarrelLook" type="Area2D" parent="Interactions"]
+position = Vector2(118, 124)
+script = ExtResource("24_interactable_gd")
+prompt = "Inspect"
+conversation_id = "forge_barrel"
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/BarrelLook"]
+shape = SubResource("CircleShape2D_31")
+
+[node name="JarLook" type="Area2D" parent="Interactions"]
+position = Vector2(302, 66)
+script = ExtResource("24_interactable_gd")
+prompt = "Inspect"
+conversation_id = "forge_jar"
+prompt_offset = Vector2(0, -30)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/JarLook"]
+shape = SubResource("CircleShape2D_32")
+
+[node name="CradleLook" type="Area2D" parent="Interactions"]
+position = Vector2(38, 194)
+script = ExtResource("24_interactable_gd")
+prompt = "Inspect"
+conversation_id = "forge_cradle"
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/CradleLook"]
+shape = SubResource("CircleShape2D_33")
+
+[node name="CradleEcho" type="Area2D" parent="Interactions"]
+position = Vector2(38, 194)
+script = ExtResource("26_echo_point_gd")
+reveal_texture = SubResource("AtlasTexture_35")
+echo_id = "cradle"
+conversation_id = "forge_cradle_echo"
+reveal_offset = Vector2(14, -16)
+hint_offset = Vector2(0, -26)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/CradleEcho"]
+shape = SubResource("CircleShape2D_36")
+
+[node name="FurnaceLook" type="Area2D" parent="Interactions"]
+position = Vector2(88, 76)
+script = ExtResource("24_interactable_gd")
+prompt = "Inspect"
+conversation_id = "forge_furnace"
+prompt_offset = Vector2(0, -60)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/FurnaceLook"]
+shape = SubResource("CircleShape2D_37")
+
+[node name="AnvilLook" type="Area2D" parent="Interactions"]
+position = Vector2(150, 136)
+script = ExtResource("24_interactable_gd")
+prompt = "Inspect"
+conversation_id = "forge_anvil"
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/AnvilLook"]
+shape = SubResource("CircleShape2D_38")
+
+[node name="ToVillage" type="Area2D" parent="Triggers"]
+position = Vector2(160, 222)
+script = ExtResource("39_area_exit_gd")
+target_area = "village"
+target_spawn = "from_forge"
+
+[node name="Shape" type="CollisionShape2D" parent="Triggers/ToVillage"]
+shape = SubResource("RectangleShape2D_40")
+
+[node name="default" type="Marker2D" parent="Spawns"]
+position = Vector2(160, 196)
+metadata/facing = "up"
+
+[node name="from_village" type="Marker2D" parent="Spawns"]
+position = Vector2(160, 196)
+metadata/facing = "up"
+
+[node name="Embers" type="CPUParticles2D" parent="Effects"]
+position = Vector2(88, 52)
+texture = ExtResource("41_px1_png")
+material = SubResource("CanvasItemMaterial_42")
+color_ramp = SubResource("Gradient_43")
+amount = 14
+lifetime = 1.8
+emission_shape = 3
+emission_rect_extents = Vector2(10, 3)
+direction = Vector2(0, -1)
+spread = 25.0
+gravity = Vector2(0, -18)
+initial_velocity_min = 10.0
+initial_velocity_max = 24.0
+color = Color(1.0, 0.81569, 0.50196, 1.0)
+
+[node name="AnvilSparks" type="CPUParticles2D" parent="Effects"]
+position = Vector2(150, 120)
+texture = ExtResource("41_px1_png")
+material = SubResource("CanvasItemMaterial_42")
+color_ramp = SubResource("Gradient_44")
+emitting = false
+one_shot = true
+explosiveness = 0.9
+amount = 16
+lifetime = 0.6
+emission_shape = 0
+direction = Vector2(0, -1)
+spread = 70.0
+gravity = Vector2(0, 160)
+initial_velocity_min = 30.0
+initial_velocity_max = 70.0
+color = Color(1.0, 0.90588, 0.62745, 1.0)
+
+[node name="Bounds" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(-8, 112)
+shape = SubResource("RectangleShape2D_45")
+
+[node name="Right" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(328, 112)
+shape = SubResource("RectangleShape2D_46")
+
+[node name="Top" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(160, -8)
+shape = SubResource("RectangleShape2D_47")
+
+[node name="Bottom" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(160, 232)
+shape = SubResource("RectangleShape2D_48")

@@ -1,0 +1,5 @@
+# Normalize line endings; Godot text resources diff cleanly with LF.
+* text=auto eol=lf
+*.png binary
+*.wav binary
+*.ttf binary

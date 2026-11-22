@@ -1,0 +1,166 @@
+{
+	"_about": "Mara's forge.",
+
+	"mara": [
+		{"if": "has_tuning_pin", "goto": "after"},
+		{"if": "discovered_bell_markings", "run": "mara_marks"},
+		{"if": "mara_showed_pin", "goto": "waiting"},
+		{"event": "mara_hammer", "hide": true, "wait": 0.5},
+		["mara", "If you're here for a sword, you're out of luck."],
+		{"choice": [
+			{"text": "I need to reach the bell tower.", "goto": "tower"},
+			{"text": "Lovely to see you too, Mara.", "set": {"rowan_wry_with_mara": true}, "goto": "wry"}
+		]},
+		{"label": "wry"},
+		["mara", "Rowan? Orin's apprentice? You've grown. Not much. Upwards, mostly."],
+		["rowan", "I need to reach the bell tower."],
+		{"label": "tower"},
+		["mara", "Then you're even more out of luck."],
+		["rowan", "What happened?"],
+		["mara", "The old mechanism broke. Orin asked me to repair it, then vanished."],
+		["rowan", "Can it be fixed?"],
+		["mara", "Anything made of iron can be fixed."],
+		{"wait": 0.9},
+		["mara", "It's the things made of promises you have to worry about."],
+		["mara", "Here. This is what he wanted looked at."],
+		{"event": "mara_show_pin", "hide": true, "wait": 0.5},
+		{"set": {"spoke_to_mara": true, "mara_showed_pin": true}},
+		["mara", "The bell's tuning pin. My family's made and mended it since before the chapel had a roof."],
+		["mara", "It's sound. Not a crack in it. Whatever broke up there, it wasn't this."],
+		["mara", "Have a look, if you like. There's a worn patch near the head. My father used to rub it with his thumb when he was thinking."],
+		{"end": true},
+
+		{"label": "waiting"},
+		{"if": "examined_pin", "goto": "waiting2"},
+		["mara", "The pin's on the bench. Go on. It won't bite. Probably."],
+		{"end": true},
+		{"label": "waiting2"},
+		["mara", "Find anything? You've got Orin's habit of staring at things until they confess."],
+		["mara", "He used to put his ear to that worn patch. Swore it talked. Daft old man."],
+		{"if": "!used_echo", "say": "narrator", "text": "(Stand close to the pin and press F to listen.)"},
+		{"end": true},
+
+		{"label": "after"},
+		{"if": "read_bellkeeper_ledger", "goto": "after_ledger"},
+		["mara", "Alden's at the chapel, east of the square. He'll want to see that pin. Don't let him keep it."],
+		{"end": true},
+		{"label": "after_ledger"},
+		{"if": "chose_mara_truth", "goto": "after_truth"},
+		{"set": {"chose_mara_truth": true}},
+		["mara", "You've got the look of someone who learned something they'd rather not have."],
+		{"choice": [
+			{"text": "The bell takes memories. Yours too.", "goto": "tell"},
+			{"text": "Nothing I can explain yet.", "goto": "keep"}
+		]},
+		{"label": "tell"},
+		["mara", "..."],
+		["mara", "So that's where it went. The song."],
+		["mara", "Every night I wondered why I could still feel the weight of him, and not hear it."],
+		{"wait": 0.7},
+		["mara", "Go on, then. Up the road. And Rowan... whatever you decide up there, decide it like someone who'll have to live with it."],
+		{"set": {"told_mara_truth": true}},
+		{"end": true},
+		{"label": "keep"},
+		["mara", "Fair. Some things should be said once, and properly. Mind the road north."],
+		{"end": true},
+		{"label": "after_truth"},
+		["mara", "Go on. I'll keep the forge hot. Somebody in this village should be good at keeping things."]
+	],
+
+	"mara_marks": [
+		["rowan", "There's a symbol on the pin. A bell surrounded by thirteen marks."],
+		["mara", "Thirteen? My father told me the bell only rings twelve times."],
+		["rowan", "Why?"],
+		["mara", "I don't remember."],
+		{"wait": 0.9},
+		["mara", "Lately, there are a lot of things I don't remember."],
+		{"choice": [
+			{"text": "Like what?", "goto": "what"},
+			{"text": "Everyone forgets things.", "goto": "everyone"}
+		]},
+		{"label": "everyone"},
+		["mara", "Not like this. Not the things that matter."],
+		{"label": "what"},
+		["mara", "I used to sing to my boy. Every night, when he was small. He's grown now. Works the river barges."],
+		["mara", "I remember the weight of him. The smell of his hair. The way he fought sleep like it owed him money."],
+		["mara", "But the song I sang him... it's gone. Like a page torn out. I can feel the edge where it was."],
+		{"set": {"mara_lullaby_told": true}},
+		{"wait": 0.7},
+		["mara", "Take it."],
+		{"event": "mara_give_pin", "hide": true, "wait": 0.3},
+		{"set": {"has_tuning_pin": true}},
+		{"event": "toast", "args": ["Received: Iron Tuning Pin", "pin"]},
+		["mara", "And if you find Orin..."],
+		["rowan", "Yes?"],
+		["mara", "Ask him why I can remember holding my boy as a baby, but not the song I sang to him."],
+		{"choice": [
+			{"text": "I'll ask him. I promise.", "set": {"promised_mara": true}, "goto": "promise"},
+			{"text": "If I find him.", "goto": "honest"}
+		]},
+		{"label": "promise"},
+		["mara", "Don't promise things in this village, Rowan. They have a way of getting lost."],
+		["mara", "...But thank you."],
+		{"goto": "end"},
+		{"label": "honest"},
+		["mara", "Honest. Orin always said you were honest to a fault. Mostly the fault."],
+		{"label": "end"},
+		["mara", "If you want to know what that bell really is, ask Brother Alden at the chapel. His books are older than my anvil."]
+	],
+
+	"forge_pin": [
+		{"set": {"examined_pin": true}},
+		["narrator", "An iron pin, long as a forearm, heavy and cold. Generations of hands have worn it smooth."],
+		{"if": "discovered_bell_markings", "goto": "known"},
+		["rowan", "There's a worn patch near the head. Something was engraved here once."],
+		{"if": "!used_echo", "say": "narrator", "text": "Some things remember more than they show. (Stand close and press F to listen.)"},
+		{"end": true},
+		{"label": "known"},
+		["rowan", "The marking has faded again. But I know what I saw. Mara should hear about this."]
+	],
+
+	"forge_pin_echo": [
+		["narrator", "For a moment the iron is warm, and the worn patch fills with pale light."],
+		["rowan", "A bell. And around it... thirteen marks."],
+		["rowan", "Mara should see this."]
+	],
+
+	"forge_plaque": [
+		["narrator", "A board above the hearth, carved in old letters:"],
+		["narrator", "BRANNOC. IRON FOR THE BELL. FIRE FOR THE VILLAGE."],
+		["rowan", "Mara's family. They've kept the bell longer than anyone's kept anything."]
+	],
+
+	"forge_swords": [
+		["narrator", "Three swords on a rack. Each one has a tag: NOT FOR SALE."],
+		["narrator", "The middle one's tag says: ESPECIALLY NOT FOR SALE."]
+	],
+
+	"forge_barrel": [
+		["narrator", "The quenching barrel. Water, soot, and what you sincerely hope is a sausage."]
+	],
+
+	"forge_jar": [
+		["narrator", "A jar labelled CURSES. It is very nearly full."],
+		["narrator", "A smaller jar beside it is labelled APOLOGIES. It contains a single, lonely button."]
+	],
+
+	"forge_cradle": [
+		["narrator", "A small wooden cradle, worn smooth at the rockers. These days it holds kindling."],
+		["rowan", "She kept it. Of course she kept it."]
+	],
+
+	"forge_cradle_echo": [
+		["narrator", "The forge fades. A younger Mara sits beside the cradle, rocking it with one boot, humming."],
+		["voice", "[wave amp=10 freq=2]Mm-mm... mm-mm-mmm...[/wave]"],
+		["rowan", "There's no tune. Just the shape where a tune should be. Like the notes were scraped off."]
+	],
+
+	"forge_furnace": [
+		["narrator", "The furnace breathes like a sleeping dragon. Your eyebrows have opinions about standing this close."]
+	],
+
+	"forge_anvil": [
+		{"if": "spoke_to_mara", "say": "mara", "text": "Touch my anvil and I'll mend you next."},
+		{"if": "!spoke_to_mara", "say": "narrator", "text": "An anvil scarred by a thousand days of work. It hums faintly under your hand."}
+	]
+}
