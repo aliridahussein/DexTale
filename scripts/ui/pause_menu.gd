@@ -22,6 +22,7 @@ func _ready() -> void:
 	quit_btn.pressed.connect(func() -> void:
 		get_tree().paused = false
 		AudioManager.quit_game())
+	quit_btn.visible = not OS.has_feature("web")
 	for b in buttons.get_children():
 		if b is Button:
 			(b as Button).focus_entered.connect(func() -> void: AudioManager.play_sfx("ui_move", -12.0))

@@ -29,6 +29,7 @@ func _ready() -> void:
 	settings_btn.pressed.connect(func() -> void: UI.open_settings(self))
 	credits_btn.pressed.connect(_show_credits)
 	quit_btn.pressed.connect(AudioManager.quit_game)
+	quit_btn.visible = not OS.has_feature("web")  # a browser tab can't quit itself
 	%CreditsBack.pressed.connect(_hide_credits)
 	%ConfirmYes.pressed.connect(_start_new_game)
 	%ConfirmNo.pressed.connect(func() -> void:
