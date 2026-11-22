@@ -3,7 +3,7 @@ extends Node
 ## documents, speakers and endings. Catches typos before anyone plays.
 
 const GLOBAL_EVENTS := ["toast", "sfx", "music", "ambience", "shake", "flash", "open_document", "fade_out",
-	"fade_in", "echo_effect"]
+	"fade_in", "echo_effect", "reconstruct", "caption_here"]
 
 var runner: Node
 

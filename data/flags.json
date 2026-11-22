@@ -47,6 +47,13 @@
 		"asked_orin_lullaby": "Asked Orin about Mara's lullaby.",
 		"asked_orin_voice": "Asked whose voice the bell borrowed.",
 		"asked_orin_why": "Asked Orin why he wrote to Rowan.",
-		"ending_selected": "keeper | promise | chorus. Completes objective 7 and plays the ending."
+		"ending_selected": "keeper | promise | chorus. Completes objective 7 and plays the ending.",
+		"seen_well_bench": "V2. Inspected the worn bench by the well (a clue for The Forgotten Promise).",
+		"promise_reconstructed": "V2. Solved the Echo Reconstruction at the well: Tobin promised Elsie a light.",
+		"reconstruction_misses": "V2. Wrong answers ruled out on reconstruction boards (number, never a penalty).",
+		"told_tobin_promise": "V2. Rowan told Tobin why he lights the lamp (changes his lines and epilogue).",
+		"kept_tobin_secret": "V2. Rowan let Tobin keep the habit without knowing why (changes his epilogue).",
+		"has_tobin_lantern": "V2. Tobin gave Rowan his lantern (a stronger light on the Mistbound Path; epilogue).",
+		"bell_retuned": "V2. Rowan completed the bell ritual (the Gathering Song), so The Chorus can play."
 	}
 }

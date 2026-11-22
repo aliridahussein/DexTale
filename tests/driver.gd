@@ -119,6 +119,10 @@ func play(picks: Array = [0], must_start: bool = true) -> void:
 			doc.set("_page", (doc.get("_pages") as Array).size() - 1)
 			doc.call("_show_page")
 			doc.call("_close")
+		elif UI.ritual_view.visible:
+			await perform_ritual()
+		elif UI.reconstruction_view.visible:
+			await solve_board()
 		elif DialogueManager.is_waiting_for_advance():
 			DialogueManager.advance()
 		elif DialogueManager.is_waiting_for_choice():
@@ -157,6 +161,34 @@ func listen(path: String, picks: Array = [0]) -> void:
 	# the vision finishes fading before prompts and toasts come back
 	var t := 0.0
 	while UI.is_revealing() and t < 10.0:
+		await wait(0.05)
+		t += 0.05
+
+
+## Sings the Gathering Song on the bell (the V2 ritual) through the view's
+## own input method, waiting out each note's short ring.
+func perform_ritual() -> void:
+	var view: Control = UI.ritual_view
+	for note in ResonanceRitual.solution():
+		var t := 0.0
+		while view.call("play_note", note) == ResonanceRitual.Result.IGNORED and t < 6.0:
+			await wait(0.05)
+			t += 0.05
+	var t2 := 0.0
+	while view.visible and t2 < 8.0:
+		await wait(0.05)
+		t2 += 0.05
+
+
+## Answers the open reconstruction board correctly.
+func solve_board() -> void:
+	var board: Control = UI.reconstruction_view
+	var answers: Array = board.call("answers")
+	for i in answers.size():
+		if answers[i].get("correct", false):
+			board.call("choose", i)
+	var t := 0.0
+	while board.visible and t < 8.0:
 		await wait(0.05)
 		t += 0.05
 

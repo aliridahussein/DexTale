@@ -7,5 +7,7 @@
 	"tobin": {"name": "Tobin", "portrait": "res://assets/portraits/tobin.png", "color": "#e0c898", "blip": 0.9},
 	"sentinel": {"name": "The Hollow Sentinel", "portrait": "res://assets/portraits/sentinel.png", "color": "#a8d8f8", "blip": 0.55},
 	"narrator": {"name": "", "narration": true, "blip": 1.0},
-	"voice": {"name": "A distant voice", "color": "#9ad8f0", "blip": 0.75}
+	"voice": {"name": "A distant voice", "color": "#9ad8f0", "blip": 0.75},
+	"elsie": {"name": "Elsie, long ago", "color": "#f4c890", "blip": 1.15},
+	"young_tobin": {"name": "Tobin, long ago", "color": "#e8d0a0", "blip": 0.95}
 }

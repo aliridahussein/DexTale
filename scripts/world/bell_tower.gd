@@ -3,11 +3,16 @@ extends GameArea
 ## the three ending sequences (keeper / promise / chorus).
 
 const ENDING_SCENE := "res://scenes/main/ending.tscn"
+## Bell sprite offset in its prop scene; the thirteen marks are drawn by
+## tools/art/props.py at x = 37 + sin(a) * 18, y = 30 + |a| * 3, a in [-0.9, 0.9].
+const BELL_SPRITE_OFFSET := Vector2(-37, -64)
+const MARK_GOLD := Color(1.0, 0.86, 0.5)
 
 var _pulse_t := 0.0
 var _glow_base := 0.9
 var _vista_layer: CanvasLayer
 var _vista_root: Control
+var _marks: Array[Sprite2D] = []
 
 @onready var bell: Node2D = $Objects/Bell
 @onready var bell_sprite: Sprite2D = $Objects/Bell/Sprite
@@ -29,6 +34,7 @@ func area_events() -> Dictionary:
 		"orin_appear": _orin_appear,
 		"orin_look_bell": func() -> void: orin.set_facing("up"),
 		"show_vista": _show_vista,
+		"bell_ritual": _bell_ritual,
 		"ending": _ending,
 	}
 
@@ -122,6 +128,72 @@ func _hide_vista(duration: float) -> void:
 	if _vista_root.visible:
 		var t := create_tween()
 		t.tween_property(_vista_root, "modulate:a", 0.0, duration)
+
+
+# ------------------------------------------------------------ the ritual --
+## V2: before The Chorus, Rowan performs the retuning (scripts/ui/ritual_view.gd).
+## Coroutine: the conversation waits, then checks `bell_retuned`.
+func _bell_ritual() -> void:
+	_hide_vista(0.5)
+	get_player().face_toward(bell.global_position)
+	_make_marks()
+	var view: Control = UI.ritual_view
+	view.connect("marks_changed", _light_marks)
+	view.connect("note_sung", _on_ritual_note)
+	view.connect("soured", _on_ritual_sour)
+	var completed: bool = await UI.open_ritual()
+	view.disconnect("marks_changed", _light_marks)
+	view.disconnect("note_sung", _on_ritual_note)
+	view.disconnect("soured", _on_ritual_sour)
+	if completed:
+		GameState.set_flag("bell_retuned", true)
+	else:
+		_light_marks(0)
+
+
+func mark_position(i: int) -> Vector2:
+	var a := -0.9 + i * (1.8 / 12.0)
+	return BELL_SPRITE_OFFSET + Vector2(int(37.0 + sin(a) * 18.0), 30 + int(absf(a) * 3.0)) + Vector2(0.5, 0.5)
+
+
+func _make_marks() -> void:
+	if not _marks.is_empty():
+		return
+	var add := CanvasItemMaterial.new()
+	add.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	for i in 13:
+		var s := Sprite2D.new()
+		s.texture = preload("res://assets/sprites/fx/spark.png")
+		s.material = add
+		s.position = mark_position(i)
+		s.modulate = Color(MARK_GOLD, 0.0)
+		s.z_index = 3
+		bell.add_child(s)
+		_marks.append(s)
+
+
+func lit_marks() -> int:
+	return _marks.filter(func(s: Sprite2D) -> bool: return s.modulate.a > 0.5).size()
+
+
+func _light_marks(count: int) -> void:
+	for i in _marks.size():
+		var target := 1.0 if i < count else 0.0
+		if absf(_marks[i].modulate.a - target) > 0.01:
+			create_tween().tween_property(_marks[i], "modulate:a", target, 0.18 if target > 0.5 else 0.4)
+
+
+func _on_ritual_note(_index: int) -> void:
+	var t := create_tween()
+	t.tween_property(self, "_glow_base", 1.5, 0.08)
+	t.tween_property(self, "_glow_base", 0.9, 0.5)
+
+
+func _on_ritual_sour() -> void:
+	camera().shake(1.5, 0.35)
+	var t := create_tween()
+	t.tween_property(bell_glow, "color", Color(0.75, 0.4, 0.55), 0.08)
+	t.tween_property(bell_glow, "color", Color("#6ad0ff"), 0.6)
 
 
 # --------------------------------------------------------------- endings --

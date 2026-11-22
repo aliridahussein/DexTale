@@ -9,10 +9,12 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/ui/key_f.png" id="9_key_f_png"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ui/icon_quill.png" id="10_icon_quill_png"]
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="11_dialogue_box_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/document_view.tscn" id="12_document_view_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/journal.tscn" id="13_journal_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="14_pause_menu_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/settings_menu.tscn" id="15_settings_menu_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ritual_view.tscn" id="12_ritual_view_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/document_view.tscn" id="13_document_view_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/reconstruction_view.tscn" id="14_reconstruction_view_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/journal.tscn" id="15_journal_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="16_pause_menu_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/settings_menu.tscn" id="17_settings_menu_tscn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3"]
 texture = ExtResource("2_panel_small_png")
@@ -203,14 +205,20 @@ unique_name_in_owner = true
 [node name="MenuLayer" type="CanvasLayer" parent="."]
 layer = 20
 
-[node name="DocumentView" parent="MenuLayer" instance=ExtResource("12_document_view_tscn")]
+[node name="RitualView" parent="MenuLayer" instance=ExtResource("12_ritual_view_tscn")]
 unique_name_in_owner = true
 
-[node name="Journal" parent="MenuLayer" instance=ExtResource("13_journal_tscn")]
+[node name="DocumentView" parent="MenuLayer" instance=ExtResource("13_document_view_tscn")]
 unique_name_in_owner = true
 
-[node name="PauseMenu" parent="MenuLayer" instance=ExtResource("14_pause_menu_tscn")]
+[node name="ReconstructionView" parent="MenuLayer" instance=ExtResource("14_reconstruction_view_tscn")]
 unique_name_in_owner = true
 
-[node name="SettingsMenu" parent="MenuLayer" instance=ExtResource("15_settings_menu_tscn")]
+[node name="Journal" parent="MenuLayer" instance=ExtResource("15_journal_tscn")]
+unique_name_in_owner = true
+
+[node name="PauseMenu" parent="MenuLayer" instance=ExtResource("16_pause_menu_tscn")]
+unique_name_in_owner = true
+
+[node name="SettingsMenu" parent="MenuLayer" instance=ExtResource("17_settings_menu_tscn")]
 unique_name_in_owner = true

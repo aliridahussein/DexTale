@@ -1,0 +1,33 @@
+{
+	"_about": "Echo Reconstruction (V2): the player gathers clues (echoes and observations), then answers one question about what happened. Each entry is self-contained, so any area can add its own. A clue shows once its 'when' condition holds; every clue marked 'required' must be found before answering. A wrong answer names the clue that rules it out and is crossed off: no penalty, no lost progress. The right answer sets 'solved_flag'. Open a board from dialogue with {\"event\": \"reconstruct\", \"args\": [\"<id>\"]}.",
+
+	"well_promise": {
+		"title": "The Forgotten Promise",
+		"intro": "Three things at the well remember more than Tobin does.",
+		"question": "What did Tobin promise Elsie?",
+		"clues": [
+			{"id": "voice", "when": "echo_well", "required": true, "title": "Her voice in the stone",
+				"text": "TOBIN and ELSIE, carved together. Her voice: \"You promised you'd wait for me.\"",
+				"missing": "Listen at the well."},
+			{"id": "lamp", "when": "echo_well_lamp", "required": true, "title": "The lamp she hung",
+				"text": "\"If I can see a light from the road, I can find the way back.\"",
+				"missing": "One lamp in the square is tended more than the others."},
+			{"id": "bench", "when": "seen_well_bench", "required": true, "title": "The worn bench",
+				"text": "Worn smooth at one end, wax on the armrest, facing the road. Someone waited here every night.",
+				"missing": "Something by the well has been used every night for years."},
+			{"id": "habit", "when": "talked_tobin", "title": "Tobin's habit",
+				"text": "Lights the well lamp twice a night. \"Never knew why.\""}
+		],
+		"answers": [
+			{"text": "To marry her when the harvest was in.", "rule_out": "voice",
+				"feedback": "Two names on a well could mean a wedding. But her voice never asked for one. She asked him to wait."},
+			{"text": "To leave Dawnmere with her before the mist came.", "rule_out": "bench",
+				"feedback": "Then nobody would have worn that bench smooth. Someone stayed behind and watched the road."},
+			{"text": "To keep a light burning by the well until she found her way home.", "correct": true},
+			{"text": "To forget her if she never came back.", "rule_out": "lamp",
+				"feedback": "Someone still tends that lamp more than any other. He never stopped keeping the promise. The forgetting was done to him."}
+		],
+		"solved_flag": "promise_reconstructed",
+		"solved_line": "That's it. That's what the lamp is for."
+	}
+}

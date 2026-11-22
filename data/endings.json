@@ -1,5 +1,5 @@
 {
-	"_about": "Ending narration and the 'What Dawnmere remembers' epilogue. Epilogue lines are shown when their ending matches (or is omitted) and their condition holds. Within a group, only the first matching line is shown.",
+	"_about": "Ending narration and the 'What Dawnmere remembers' epilogue. Epilogue lines are shown when their ending matches (or is omitted) and their condition holds. Within a group, only the first matching line is shown, so put the most specific lines first.",
 	"endings": {
 		"keeper": {
 			"title": "THE KEEPER",
@@ -44,6 +44,10 @@
 
 		{"group": "alden", "text": "Brother Alden began a new record: every name in Dawnmere, written by everyone. It is very long and full of spelling mistakes. He has never been prouder of a book."},
 
+		{"group": "tobin", "ending": "chorus", "if": "promise_reconstructed", "text": "Tobin got Elsie back, the memory of her at least. He keeps the lamp by the well lit all night now. If she ever finds the road again, she'll know which light is his."},
+		{"group": "tobin", "ending": "promise", "if": "has_tobin_lantern", "text": "Tobin's lantern came back down the tower road still lit. He hung it on the post by the well, and on the longest nights he stands beside it, keeping the promise on purpose now."},
+		{"group": "tobin", "if": "told_tobin_promise", "text": "Tobin still doesn't remember Elsie's face. But he knows her name now, and he says it every time he lights the lamp by the well."},
+		{"group": "tobin", "if": "kept_tobin_secret", "text": "Tobin still lights the lamp by the well twice a night. You never told him why. Some promises keep themselves."},
 		{"group": "tobin", "ending": "chorus", "if": "echo_well", "text": "Tobin stopped lighting the lantern by the well twice a night. Now he lights it once, and sits with it, and says her name."},
 		{"group": "tobin", "if": "echo_well", "text": "Tobin still lights the lantern by the well twice a night. Some habits are the shape a memory leaves behind."},
 

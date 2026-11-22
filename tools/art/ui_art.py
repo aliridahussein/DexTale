@@ -308,6 +308,14 @@ def icon(name: str) -> Canvas:
         cv.ellipse(8, 8, 6, 3.5, "sp3")
         cv.ellipse(8, 8, 2.5, 2.5, "sp1")
         cv.px(8, 8, "sp4")
+    elif name == "lantern":  # V2: Tobin's lantern
+        cv.rect(7, 1, 2, 2, "ir2")
+        cv.rect(5, 3, 6, 2, "ir2")
+        cv.rect(5, 5, 6, 7, "fi3")
+        cv.rect(6, 6, 4, 5, "fi4")
+        cv.vline(5, 5, 7, "ir3")
+        cv.vline(10, 5, 7, "ir3")
+        cv.rect(4, 12, 8, 2, "ir2")
     cv.outline("ink")
     return cv
 
@@ -777,7 +785,7 @@ def build_all():
     for k in ("E", "F", "J"):
         keycap(k).save(out + f"key_{k.lower()}.png")
     keycap("ESC").save(out + "key_esc.png")
-    for n in ("bell", "pin", "key", "ledger", "song", "quill", "eye"):
+    for n in ("bell", "pin", "key", "ledger", "song", "quill", "eye", "lantern"):
         icon(n).save(out + f"icon_{n}.png")
     ic = Canvas(64, 64)
     big = icon("bell")

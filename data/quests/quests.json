@@ -65,12 +65,32 @@
 			"optional": true,
 			"start": "promised_mara",
 			"done": "asked_orin_lullaby"
+		},
+		{
+			"id": "the_promise",
+			"title": "Find out what was promised at the well.",
+			"detail": "Tobin's name is carved beside another. Look closer at what stands around the well: the lamp, the bench. Some things are worth listening to (F).",
+			"optional": true,
+			"start": "echo_well",
+			"done": ["echo_well_lamp", "seen_well_bench"]
+		},
+		{
+			"id": "the_promise_solve",
+			"title": "Piece together the forgotten promise.",
+			"detail": "Her voice, the lamp she hung, the bench that faces the road. At the well, put them together.",
+			"optional": true,
+			"start": ["echo_well", "echo_well_lamp", "seen_well_bench"],
+			"done": "promise_reconstructed"
 		}
 	],
 	"discoveries": [
 		{"id": "letter", "when": "game_started", "title": "Orin's Letter", "text": "\"Come home before the thirteenth toll. There is something I need you to remember.\" It was the only thing he wrote."},
 		{"id": "forgetting", "when": "met_pip", "title": "People Forget", "text": "Pip says people forget things after the bell rings. Pip's grandmother used to sing an old tune, but nobody remembers her singing it."},
 		{"id": "well_names", "when": "echo_well", "title": "Names on the Well", "text": "Two names carved into the well: TOBIN and ELSIE. A voice in the stone: \"You promised you'd wait for me.\""},
+		{"id": "well_lamp", "when": "echo_well_lamp", "title": "The Lamp by the Well", "text": "A young woman hung the lamp beside the well: \"If I can see a light from the road, I can find the way back.\""},
+		{"id": "well_bench", "when": "seen_well_bench", "title": "The Worn Bench", "text": "One end of the bench by the well is worn smooth and crusted with candle wax. It faces the road. Someone waited there, night after night."},
+		{"id": "promise", "when": "promise_reconstructed", "title": "The Forgotten Promise", "text": "Elsie asked Tobin to keep a lamp lit by the well until she found her way home through the mist. He promised to wait. The bell took her from his memory; the promise stayed in his hands."},
+		{"id": "tobin_lantern", "when": "has_tobin_lantern", "title": "Tobin's Lantern", "text": "\"If it's for finding the way home... take this one. Bring it back lit.\""},
 		{"id": "thirteen_marks", "when": "discovered_bell_markings", "title": "Thirteen Marks", "text": "The tuning pin bears a bell ringed by thirteen marks. Mara's father taught her that the bell rings only twelve times."},
 		{"id": "lullaby", "when": "mara_lullaby_told", "title": "Mara's Lullaby", "text": "Mara remembers holding her son as a baby. She cannot remember the song she sang him."},
 		{"id": "hollow_cradle", "when": "echo_cradle", "title": "A Hollow Lullaby", "text": "In the forge, the echo of a woman humming over a cradle. The tune itself has been scraped away."},

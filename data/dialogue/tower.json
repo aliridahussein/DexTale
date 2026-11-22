@@ -24,8 +24,9 @@
 
 	"tower_memories_echo": [
 		["narrator", "The bell's light spills out, and you see them: memories, crowded inside the bronze like moths in a jar."],
-		["narrator", "A girl laughing loud enough to fill the tower. A woman singing over a cradle. Two young people carving names into a well."],
-		["narrator", "A young monk tearing pages from a book, crying. A boy in borrowed armour, guarding a road."],
+		["narrator", "A girl laughing loud enough to fill the tower. A woman singing over a cradle. Two young people carving names into a well. A monk tearing pages from a book. A boy in borrowed armour, guarding a road."],
+		{"if": "promise_reconstructed", "say": "rowan", "text": "Tobin and Elsie. She's in there, and her lamp is still lit down in the square."},
+		{"if": ["echo_cradle", "!promise_reconstructed"], "say": "rowan", "text": "Mara's lullaby. It's in there."},
 		["rowan", "Everything Dawnmere gave away. It's all still in there."]
 	],
 
@@ -87,13 +88,15 @@
 		{"label": "voice"},
 		{"set": {"asked_orin_voice": true}},
 		["orin", "...The Sentinel told you to ask that. He always was the cleverest of us."],
-		["orin", "The village's. Before the bell, everyone gathered at dusk and sang. Thirteen notes. The mist can't take hold of a village that's holding on to itself."],
-		["orin", "But singing every night, in the cold, all of us... it was hard. So we cast a bell to sing for us. And a bell has no memories of its own to spend."],
+		{"if": "learned_village_song", "say": "orin", "text": "But you already know. The village's own. Thirteen notes, sung together at dusk."},
+		{"if": "!learned_village_song", "say": "orin", "text": "The village's. Before the bell, everyone gathered at dusk and sang. Thirteen notes. The mist can't take hold of a village that's holding on to itself."},
+		["orin", "Singing every night, in the cold, all of us... it was hard. So we cast a bell to sing for us. And a bell has no memories of its own to spend."],
 		{"goto": "hub"},
 		{"label": "why"},
 		{"set": {"asked_orin_why": true}},
 		["orin", "Because you were away. The bell couldn't reach you. You're the only one in Dawnmere who still has all of yourself."],
-		["orin", "I taught you the old song once. At the well. You were seven, and you sang it flat."],
+		{"if": "!read_orin_notes", "say": "orin", "text": "I taught you the old song once. At the well. You were seven, and you sang it flat."},
+		{"if": "read_orin_notes", "say": "orin", "text": "You've read my notes, so you know about the song. You were seven. You sang it flat."},
 		{"if": "learned_village_song", "say": "rowan", "text": "I remember. Pip hummed it, and I knew how it ended."},
 		{"if": "!learned_village_song", "say": "rowan", "text": "I don't remember that."},
 		{"if": "!learned_village_song", "say": "orin", "text": "No. Perhaps someone else in Dawnmere still does."},
@@ -116,6 +119,7 @@
 		["orin", "Yours, if you offer it."],
 		{"if": ["learned_village_song", "read_bellkeeper_ledger", "has_tuning_pin"], "say": "rowan", "text": "There's another way. Thirteen marks. Thirteen notes. The pin can tune it."},
 		{"if": ["learned_village_song", "read_bellkeeper_ledger", "has_tuning_pin"], "say": "orin", "text": "...You remember the song. Then the last mark isn't a toll at all. It's the end of the tune. The note that gives back."},
+		{"label": "choose"},
 		{"choice": [
 			{"text": "Ring the bell. Pay the price.", "goto": "keeper"},
 			{"text": "Break the bell. End the bargain.", "goto": "promise"},
@@ -134,7 +138,13 @@
 		{"end": true},
 		{"label": "chorus"},
 		["orin", "Thirteen notes. Sing it flat, like you used to. The bell won't mind."],
+		{"event": "bell_ritual", "hide": true},
+		{"if": "!bell_retuned", "goto": "ritual_left"},
 		{"set": {"ending_selected": "chorus"}},
-		{"event": "ending", "args": ["chorus"]}
+		{"event": "ending", "args": ["chorus"]},
+		{"end": true},
+		{"label": "ritual_left"},
+		["orin", "Take your time. The bell has waited this long. It can wait for you."],
+		{"goto": "choose"}
 	]
 }

@@ -161,8 +161,149 @@ func _tour() -> void:
 			only = arg.substr(7)
 	if only in ["", "story"]:
 		await _story()
+	if only in ["", "v2"]:
+		await _v2_features()
 	if only in ["", "endings"]:
 		await _endings()
+
+
+## Milestone 2: the Echo Reconstruction at the well and the bell ritual.
+func _v2_features() -> void:
+	while SceneManager.transitioning:
+		await wait(0.1)
+	GameState.reset()
+	flags(["game_started", "met_pip", "spoke_to_mara", "talked_tobin"])
+	await goto_area("village", "default")
+	await put(Vector2(386, 360), "up")
+	listen_here()
+	await wait(0.6)
+	await drain()
+	await wait(3.0)
+	await put(Vector2(352, 360), "up")
+	await wait(0.4)
+	await shot("30_lamp_echo_prompt")
+	listen_here()
+	await wait(1.5)
+	await shot("31_lamp_echo_vision")
+	await drain()
+	await wait(3.0)
+	await put(Vector2(344, 392), "up")
+	await talk("well_bench")
+	await wait(2.5)
+	await put(Vector2(384, 358), "up")
+	await wait(0.4)
+	await shot("32_piece_it_together_prompt")
+	await press("interact")
+	var board: Control = UI.reconstruction_view
+	var t := 0.0
+	while not board.visible and t < 10.0:
+		if DialogueManager.is_waiting_for_advance():
+			DialogueManager.advance()
+		await wait(0.1)
+		t += 0.1
+	check(board.visible, "the reconstruction board opens at the well")
+	await wait(0.4)
+	await shot("33_reconstruction_board")
+	await press("interact")  # the first answer (a wrong one)
+	await wait(0.4)
+	await shot("34_reconstruction_wrong_answer")
+	while int(board.get("cursor")) != 2:
+		await press("move_down")
+	await press("interact")
+	await wait(0.6)
+	await shot("35_reconstruction_solved")
+	t = 0.0
+	while board.visible and t < 5.0:
+		await wait(0.1)
+		t += 0.1
+	var lines := 0
+	while DialogueManager.is_active() and t < 30.0:
+		if DialogueManager.is_waiting_for_advance():
+			lines += 1
+			if lines == 2:
+				await wait(1.2)
+				await shot("36_memory_elsie_and_tobin")
+			DialogueManager.advance()
+		await wait(0.1)
+		t += 0.1
+	check(GameState.has_flag("promise_reconstructed"), "the promise was reconstructed")
+	await wait(3.0)
+	await talk("tobin", 0, "37_tobin_told", 5)
+	await wait(2.5)
+	UI.open_journal()
+	await wait(0.3)
+	await press("move_right")
+	for i in 40:
+		await press("move_down")
+	await wait(0.2)
+	await shot("38_journal_promise_entry")
+	UI.journal.call("close")
+	# Tobin's lantern on the Mistbound Path
+	flags(["has_tuning_pin", "solved_chapel_puzzle", "read_ledger", "read_bellkeeper_ledger", "has_gate_key",
+		"gate_unlocked", "learned_village_song", "met_sentinel"])
+	await goto_area("mist_path", "from_village")
+	await put(Vector2(192, 560), "up")
+	await wait(0.6)
+	await shot("39_mist_path_tobins_lantern")
+	# the bell ritual
+	flags(["passed_sentinel", "pin_installed", "orin_appeared", "met_orin_echo"])
+	await goto_area("bell_tower", "from_path")
+	area().npc("Orin").talk.interact(player())
+	t = 0.0
+	while not DialogueManager.is_waiting_for_choice() and t < 30.0:
+		if DialogueManager.is_waiting_for_advance():
+			DialogueManager.advance()
+		await wait(0.1)
+		t += 0.1
+	await wait(0.4)
+	await shot("40_final_choice_three_options")
+	DialogueManager.choose(2)
+	var view: Control = UI.ritual_view
+	t = 0.0
+	while not view.visible and t < 15.0:
+		if DialogueManager.is_waiting_for_advance():
+			DialogueManager.advance()
+		await wait(0.1)
+		t += 0.1
+	check(view.visible, "the ritual opens after choosing The Chorus")
+	await wait(1.2)
+	await shot("41_ritual_start")
+	var r: ResonanceRitual = view.get("ritual")
+	var sol := ResonanceRitual.solution()
+	for i in 5:
+		while view.call("play_note", sol[i]) == ResonanceRitual.Result.IGNORED:
+			await wait(0.05)
+		await wait(0.25)
+	await wait(0.3)
+	await shot("42_ritual_five_notes")
+	while view.call("play_note", ResonanceRitual.Note.UP) == ResonanceRitual.Result.IGNORED:  # wrong: needs DOWN
+		await wait(0.05)
+	await wait(0.12)
+	await shot("43_ritual_soured")
+	await wait(1.0)
+	await shot("44_ritual_missed_note_hinted")
+	for i in sol.size():
+		if r.done:
+			break
+		while view.call("play_note", ResonanceRitual.needed_for(r.sung)) == ResonanceRitual.Result.IGNORED:
+			await wait(0.05)
+		await wait(0.2)
+		if r.sung == 12:
+			await wait(0.4)
+			await shot("45_ritual_last_note_circled")
+	await wait(0.6)
+	await shot("46_ritual_complete")
+	t = 0.0
+	while get_tree().current_scene != null and get_tree().current_scene.name != "Ending" and t < 20.0:
+		if DialogueManager.is_waiting_for_advance():
+			DialogueManager.advance()
+		await wait(0.1)
+		t += 0.1
+	check(GameState.has_flag("bell_retuned") and str(GameState.get_flag("ending_selected")) == "chorus",
+		"the ritual leads into The Chorus")
+	await wait(2.0)
+	SceneManager.goto_scene("res://scenes/main/main_menu.tscn", 0.3)
+	await wait(1.5)
 
 
 func _story() -> void:

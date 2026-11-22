@@ -115,6 +115,50 @@ def build_document_view():
     sc.save("scenes/ui/document_view.tscn")
 
 
+def build_reconstruction_view():
+    """V2 Echo Reconstruction board: clues on the left, one question on the right."""
+    sc = Scene("ReconstructionView", "Control", {**FULL})
+    sc.nodes[0][3]["script"] = sc.ext("Script", "res://scripts/ui/reconstruction_view.gd")
+    dim(sc, a=0.62)
+    board = sc.add("Board", "NinePatchRect", props={**rect(20, 10, 440, 250),
+                   **ninepatch(sc, "res://assets/sprites/ui/panel_parchment.png")})
+    sc.add("ReconTitle", "Label", parent=board, props={**rect(0, 6, 440, 20), **label("", 18, INK, 1, NO_SHADOW)},
+           unique_name=True)
+    sc.add("ReconIntro", "Label", parent=board, props={**rect(12, 26, 416, 12), **label("", None, INK_DIM, 1, NO_SHADOW)},
+           unique_name=True)
+    rich = {"bbcode_enabled": True, "theme_override_colors/default_color": INK,
+            "theme_override_colors/font_shadow_color": Col(0, 0, 0, 0), "focus_mode": 0}
+    sc.add("ReconClues", "RichTextLabel", parent=board, props={**rect(14, 42, 206, 182), **rich,
+           "scroll_active": True}, unique_name=True)
+    sc.add("Divider", "ColorRect", parent=board, props={**rect(226, 44, 1, 178), "color": Col("#b0a080")})
+    sc.add("ReconQuestion", "Label", parent=board, props={**rect(234, 42, 194, 26),
+           **label("", None, Col("#6a4614"), 0, {**NO_SHADOW, "autowrap_mode": 3})}, unique_name=True)
+    sc.add("ReconAnswers", "RichTextLabel", parent=board, props={**rect(234, 70, 196, 116), **rich,
+           "scroll_active": False, "meta_underlined": False}, unique_name=True)
+    sc.add("ReconFeedback", "RichTextLabel", parent=board, props={**rect(234, 186, 196, 40), **rich,
+           "scroll_active": False}, unique_name=True)
+    sc.add("Footer", "Label", parent=board, props={**rect(0, 230, 440, 12),
+           **label("W/S: choose    E: decide    Esc: step back", None, INK_DIM, 1, NO_SHADOW)})
+    sc.save("scenes/ui/reconstruction_view.tscn")
+
+
+def build_ritual_view():
+    """V2 bell ritual: a strip under the bell showing the Gathering Song's shape."""
+    sc = Scene("RitualView", "Control", {**FULL, "mouse_filter": 2})
+    sc.nodes[0][3]["script"] = sc.ext("Script", "res://scripts/ui/ritual_view.gd")
+    panel = sc.add("Panel", "NinePatchRect", props={**rect(36, 166, 408, 100), "mouse_filter": 2,
+                   **ninepatch(sc, "res://assets/sprites/ui/panel_dark.png")})
+    sc.add("RitualTitle", "Label", parent=panel, props={**rect(12, 5, 220, 14), **label("The Gathering Song", None, GOLD)})
+    sc.add("RitualProgress", "Label", parent=panel, props={**rect(296, 5, 100, 14), **label("1 / 13", None, DIM, 2)},
+           unique_name=True)
+    sc.add("Staff", "Control", parent=panel, props={**rect(14, 20, 380, 50), "mouse_filter": 2}, unique_name=True)
+    sc.add("RitualMessage", "Label", parent=panel, props={**rect(0, 70, 408, 12), **label("", None, Col("#ece2cc"), 1)},
+           unique_name=True)
+    sc.add("RitualHint", "Label", parent=panel, props={**rect(0, 83, 408, 12),
+           **label("W/S: follow the tune    E: sing the circled note    Esc: step back", None, DIM, 1)})
+    sc.save("scenes/ui/ritual_view.tscn")
+
+
 def build_pause_menu():
     sc = Scene("PauseMenu", "Control", {**FULL})
     sc.nodes[0][3]["script"] = sc.ext("Script", "res://scripts/ui/pause_menu.gd")
@@ -205,8 +249,9 @@ def build_ui_root():
     sc.add("DialogueBox", None, parent=dl, instance=sc.ext("PackedScene", "res://scenes/ui/dialogue_box.tscn"),
            unique_name=True)
     ml = sc.add("MenuLayer", "CanvasLayer", props={"layer": 20})
-    for name, path in (("DocumentView", "document_view"), ("Journal", "journal"), ("PauseMenu", "pause_menu"),
-                       ("SettingsMenu", "settings_menu")):
+    for name, path in (("RitualView", "ritual_view"), ("DocumentView", "document_view"),
+                       ("ReconstructionView", "reconstruction_view"), ("Journal", "journal"),
+                       ("PauseMenu", "pause_menu"), ("SettingsMenu", "settings_menu")):
         sc.add(name, None, parent=ml, instance=sc.ext("PackedScene", f"res://scenes/ui/{path}.tscn"), unique_name=True)
     sc.save("scenes/ui/ui.tscn")
 
@@ -331,6 +376,8 @@ def build_all():
     build_dialogue_box()
     build_journal()
     build_document_view()
+    build_reconstruction_view()
+    build_ritual_view()
     build_pause_menu()
     build_settings_menu()
     build_ui_root()

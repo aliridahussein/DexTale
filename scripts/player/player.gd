@@ -212,12 +212,13 @@ func _finish_auto_walk() -> void:
 
 
 ## Turn the light Rowan carries on (energy > 0) or off.
-func set_carried_light(energy: float) -> void:
+func set_carried_light(energy: float, radius_scale: float = 0.7) -> void:
 	var light := get_node_or_null("CarriedLight") as PointLight2D
 	if light == null:
 		return
 	light.enabled = energy > 0.0
 	light.energy = energy
+	light.texture_scale = radius_scale
 
 
 func carried_light() -> float:

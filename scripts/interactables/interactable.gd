@@ -11,7 +11,8 @@ signal focused(on: bool)
 
 @export var prompt := "Inspect"
 @export var conversation_id := ""
-## Condition that must hold for the interaction to be offered (see GameState.check).
+## Condition that must hold for the interaction to be offered (see
+## GameState.check; several conditions can be listed: "a, b, !c").
 @export var requires := ""
 ## Condition that hides the interaction (e.g. once something is solved).
 @export var hidden_when := ""

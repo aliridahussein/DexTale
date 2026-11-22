@@ -82,7 +82,8 @@ func inc_flag(flag: String, amount: int = 1) -> int:
 
 ## Evaluates a condition used by dialogue, quests and interactables.
 ## Accepts "" / null (always true), "flag", "!flag", "flag>=2", "flag==value",
-## or an Array of those (all must hold).
+## an Array of those, or the same list written as one string "a, !b, c"
+## (handy for exported scene properties). Lists mean all must hold.
 func check(condition: Variant) -> bool:
 	if condition == null:
 		return true
@@ -94,6 +95,8 @@ func check(condition: Variant) -> bool:
 	var text: String = str(condition).strip_edges()
 	if text == "":
 		return true
+	if text.contains(","):
+		return check(Array(text.split(",", false)))
 	var m: RegExMatch = _cond_regex.search(text)
 	if m == null:
 		push_warning("GameState: cannot parse condition '%s'" % text)

@@ -72,6 +72,7 @@ def village():
     L.prop("house_narrow", 152, 496, "HouseSW")
     L.prop("house_tavern", 584, 512, "Tavern")
     L.prop("well", 384, 344, "Well")
+    L.prop("lantern_post", 352, 340, "WellLamp")  # V2: "the one by the well" Tobin keeps lighting
     L.prop("gate_north", 384, 176, "Gate")
     L.prop("market_stall", 312, 296, "StallA")
     L.prop("market_stall_b", 464, 296, "StallB")
@@ -109,6 +110,14 @@ def village():
     L.interact("WellInspect", 384, 338, "village_well", r=16, prompt_offset=V2(0, -40))
     L.echo("WellEcho", 384, 338, "well", "village_well_echo", texture=FX + "echo_names.png", r=18,
            reveal_offset=V2(-30, -58), hint_offset=V2(0, -52))
+    # V2 Echo Reconstruction "The Forgotten Promise": the lamp, the bench, and the board at the well
+    L.interact("WellLampLook", 352, 344, "well_lamp", r=9, prompt_offset=V2(0, -40))
+    L.echo("WellLampEcho", 352, 344, "well_lamp", "well_lamp_echo", texture=FX + "echo_figure.png", r=12,
+           requires="echo_well", reveal_offset=V2(-16, -24), hint_offset=V2(0, -50))
+    L.interact("BenchInspect", 344, 378, "well_bench", r=10, prompt_offset=V2(0, -22))
+    L.interact("WellReconstruct", 384, 338, "well_reconstruct", "Piece it together", r=16, prompt_offset=V2(0, -40),
+               requires="echo_well, echo_well_lamp, seen_well_bench", hidden_when="promise_reconstructed",
+               focus_priority=1, important=True)
     L.interact("NoticeRead", 336, 432, "village_notice", "Read", r=14, prompt_offset=V2(0, -36))
     L.interact("SignRead", 432, 432, "village_signpost", "Read", r=10, prompt_offset=V2(0, -34))
     L.interact("StallInspect", 312, 302, "village_stall", r=14, prompt_offset=V2(0, -44))

@@ -32,6 +32,8 @@ func area_events() -> Dictionary:
 		"pip_face_tower": func() -> void: npc("Pip").set_facing("up"),
 		"pip_hum": _pip_hum,
 		"gate_open": _gate_open,
+		"well_memory": _well_memory,
+		"well_memory_end": _well_memory_end,
 	}
 
 
@@ -106,6 +108,83 @@ func _pip_hum(slow: float = 0.0) -> Signal:
 		t.tween_property(note, "modulate:a", 0.0, 0.4)
 		t.tween_callback(note.queue_free)
 	return get_tree().create_timer(duration).timeout
+
+
+## The reconstructed memory (V2): Elsie and young Tobin at the well, in warm
+## light rather than the cold blue of an ordinary echo, and her lamp flaring.
+var _memory_sprites: Array[Sprite2D] = []
+var _memory_holds_ui := false
+
+
+func _well_memory() -> Signal:
+	_well_memory_end_now()
+	var well := $Objects/Well as Node2D
+	var add := CanvasItemMaterial.new()
+	add.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	var tobin_tex := AtlasTexture.new()
+	tobin_tex.atlas = load("res://assets/sprites/characters/tobin.png")
+	tobin_tex.region = Rect2(0, 0, 16, 24)
+	# Elsie is the pale echo figure; Tobin's own sprite is darker, so it is
+	# boosted to read just as clearly in additive light.
+	for spec in [[load("res://assets/sprites/fx/echo_figure.png"), Vector2(-20, -18), Color(1.0, 0.82, 0.55)],
+			[tobin_tex, Vector2(20, -14), Color(1.9, 1.5, 1.0)]]:
+		var s := Sprite2D.new()
+		s.texture = spec[0]
+		s.position = well.position + (spec[1] as Vector2)
+		s.material = add
+		s.modulate = Color(spec[2] as Color, 0.0)
+		s.z_index = 20
+		$Effects.add_child(s)
+		_memory_sprites.append(s)
+	AudioManager.play_sfx("memory_warm", -3.0)
+	UI.play_echo_effect(3.0)
+	if not _memory_holds_ui:
+		_memory_holds_ui = true
+		UI.begin_reveal()  # no toast or prompt over the memory (QA-11)
+	var t := create_tween().set_parallel(true)
+	for s in _memory_sprites:
+		t.tween_property(s, "modulate:a", 0.85, 0.9)
+	var lamp := _lamp_light()
+	if lamp:
+		t.tween_method(Callable(lamp, "set_base_energy"), _lamp_energy(), 2.2, 0.9)
+	return t.finished
+
+
+func _well_memory_end() -> Signal:
+	var t := create_tween().set_parallel(true)
+	for s in _memory_sprites:
+		t.tween_property(s, "modulate:a", 0.0, 1.0)
+	var lamp := _lamp_light()
+	if lamp:
+		t.tween_method(Callable(lamp, "set_base_energy"), 2.2, _lamp_energy(), 1.2)
+	t.chain().tween_callback(_well_memory_end_now)
+	return t.finished
+
+
+func _lamp_light() -> PointLight2D:
+	var lamp := get_node_or_null("Objects/WellLamp/Light") as PointLight2D
+	return lamp if lamp and lamp.has_method("set_base_energy") else null
+
+
+func _lamp_energy() -> float:
+	return 0.95 * float(STAGES[stage()]["lights"])
+
+
+func _well_memory_end_now() -> void:
+	for s in _memory_sprites:
+		if is_instance_valid(s):
+			s.queue_free()
+	_memory_sprites.clear()
+	if _memory_holds_ui:
+		_memory_holds_ui = false
+		UI.end_reveal()
+
+
+func _exit_tree() -> void:
+	super._exit_tree()
+	if _memory_holds_ui:
+		_memory_holds_ui = false
+		UI.end_reveal()
 
 
 func _run_intro() -> void:

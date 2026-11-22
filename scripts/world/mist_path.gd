@@ -24,6 +24,9 @@ var _silhouettes: Array[Node2D] = []
 
 
 func _area_ready() -> void:
+	# V2: Tobin's lantern (from telling him about Elsie) lights the road wider and warmer.
+	if GameState.has_flag("has_tobin_lantern"):
+		get_player().set_carried_light(1.1, 1.0)
 	_make_block()
 	for p in $Encounter.get_children():
 		if p is MistPulse:

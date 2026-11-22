@@ -15,12 +15,12 @@
 [ext_resource type="PackedScene" path="res://scenes/props/house_narrow.tscn" id="13_house_narrow_tscn"]
 [ext_resource type="PackedScene" path="res://scenes/props/house_tavern.tscn" id="14_house_tavern_tscn"]
 [ext_resource type="PackedScene" path="res://scenes/props/well.tscn" id="15_well_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/props/gate_north.tscn" id="16_gate_north_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/props/market_stall.tscn" id="17_market_stall_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/props/market_stall_b.tscn" id="18_market_stall_b_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/props/notice_board.tscn" id="19_notice_board_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/props/signpost.tscn" id="20_signpost_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/props/lantern_post.tscn" id="21_lantern_post_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/lantern_post.tscn" id="16_lantern_post_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/gate_north.tscn" id="17_gate_north_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/market_stall.tscn" id="18_market_stall_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/market_stall_b.tscn" id="19_market_stall_b_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/notice_board.tscn" id="20_notice_board_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/props/signpost.tscn" id="21_signpost_tscn"]
 [ext_resource type="PackedScene" path="res://scenes/props/bench.tscn" id="22_bench_tscn"]
 [ext_resource type="PackedScene" path="res://scenes/props/barrel.tscn" id="23_barrel_tscn"]
 [ext_resource type="PackedScene" path="res://scenes/props/crate.tscn" id="24_crate_tscn"]
@@ -48,15 +48,16 @@
 [ext_resource type="Script" path="res://scripts/interactables/interactable.gd" id="46_interactable_gd"]
 [ext_resource type="Script" path="res://scripts/interactables/echo_point.gd" id="48_echo_point_gd"]
 [ext_resource type="Texture2D" path="res://assets/sprites/fx/echo_names.png" id="49_echo_names_png"]
-[ext_resource type="Script" path="res://scripts/interactables/area_exit.gd" id="60_area_exit_gd"]
-[ext_resource type="Script" path="res://scripts/interactables/story_trigger.gd" id="64_story_trigger_gd"]
-[ext_resource type="Texture2D" path="res://assets/sprites/fx/light_shaft.png" id="66_light_shaft_png"]
-[ext_resource type="Script" path="res://scripts/world/light_shaft.gd" id="67_light_shaft_gd"]
-[ext_resource type="Texture2D" path="res://assets/sprites/fx/px2.png" id="68_px2_png"]
-[ext_resource type="Texture2D" path="res://assets/sprites/fx/mote.png" id="71_mote_png"]
-[ext_resource type="Shader" path="res://assets/shaders/mist.gdshader" id="74_mist_gdshader"]
-[ext_resource type="Texture2D" path="res://assets/sprites/fx/noise.png" id="75_noise_png"]
-[ext_resource type="Script" path="res://scripts/world/mist_layer.gd" id="77_mist_layer_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/echo_figure.png" id="52_echo_figure_png"]
+[ext_resource type="Script" path="res://scripts/interactables/area_exit.gd" id="65_area_exit_gd"]
+[ext_resource type="Script" path="res://scripts/interactables/story_trigger.gd" id="69_story_trigger_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/light_shaft.png" id="71_light_shaft_png"]
+[ext_resource type="Script" path="res://scripts/world/light_shaft.gd" id="72_light_shaft_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/px2.png" id="73_px2_png"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/mote.png" id="76_mote_png"]
+[ext_resource type="Shader" path="res://assets/shaders/mist.gdshader" id="79_mist_gdshader"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/noise.png" id="80_noise_png"]
+[ext_resource type="Script" path="res://scripts/world/mist_layer.gd" id="82_mist_layer_gd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_47"]
 radius = 16.0
@@ -65,73 +66,85 @@ radius = 16.0
 radius = 18.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_51"]
-radius = 14.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_52"]
-radius = 10.0
+radius = 9.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_53"]
-radius = 14.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_54"]
-radius = 14.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_55"]
-radius = 9.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_56"]
-radius = 9.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_57"]
-radius = 9.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_58"]
-radius = 9.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_59"]
 radius = 12.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_61"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_54"]
+radius = 10.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_55"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_56"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_57"]
+radius = 10.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_58"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_59"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_60"]
+radius = 9.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_61"]
+radius = 9.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_62"]
+radius = 9.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_63"]
+radius = 9.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_64"]
+radius = 12.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_66"]
 size = Vector2(18, 8)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_62"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_67"]
 size = Vector2(18, 8)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_63"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_68"]
 size = Vector2(64, 10)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_65"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70"]
 size = Vector2(96, 12)
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_69"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_74"]
 blend_mode = 1
 
-[sub_resource type="Gradient" id="Gradient_70"]
+[sub_resource type="Gradient" id="Gradient_75"]
 offsets = PackedFloat32Array(0.0, 0.3, 0.7, 1.0)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.8, 1, 1, 1, 0)
 
-[sub_resource type="Gradient" id="Gradient_72"]
+[sub_resource type="Gradient" id="Gradient_77"]
 offsets = PackedFloat32Array(0.0, 0.2, 1.0)
 colors = PackedColorArray(0.55, 0.55, 0.6, 0.0, 0.55, 0.55, 0.6, 0.55, 0.4, 0.4, 0.45, 0.0)
 
-[sub_resource type="Gradient" id="Gradient_73"]
+[sub_resource type="Gradient" id="Gradient_78"]
 offsets = PackedFloat32Array(0.0, 0.2, 1.0)
 colors = PackedColorArray(0.55, 0.55, 0.6, 0.0, 0.55, 0.55, 0.6, 0.55, 0.4, 0.4, 0.45, 0.0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_76"]
-shader = ExtResource("74_mist_gdshader")
-shader_parameter/noise_tex = ExtResource("75_noise_png")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_81"]
+shader = ExtResource("79_mist_gdshader")
+shader_parameter/noise_tex = ExtResource("80_noise_png")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_78"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_83"]
 size = Vector2(16, 608)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_79"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_84"]
 size = Vector2(16, 608)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_80"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_85"]
 size = Vector2(768, 16)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_81"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_86"]
 size = Vector2(768, 16)
 
 [node name="Village" type="Node2D"]
@@ -238,49 +251,52 @@ position = Vector2(584, 512)
 [node name="Well" parent="Objects" instance=ExtResource("15_well_tscn")]
 position = Vector2(384, 344)
 
-[node name="Gate" parent="Objects" instance=ExtResource("16_gate_north_tscn")]
+[node name="WellLamp" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
+position = Vector2(352, 340)
+
+[node name="Gate" parent="Objects" instance=ExtResource("17_gate_north_tscn")]
 position = Vector2(384, 176)
 
-[node name="StallA" parent="Objects" instance=ExtResource("17_market_stall_tscn")]
+[node name="StallA" parent="Objects" instance=ExtResource("18_market_stall_tscn")]
 position = Vector2(312, 296)
 
-[node name="StallB" parent="Objects" instance=ExtResource("18_market_stall_b_tscn")]
+[node name="StallB" parent="Objects" instance=ExtResource("19_market_stall_b_tscn")]
 position = Vector2(464, 296)
 
-[node name="NoticeBoard" parent="Objects" instance=ExtResource("19_notice_board_tscn")]
+[node name="NoticeBoard" parent="Objects" instance=ExtResource("20_notice_board_tscn")]
 position = Vector2(336, 428)
 
-[node name="Signpost" parent="Objects" instance=ExtResource("20_signpost_tscn")]
+[node name="Signpost" parent="Objects" instance=ExtResource("21_signpost_tscn")]
 position = Vector2(432, 428)
 
-[node name="Lantern1" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern1" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(232, 256)
 
-[node name="Lantern2" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern2" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(536, 256)
 
-[node name="Lantern3" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern3" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(232, 408)
 
-[node name="Lantern4" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern4" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(536, 408)
 
-[node name="Lantern5" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern5" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(338, 190)
 
-[node name="Lantern6" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern6" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(430, 190)
 
-[node name="Lantern7" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern7" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(346, 520)
 
-[node name="Lantern8" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern8" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(422, 520)
 
-[node name="Lantern9" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern9" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(158, 302)
 
-[node name="Lantern10" parent="Objects" instance=ExtResource("21_lantern_post_tscn")]
+[node name="Lantern10" parent="Objects" instance=ExtResource("16_lantern_post_tscn")]
 position = Vector2(626, 292)
 
 [node name="Bench" parent="Objects" instance=ExtResource("22_bench_tscn")]
@@ -556,6 +572,53 @@ hint_offset = Vector2(0, -52)
 [node name="Shape" type="CollisionShape2D" parent="Interactions/WellEcho"]
 shape = SubResource("CircleShape2D_50")
 
+[node name="WellLampLook" type="Area2D" parent="Interactions"]
+position = Vector2(352, 344)
+script = ExtResource("46_interactable_gd")
+prompt = "Inspect"
+conversation_id = "well_lamp"
+prompt_offset = Vector2(0, -40)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/WellLampLook"]
+shape = SubResource("CircleShape2D_51")
+
+[node name="WellLampEcho" type="Area2D" parent="Interactions"]
+position = Vector2(352, 344)
+script = ExtResource("48_echo_point_gd")
+reveal_texture = ExtResource("52_echo_figure_png")
+echo_id = "well_lamp"
+conversation_id = "well_lamp_echo"
+requires = "echo_well"
+reveal_offset = Vector2(-16, -24)
+hint_offset = Vector2(0, -50)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/WellLampEcho"]
+shape = SubResource("CircleShape2D_53")
+
+[node name="BenchInspect" type="Area2D" parent="Interactions"]
+position = Vector2(344, 378)
+script = ExtResource("46_interactable_gd")
+prompt = "Inspect"
+conversation_id = "well_bench"
+prompt_offset = Vector2(0, -22)
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/BenchInspect"]
+shape = SubResource("CircleShape2D_54")
+
+[node name="WellReconstruct" type="Area2D" parent="Interactions"]
+position = Vector2(384, 338)
+script = ExtResource("46_interactable_gd")
+prompt = "Piece it together"
+conversation_id = "well_reconstruct"
+prompt_offset = Vector2(0, -40)
+requires = "echo_well, echo_well_lamp, seen_well_bench"
+hidden_when = "promise_reconstructed"
+focus_priority = 1
+important = true
+
+[node name="Shape" type="CollisionShape2D" parent="Interactions/WellReconstruct"]
+shape = SubResource("CircleShape2D_55")
+
 [node name="NoticeRead" type="Area2D" parent="Interactions"]
 position = Vector2(336, 432)
 script = ExtResource("46_interactable_gd")
@@ -564,7 +627,7 @@ conversation_id = "village_notice"
 prompt_offset = Vector2(0, -36)
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/NoticeRead"]
-shape = SubResource("CircleShape2D_51")
+shape = SubResource("CircleShape2D_56")
 
 [node name="SignRead" type="Area2D" parent="Interactions"]
 position = Vector2(432, 432)
@@ -574,7 +637,7 @@ conversation_id = "village_signpost"
 prompt_offset = Vector2(0, -34)
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/SignRead"]
-shape = SubResource("CircleShape2D_52")
+shape = SubResource("CircleShape2D_57")
 
 [node name="StallInspect" type="Area2D" parent="Interactions"]
 position = Vector2(312, 302)
@@ -584,7 +647,7 @@ conversation_id = "village_stall"
 prompt_offset = Vector2(0, -44)
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/StallInspect"]
-shape = SubResource("CircleShape2D_53")
+shape = SubResource("CircleShape2D_58")
 
 [node name="GateUse" type="Area2D" parent="Interactions"]
 position = Vector2(384, 184)
@@ -596,7 +659,7 @@ hidden_when = "gate_unlocked"
 important = true
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/GateUse"]
-shape = SubResource("CircleShape2D_54")
+shape = SubResource("CircleShape2D_59")
 
 [node name="DoorNW" type="Area2D" parent="Interactions"]
 position = Vector2(184, 220)
@@ -606,7 +669,7 @@ conversation_id = "village_door_nw"
 prompt_offset = Vector2(0, -26)
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/DoorNW"]
-shape = SubResource("CircleShape2D_55")
+shape = SubResource("CircleShape2D_60")
 
 [node name="DoorNE" type="Area2D" parent="Interactions"]
 position = Vector2(478, 220)
@@ -616,7 +679,7 @@ conversation_id = "village_door_ne"
 prompt_offset = Vector2(0, -26)
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/DoorNE"]
-shape = SubResource("CircleShape2D_56")
+shape = SubResource("CircleShape2D_61")
 
 [node name="DoorSW" type="Area2D" parent="Interactions"]
 position = Vector2(158, 500)
@@ -626,7 +689,7 @@ conversation_id = "village_door_sw"
 prompt_offset = Vector2(0, -26)
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/DoorSW"]
-shape = SubResource("CircleShape2D_57")
+shape = SubResource("CircleShape2D_62")
 
 [node name="TavernDoor" type="Area2D" parent="Interactions"]
 position = Vector2(583, 516)
@@ -636,7 +699,7 @@ conversation_id = "village_tavern"
 prompt_offset = Vector2(0, -26)
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/TavernDoor"]
-shape = SubResource("CircleShape2D_58")
+shape = SubResource("CircleShape2D_63")
 
 [node name="CartLook" type="Area2D" parent="Interactions"]
 position = Vector2(664, 482)
@@ -645,43 +708,43 @@ prompt = "Inspect"
 conversation_id = "village_cart"
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/CartLook"]
-shape = SubResource("CircleShape2D_59")
+shape = SubResource("CircleShape2D_64")
 
 [node name="ToForge" type="Area2D" parent="Triggers"]
 position = Vector2(122, 293)
-script = ExtResource("60_area_exit_gd")
+script = ExtResource("65_area_exit_gd")
 target_area = "forge"
 target_spawn = "from_village"
 
 [node name="Shape" type="CollisionShape2D" parent="Triggers/ToForge"]
-shape = SubResource("RectangleShape2D_61")
+shape = SubResource("RectangleShape2D_66")
 
 [node name="ToChapel" type="Area2D" parent="Triggers"]
 position = Vector2(592, 277)
-script = ExtResource("60_area_exit_gd")
+script = ExtResource("65_area_exit_gd")
 target_area = "chapel"
 target_spawn = "from_village"
 
 [node name="Shape" type="CollisionShape2D" parent="Triggers/ToChapel"]
-shape = SubResource("RectangleShape2D_62")
+shape = SubResource("RectangleShape2D_67")
 
 [node name="ToPath" type="Area2D" parent="Triggers"]
 position = Vector2(384, 152)
-script = ExtResource("60_area_exit_gd")
+script = ExtResource("65_area_exit_gd")
 target_area = "mist_path"
 target_spawn = "from_village"
 requires = "gate_unlocked"
 
 [node name="Shape" type="CollisionShape2D" parent="Triggers/ToPath"]
-shape = SubResource("RectangleShape2D_63")
+shape = SubResource("RectangleShape2D_68")
 
 [node name="LeaveVillage" type="Area2D" parent="Triggers"]
 position = Vector2(384, 570)
-script = ExtResource("64_story_trigger_gd")
+script = ExtResource("69_story_trigger_gd")
 conversation_id = "village_leave"
 
 [node name="Shape" type="CollisionShape2D" parent="Triggers/LeaveVillage"]
-shape = SubResource("RectangleShape2D_65")
+shape = SubResource("RectangleShape2D_70")
 
 [node name="default" type="Marker2D" parent="Spawns"]
 position = Vector2(384, 392)
@@ -762,37 +825,37 @@ texture_scale = 0.45
 position = Vector2(60, -10)
 rotation = -0.55851
 scale = Vector2(3, 4.2)
-texture = ExtResource("66_light_shaft_png")
+texture = ExtResource("71_light_shaft_png")
 offset = Vector2(0, 64)
 modulate = Color(1.0, 0.72157, 0.47059, 1.0)
-script = ExtResource("67_light_shaft_gd")
+script = ExtResource("72_light_shaft_gd")
 base_alpha = 0.13
 
 [node name="SunRay2" type="Sprite2D" parent="Effects"]
 position = Vector2(260, -10)
 rotation = -0.55851
 scale = Vector2(3, 4.2)
-texture = ExtResource("66_light_shaft_png")
+texture = ExtResource("71_light_shaft_png")
 offset = Vector2(0, 64)
 modulate = Color(1.0, 0.72157, 0.47059, 1.0)
-script = ExtResource("67_light_shaft_gd")
+script = ExtResource("72_light_shaft_gd")
 base_alpha = 0.13
 
 [node name="SunRay3" type="Sprite2D" parent="Effects"]
 position = Vector2(470, -10)
 rotation = -0.55851
 scale = Vector2(3, 4.2)
-texture = ExtResource("66_light_shaft_png")
+texture = ExtResource("71_light_shaft_png")
 offset = Vector2(0, 64)
 modulate = Color(1.0, 0.72157, 0.47059, 1.0)
-script = ExtResource("67_light_shaft_gd")
+script = ExtResource("72_light_shaft_gd")
 base_alpha = 0.13
 
 [node name="Fireflies" type="CPUParticles2D" parent="Effects"]
 position = Vector2(384, 330)
-texture = ExtResource("68_px2_png")
-material = SubResource("CanvasItemMaterial_69")
-color_ramp = SubResource("Gradient_70")
+texture = ExtResource("73_px2_png")
+material = SubResource("CanvasItemMaterial_74")
+color_ramp = SubResource("Gradient_75")
 amount = 22
 lifetime = 7.0
 emission_shape = 3
@@ -806,8 +869,8 @@ color = Color(0.9098, 0.94118, 0.54118, 1.0)
 
 [node name="ForgeSmoke" type="CPUParticles2D" parent="Effects"]
 position = Vector2(104, 226)
-texture = ExtResource("71_mote_png")
-color_ramp = SubResource("Gradient_72")
+texture = ExtResource("76_mote_png")
+color_ramp = SubResource("Gradient_77")
 amount = 9
 lifetime = 3.5
 emission_shape = 1
@@ -822,8 +885,8 @@ scale_amount_max = 2.6
 
 [node name="CottageSmoke" type="CPUParticles2D" parent="Effects"]
 position = Vector2(200, 162)
-texture = ExtResource("71_mote_png")
-color_ramp = SubResource("Gradient_73")
+texture = ExtResource("76_mote_png")
+color_ramp = SubResource("Gradient_78")
 amount = 9
 lifetime = 3.5
 emission_shape = 1
@@ -841,8 +904,8 @@ z_index = 10
 offset_right = 768.0
 offset_bottom = 576.0
 mouse_filter = 2
-material = SubResource("ShaderMaterial_76")
-script = ExtResource("77_mist_layer_gd")
+material = SubResource("ShaderMaterial_81")
+script = ExtResource("82_mist_layer_gd")
 density = 0.32
 edge_only = true
 tint = Color(0.76863, 0.8, 0.84706, 1.0)
@@ -853,16 +916,16 @@ collision_mask = 0
 
 [node name="Left" type="CollisionShape2D" parent="Bounds"]
 position = Vector2(-8, 288)
-shape = SubResource("RectangleShape2D_78")
+shape = SubResource("RectangleShape2D_83")
 
 [node name="Right" type="CollisionShape2D" parent="Bounds"]
 position = Vector2(776, 288)
-shape = SubResource("RectangleShape2D_79")
+shape = SubResource("RectangleShape2D_84")
 
 [node name="Top" type="CollisionShape2D" parent="Bounds"]
 position = Vector2(384, -8)
-shape = SubResource("RectangleShape2D_80")
+shape = SubResource("RectangleShape2D_85")
 
 [node name="Bottom" type="CollisionShape2D" parent="Bounds"]
 position = Vector2(384, 584)
-shape = SubResource("RectangleShape2D_81")
+shape = SubResource("RectangleShape2D_86")

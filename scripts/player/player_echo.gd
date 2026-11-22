@@ -73,7 +73,8 @@ func activate() -> void:
 		target.reveal(player)
 	else:
 		await get_tree().create_timer(0.5).timeout
-		UI.show_toast(QUIET_LINES[_quiet_index % QUIET_LINES.size()])
+		# a quiet reply floats over Rowan instead of queueing a toast (V2 2.4)
+		UI.caption(QUIET_LINES[_quiet_index % QUIET_LINES.size()], player.global_position + Vector2(0, -30), 1.8)
 		_quiet_index += 1
 
 

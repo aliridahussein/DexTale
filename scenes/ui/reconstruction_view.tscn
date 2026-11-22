@@ -1,0 +1,122 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/reconstruction_view.gd" id="1_reconstruction_view_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/panel_parchment.png" id="2_panel_parchment_png"]
+
+[node name="ReconstructionView" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_reconstruction_view_gd")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.01, 0.04, 0.62)
+
+[node name="Board" type="NinePatchRect" parent="."]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 460.0
+offset_bottom = 260.0
+texture = ExtResource("2_panel_parchment_png")
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="ReconTitle" type="Label" parent="Board"]
+unique_name_in_owner = true
+offset_left = 0.0
+offset_top = 6.0
+offset_right = 440.0
+offset_bottom = 26.0
+text = ""
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.22745, 0.16471, 0.12549, 1.0)
+horizontal_alignment = 1
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 0.0)
+
+[node name="ReconIntro" type="Label" parent="Board"]
+unique_name_in_owner = true
+offset_left = 12.0
+offset_top = 26.0
+offset_right = 428.0
+offset_bottom = 38.0
+text = ""
+theme_override_colors/font_color = Color(0.47843, 0.4, 0.31373, 1.0)
+horizontal_alignment = 1
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 0.0)
+
+[node name="ReconClues" type="RichTextLabel" parent="Board"]
+unique_name_in_owner = true
+offset_left = 14.0
+offset_top = 42.0
+offset_right = 220.0
+offset_bottom = 224.0
+bbcode_enabled = true
+theme_override_colors/default_color = Color(0.22745, 0.16471, 0.12549, 1.0)
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 0.0)
+focus_mode = 0
+scroll_active = true
+
+[node name="Divider" type="ColorRect" parent="Board"]
+offset_left = 226.0
+offset_top = 44.0
+offset_right = 227.0
+offset_bottom = 222.0
+color = Color(0.6902, 0.62745, 0.50196, 1.0)
+
+[node name="ReconQuestion" type="Label" parent="Board"]
+unique_name_in_owner = true
+offset_left = 234.0
+offset_top = 42.0
+offset_right = 428.0
+offset_bottom = 68.0
+text = ""
+theme_override_colors/font_color = Color(0.41569, 0.27451, 0.07843, 1.0)
+horizontal_alignment = 0
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 0.0)
+autowrap_mode = 3
+
+[node name="ReconAnswers" type="RichTextLabel" parent="Board"]
+unique_name_in_owner = true
+offset_left = 234.0
+offset_top = 70.0
+offset_right = 430.0
+offset_bottom = 186.0
+bbcode_enabled = true
+theme_override_colors/default_color = Color(0.22745, 0.16471, 0.12549, 1.0)
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 0.0)
+focus_mode = 0
+scroll_active = false
+meta_underlined = false
+
+[node name="ReconFeedback" type="RichTextLabel" parent="Board"]
+unique_name_in_owner = true
+offset_left = 234.0
+offset_top = 186.0
+offset_right = 430.0
+offset_bottom = 226.0
+bbcode_enabled = true
+theme_override_colors/default_color = Color(0.22745, 0.16471, 0.12549, 1.0)
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 0.0)
+focus_mode = 0
+scroll_active = false
+
+[node name="Footer" type="Label" parent="Board"]
+offset_left = 0.0
+offset_top = 230.0
+offset_right = 440.0
+offset_bottom = 242.0
+text = "W/S: choose    E: decide    Esc: step back"
+theme_override_colors/font_color = Color(0.47843, 0.4, 0.31373, 1.0)
+horizontal_alignment = 1
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 0.0)

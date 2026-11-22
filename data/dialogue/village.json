@@ -117,6 +117,9 @@
 	],
 
 	"tobin": [
+		{"if": ["promise_reconstructed", "!told_tobin_promise", "!kept_tobin_secret"], "goto": "promise"},
+		{"if": "told_tobin_promise", "goto": "promise_after"},
+		{"if": "kept_tobin_secret", "goto": "again"},
 		{"if": "echo_well", "goto": "elsie"},
 		{"if": "talked_tobin", "goto": "again"},
 		["tobin", "Evening. Or is it? I lit this one already, didn't I. Or I meant to."],
@@ -137,11 +140,39 @@
 		["tobin", "...No. No, I don't know an Elsie."],
 		["tobin", "Funny. My hands went cold just now."],
 		{"wait": 0.6},
-		["tobin", "Well. The one by the well won't light itself."],
-		{"set": {"tobin_elsie": true}},
+		["tobin", "Well. The one by the well won't light itself. Twice a night, that one. Never knew why."],
+		{"set": {"tobin_elsie": true, "talked_tobin": true}},
 		{"end": true},
 		{"label": "elsie_again"},
-		["tobin", "Habit, that lantern. Just habit. Good night to you."]
+		["tobin", "Habit, that lantern. Just habit. Good night to you."],
+		{"end": true},
+
+		{"label": "promise"},
+		["rowan", "Tobin. The lamp by the well. I know why you light it."],
+		["tobin", "Do you now. That makes one of us."],
+		{"choice": [
+			{"text": "Tell him about Elsie and the promise.", "goto": "tell"},
+			{"text": "Let him keep the habit in peace.", "goto": "spare"}
+		]},
+		{"label": "tell"},
+		["rowan", "A woman named Elsie hung it there before she went away. She asked you to keep it lit, so she could find her way home through the mist."],
+		["rowan", "You promised you'd wait for her."],
+		{"wait": 1.0},
+		["tobin", "...Elsie."],
+		["tobin", "I don't remember her face. But my hands do. They always reach for that lamp first."],
+		{"wait": 0.6},
+		["tobin", "If it's for finding the way home... take this one. You're going up the tower road. Bring it back lit."],
+		{"set": {"told_tobin_promise": true, "has_tobin_lantern": true}},
+		{"event": "toast", "args": ["Received: Tobin's lantern", "lantern"]},
+		{"end": true},
+		{"label": "spare"},
+		["rowan", "Never mind. Keep it lit. Someone's counting on it."],
+		["tobin", "Somebody always is. Good night to you."],
+		{"set": {"kept_tobin_secret": true}},
+		{"end": true},
+		{"label": "promise_after"},
+		{"if": "gate_unlocked", "say": "tobin", "text": "Keep that lantern lit on the tower road. I'll keep this one lit down here."},
+		{"if": "!gate_unlocked", "say": "tobin", "text": "Twice a night. For Elsie. Funny. It doesn't feel like a chore any more."}
 	],
 
 	"cat": [
@@ -164,7 +195,49 @@
 		{"if": "!used_echo", "say": "narrator", "text": "The stone feels colder than it should. Some places remember more than they show. (Stand close and press F to listen.)"},
 		{"end": true},
 		{"label": "heard"},
-		["rowan", "TOBIN, and ELSIE. Hard to see. Easy to know, once you've heard it."]
+		["rowan", "TOBIN, and ELSIE. Hard to see. Easy to know, once you've heard it."],
+		{"if": "promise_reconstructed", "say": "rowan", "text": "And a lamp still lit for her, twice a night."},
+		{"if": ["!echo_well_lamp", "!promise_reconstructed"], "say": "rowan", "text": "The lamp beside the well looks better kept than any other in the square."}
+	],
+
+	"well_lamp": [
+		["narrator", "The lamp beside the well. Every other post in the square has a plain iron hook. This one's hook is worn bright from being lifted down and lit, over and over."],
+		{"if": "!echo_well", "end": true},
+		{"if": "echo_well_lamp", "say": "rowan", "text": "Her lamp. Still lit."},
+		{"if": "!echo_well_lamp", "say": "rowan", "text": "It feels the way the well did. Like it's waiting to be heard."}
+	],
+
+	"well_lamp_echo": [
+		["narrator", "For a breath the lamp is new, and a young woman is hanging it on the post, up on her toes."],
+		["voice", "[wave amp=10 freq=2]It's all mist past the bridge after dark. If I can see a light from the road, I can find the way back.[/wave]"],
+		["rowan", "She was going away. And she meant to come back in the dark."]
+	],
+
+	"well_bench": [
+		{"set": {"seen_well_bench": true}},
+		["narrator", "The bench nearest the well. One end is worn pale and smooth, the way wood goes when someone sits in the same spot for years."],
+		["narrator", "Old candle wax is crusted along that armrest. The bench faces the road out of the square."],
+		{"if": "echo_well", "say": "rowan", "text": "Someone sat here with a light. Night after night, watching the road."},
+		{"if": "!echo_well", "say": "rowan", "text": "Somebody has spent a lot of evenings here."}
+	],
+
+	"well_reconstruct": [
+		["rowan", "Her voice in the stone. The lamp she hung. The bench that faces the road."],
+		["rowan", "It fits together. I just have to see how."],
+		{"event": "reconstruct", "args": ["well_promise"], "hide": true},
+		{"if": "promise_reconstructed", "run": "well_promise_memory"},
+		["rowan", "Not yet. I'll come back to it."]
+	],
+
+	"well_promise_memory": [
+		{"event": "well_memory", "hide": true, "wait": 0.5},
+		["elsie", "[wave amp=8 freq=2]If the mist comes up before I'm home, light the lamp by the well. I'll follow it back.[/wave]"],
+		["young_tobin", "Every night. Twice, if I have to."],
+		["elsie", "[wave amp=8 freq=2]Promise you'll wait?[/wave]"],
+		["young_tobin", "I'll wait. However long it takes."],
+		{"event": "well_memory_end", "hide": true, "wait": 0.4},
+		["rowan", "Twice a night. He's still keeping it. He just doesn't know who it's for any more."],
+		{"event": "toast", "args": ["Reconstructed: The Forgotten Promise", "quill"]}
 	],
 
 	"village_well_echo": [

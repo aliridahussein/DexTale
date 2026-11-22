@@ -44,6 +44,8 @@ var _caption_tween: Tween
 @onready var document_view: Control = %DocumentView
 @onready var pause_menu: Control = %PauseMenu
 @onready var settings_menu: Control = %SettingsMenu
+@onready var reconstruction_view: Control = %ReconstructionView
+@onready var ritual_view: Control = %RitualView
 
 
 func _ready() -> void:
@@ -314,11 +316,22 @@ func play_echo_effect(hold: float = 1.6) -> void:
 
 # ------------------------------------------------------------------ menus --
 func is_menu_open() -> bool:
-	return journal.visible or document_view.visible or pause_menu.visible or settings_menu.visible
+	return journal.visible or document_view.visible or pause_menu.visible or settings_menu.visible \
+		or reconstruction_view.visible or ritual_view.visible
 
 
 func open_document(doc_id: String) -> Signal:
 	return document_view.call("open", doc_id)
+
+
+## Echo Reconstruction board. The signal carries whether it was solved.
+func open_reconstruction(id: String) -> Signal:
+	return reconstruction_view.call("open", id)
+
+
+## The bell ritual. The signal carries whether the song was completed.
+func open_ritual() -> Signal:
+	return ritual_view.call("open")
 
 
 func open_journal() -> void:
@@ -360,6 +373,11 @@ func _register_global_events() -> void:
 	DialogueManager.register_event("fade_out", func(d: float = 0.6) -> Signal: return SceneManager.fade_to(1.0, d))
 	DialogueManager.register_event("fade_in", func(d: float = 0.6) -> Signal: return SceneManager.fade_to(0.0, d))
 	DialogueManager.register_event("echo_effect", func(hold: float = 1.6) -> void: play_echo_effect(hold))
+	DialogueManager.register_event("reconstruct", func(id: String) -> Signal: return open_reconstruction(id))
+	DialogueManager.register_event("caption_here", func(text: String) -> void:
+		var area := SceneManager.current_area
+		if area and is_instance_valid(area) and area.has_method("get_player"):
+			caption(text, (area.call("get_player") as Node2D).global_position + Vector2(0, -30)))
 
 
 func _event_shake(strength: float = 3.0, duration: float = 0.5) -> void:

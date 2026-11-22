@@ -416,6 +416,31 @@ def sfx_all():
     for i, f in enumerate((2637, 2349, 1976, 1760, 1318, 1175)):
         place(y, glass(f, 1.4) * 0.3, i * 0.18)
     out["memory_fade"] = reverb(y, 2.8, 0.55)
+    out.update(sfx_v2())
+    return out
+
+
+def sfx_v2():
+    """Sounds added in Prototype V2. The shared RNG state is saved and restored
+    so every V1 sound and track still regenerates bit-identically."""
+    state = RNG.bit_generator.state
+    out = {}
+    # the Chorus ritual: one sung bell tone, pitched in game to each note of the
+    # Gathering Song (D4 is the song's lowest step), and a sour clash for a wrong note
+    note = bell(hz("D4"), 2.4, BELL_MAJOR, strike=0.5, beat=0.3, decay_scale=0.55)
+    place(note, choir(hz("D4"), 1.8, FORMANTS_O, 3) * 0.35, 0.02)
+    out["ritual_note"] = reverb(note, 2.2, 0.35)
+    sour = bell(hz("D4"), 1.6, BELL_MINOR, strike=0.8, beat=7.0, decay_scale=0.35)
+    sour += bell(hz("D#4"), 1.6, BELL_MINOR, strike=0.0, beat=5.0, decay_scale=0.3) * 0.7
+    out["ritual_sour"] = reverb(lowpass(sour, 2600), 1.8, 0.3)
+    # the reconstructed memory at the well: a warm, low swell
+    d = 2.8
+    y = np.zeros(int(d * SR))
+    for i, n in enumerate(("D4", "A4", "F#4")):
+        place(y, choir(hz(n), 2.4, FORMANTS_O, 3) * 0.45, i * 0.22)
+    place(y, glass(hz("D6"), 2.0) * 0.12, 0.6)
+    out["memory_warm"] = reverb(y, 3.0, 0.5)
+    RNG.bit_generator.state = state
     return out
 
 
