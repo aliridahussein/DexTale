@@ -175,6 +175,8 @@ prompt = "Inspect"
 conversation_id = "tower_mechanism"
 prompt_offset = Vector2(0, -50)
 hidden_when = "orin_appeared"
+important = true
+highlight_path = NodePath("../../Objects/Mechanism/Sprite")
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/MechanismUse"]
 shape = SubResource("CircleShape2D_20")

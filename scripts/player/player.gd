@@ -130,22 +130,47 @@ func _update_footsteps(delta: float) -> void:
 func _update_focus() -> void:
 	var best: Interactable = null
 	if can_act():
-		var probe := global_position + facing * 10.0 + Vector2(0, -6)
 		var best_score := INF
+		var focus_score := INF
 		for a in sensor.get_overlapping_areas():
 			var it := a as Interactable
 			if it == null or not it.is_available():
 				continue
-			var score := it.global_position.distance_to(probe) - float(it.focus_priority) * 100.0
+			var score := focus_score_for(it)
+			if it == focus:
+				focus_score = score
 			if score < best_score:
 				best_score = score
 				best = it
+		# Keep the current target unless another is clearly closer, so the
+		# selection never flickers between two neighbours.
+		if focus != null and best != focus and focus_score < best_score + 2.0:
+			best = focus
 	if best != focus:
 		_set_focus(best)
 
 
+## Lower is better. Normal targets are ranked from a point just ahead of
+## Rowan, in the direction he faces. Rows of small wall targets (align_select)
+## are ranked by how squarely Rowan stands in front of them, so turning left
+## or right under the Moon seal can no longer select the Flame seal (QA-04).
+func focus_score_for(it: Interactable) -> float:
+	var score: float
+	if it.align_select:
+		var d := it.global_position - global_position
+		score = absf(d.x) + absf(d.y) * 0.25
+	else:
+		var probe := global_position + facing * 10.0 + Vector2(0, -6)
+		score = it.global_position.distance_to(probe)
+	return score - float(it.focus_priority) * 100.0
+
+
 func _set_focus(target: Interactable) -> void:
+	if focus != null and is_instance_valid(focus):
+		focus.set_focused(false)
 	focus = target
+	if focus != null:
+		focus.set_focused(true)
 	focus_changed.emit(focus)
 	UI.set_interact_focus(focus)
 
@@ -184,6 +209,20 @@ func _finish_auto_walk() -> void:
 	_auto_target = null
 	velocity = Vector2.ZERO
 	arrived.emit()
+
+
+## Turn the light Rowan carries on (energy > 0) or off.
+func set_carried_light(energy: float) -> void:
+	var light := get_node_or_null("CarriedLight") as PointLight2D
+	if light == null:
+		return
+	light.enabled = energy > 0.0
+	light.energy = energy
+
+
+func carried_light() -> float:
+	var light := get_node_or_null("CarriedLight") as PointLight2D
+	return light.energy if light and light.enabled else 0.0
 
 
 func teleport(pos: Vector2) -> void:

@@ -77,13 +77,7 @@
 		["rowan", "No handle. No keyhole. Just the seals."]
 	],
 
-	"chapel_seal_wrong": [
-		["narrator", "The seals grind back into place with a low, disappointed sound."],
-		{"if": "seal_attempts>=2", "say": "rowan", "text": "The inscription. It must be telling me the order."}
-	],
-
 	"chapel_seal_solved": [
-		["narrator", "Moon. Flame. Crown. The seals blaze, and stone groans against stone."],
 		{"event": "archive_open", "hide": true, "wait": 0.3},
 		["narrator", "The archive door swings inward. Cold, dry air spills out, smelling of old paper."],
 		["alden", "It's open. After twenty years... Go, Rowan. I'll follow."]

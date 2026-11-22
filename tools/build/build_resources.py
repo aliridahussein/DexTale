@@ -170,7 +170,13 @@ def build_player():
     sc.add("Ripple", "Sprite2D", parent="Echo", props={
         "material": add_mat, "visible": False,
         "texture": sc.ext("Texture2D", "res://assets/sprites/fx/ring.png")})
-    sc.add("Camera", "Camera2D", props={"position": V2(0, -12),
+    # A soft light Rowan carries in dark, foggy areas (GameArea.player_light).
+    sc.add("CarriedLight", "PointLight2D", props={
+        "position": V2(0, -10), "enabled": False, "energy": 0.0, "color": Col("#ffd9a8"),
+        "texture": sc.ext("Texture2D", "res://assets/sprites/fx/light_radial.png"), "texture_scale": 0.7})
+    # Physics interpolation is on, so the camera follows in the physics step
+    # (set explicitly: the engine used to override it with a warning, QA-10).
+    sc.add("Camera", "Camera2D", props={"position": V2(0, -12), "process_callback": 0,
                                         "script": sc.ext("Script", "res://scripts/player/game_camera.gd")})
     sc.save("scenes/characters/player.tscn")
 

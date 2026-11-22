@@ -31,9 +31,11 @@ func _ready() -> void:
 func open() -> void:
 	visible = true
 	get_tree().paused = true
-	status.text = "Progress also saves when you enter an area."
-	# Saving mid-conversation would restore into a broken scene, so it is disabled then.
-	save_btn.disabled = DialogueManager.is_active() or GameState.lock_reasons().size() > 0 or SceneManager.current_area == null
+	# Saving mid-conversation would restore into a broken scene, so it is disabled
+	# then, and the menu says why instead of failing silently.
+	var reason := SaveManager.why_not_saving()
+	save_btn.disabled = reason != ""
+	status.text = reason if reason != "" else "Progress also saves when you enter an area."
 	AudioManager.play_sfx("ui_open", -8.0)
 	resume_btn.grab_focus()
 
@@ -51,9 +53,15 @@ func _on_journal() -> void:
 
 func _on_save() -> void:
 	get_tree().paused = false
-	var ok := SaveManager.save_game(true)
+	var reason := SaveManager.why_not_saving()
+	var ok := reason == "" and SaveManager.save_game(true)
 	get_tree().paused = true
-	status.text = "Game saved." if ok else "You can't save right now."
+	if ok:
+		status.text = "Game saved."
+	elif reason != "":
+		status.text = reason
+	else:
+		status.text = "Saving failed. Your previous save is safe."
 	AudioManager.play_sfx("ui_confirm" if ok else "ui_back", -6.0)
 
 

@@ -10,6 +10,9 @@ const SUITES := [
 	"res://tests/test_state.gd",
 	"res://tests/test_puzzle.gd",
 	"res://tests/test_scenes.gd",
+	"res://tests/test_save.gd",
+	"res://tests/test_ui.gd",
+	"res://tests/test_endings.gd",
 	"res://tests/test_playthrough.gd",
 ]
 
@@ -86,7 +89,11 @@ func _ready() -> void:
 	print("\n=== %d passed, %d failed ===" % [passed, failed])
 	for f in failures:
 		print("  - " + f)
-	get_tree().quit(1 if failed > 0 else 0)
+	# leave the way the game does, so audio is released before shutdown
+	var scene := get_tree().current_scene
+	if scene:
+		scene.queue_free()
+	AudioManager.quit_game(1 if failed > 0 else 0)
 
 
 func allow_errors(n: int) -> void:

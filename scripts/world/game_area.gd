@@ -22,6 +22,9 @@ extends Node2D
 @export var footstep_surface := "stone"
 ## Camera limits in pixels.
 @export var bounds := Rect2(0, 0, 480, 270)
+## Energy of the soft light Rowan carries in this area (0 = none). Keeps him
+## readable in dense fog (QA-07).
+@export var player_light := 0.0
 
 var _registered_events: Array = []
 
@@ -34,6 +37,7 @@ func _ready() -> void:
 	var player := get_player()
 	if player:
 		player.camera.set_bounds(bounds)
+		player.set_carried_light(player_light)
 	AudioManager.play_music(music)
 	AudioManager.play_ambience(ambience)
 	AudioManager.set_reverb(reverb)
@@ -45,7 +49,7 @@ func _ready() -> void:
 	UI.set_gameplay_hud(true)
 	_area_ready()
 	if display_name != "":
-		UI.show_area_title(display_name, subtitle)
+		UI.show_area_title(display_name, area_subtitle())
 
 
 func _exit_tree() -> void:
@@ -58,6 +62,11 @@ func _exit_tree() -> void:
 ## Override in subclasses.
 func _area_ready() -> void:
 	pass
+
+
+## Override when the subtitle depends on the story (e.g. time of day).
+func area_subtitle() -> String:
+	return subtitle
 
 
 ## Override: event name -> Callable, available to dialogue while this area is loaded.

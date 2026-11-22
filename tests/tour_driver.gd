@@ -1,12 +1,15 @@
 extends Node
-## Visual playtest: drives the real game (windowed) through every area and
-## key story beat and saves screenshots to docs/screenshots/.
-## Run:  godot --path . res://tests/tour.tscn
+## Visual playtest: drives the real game (windowed) through every area, the
+## V2 fixes and all three endings, saving screenshots to docs/screenshots/v2/.
+## Unlike V1's tour it also asserts: an ending that never reaches its card,
+## epilogue and title menu fails the run.
+## Run:  godot --path . res://tests/tour.tscn  [-- --only=story|endings|v2]
 ## Lives under the root (not as the current scene) so scene changes don't free it.
 
-const OUT := "res://docs/screenshots/"
+const OUT := "res://docs/screenshots/v2/"
 
 var _errors: Array[String] = []
+var _failures: Array[String] = []
 
 
 class TourLogger extends Logger:
@@ -27,14 +30,25 @@ func _ready() -> void:
 	lg.sink = _errors
 	OS.add_logger(lg)
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+	SaveManager.save_path = "user://tour_save.json"
+	SaveManager.delete_save()
 	await _tour()
-	print("\n=== tour finished: %d engine/script errors ===" % _errors.size())
+	SaveManager.delete_save()
+	print("\n=== tour finished: %d engine/script errors, %d failed checks ===" % [_errors.size(), _failures.size()])
 	for e in _errors.slice(0, 40):
 		print("  ! " + e)
-	get_tree().quit(0 if _errors.is_empty() else 1)
+	for f in _failures:
+		print("  x " + f)
+	AudioManager.quit_game(0 if _errors.is_empty() and _failures.is_empty() else 1)
 
 
 # ---------------------------------------------------------------- helpers --
+func check(ok: bool, what: String) -> void:
+	print("  %s %s" % ["ok" if ok else "FAILED", what])
+	if not ok:
+		_failures.append(what)
+
+
 func shot(file_name: String) -> void:
 	await RenderingServer.frame_post_draw
 	var img := get_viewport().get_texture().get_image()
@@ -48,7 +62,9 @@ func wait(seconds: float) -> void:
 
 
 func goto_area(area_id: String, spawn: String = "default") -> GameArea:
-	DialogueManager.stop()
+	await drain()
+	while SceneManager.transitioning:
+		await wait(0.05)
 	SceneManager.change_area(area_id, spawn)
 	await SceneManager.area_ready
 	await wait(1.2)
@@ -69,12 +85,30 @@ func put(pos: Vector2, facing: String = "up") -> void:
 	await wait(0.3)
 
 
+func press(action: String) -> void:
+	var ev := InputEventAction.new()
+	ev.action = action
+	ev.pressed = true
+	Input.parse_input_event(ev)
+	await get_tree().process_frame
+	var up := InputEventAction.new()
+	up.action = action
+	up.pressed = false
+	Input.parse_input_event(up)
+	await get_tree().process_frame
+
+
 ## Plays a conversation to the end, always picking choice `pick` (clamped).
 func talk(conv: String, pick: int = 0, shot_name: String = "", shot_at_line: int = 2) -> void:
 	await drain()
 	if not DialogueManager.start(conv):
 		print("  ! could not start ", conv)
 		return
+	await follow(pick, shot_name, shot_at_line)
+
+
+## Advances the running conversation; optionally screenshots line N.
+func follow(pick: int = 0, shot_name: String = "", shot_at_line: int = 2) -> void:
 	var lines := 0
 	var guard := 0
 	while DialogueManager.is_active() and guard < 4000:
@@ -114,16 +148,20 @@ func flags(names: Array) -> void:
 		GameState.set_flag(n, true)
 
 
+func listen_here() -> void:
+	player().get_node("Echo").call("activate")
+
+
 # ------------------------------------------------------------------- tour --
 func _tour() -> void:
-	print("=== visual tour ===")
+	print("=== visual tour (V2) ===")
 	var only := ""
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--only="):
 			only = arg.substr(7)
-	if only != "endings":
+	if only in ["", "story"]:
 		await _story()
-	if only != "story":
+	if only in ["", "endings"]:
 		await _endings()
 
 
@@ -132,154 +170,175 @@ func _story() -> void:
 		await wait(0.1)
 	await wait(2.6)
 	await shot("01_title")
-	# new game -> prologue
-	GameState.reset()
-	SceneManager.goto_scene("res://scenes/main/prologue.tscn")
-	await wait(7.0)
-	await shot("02_prologue_tolls")
-	# the arrival cutscene
+	# the arrival
 	GameState.reset()
 	GameState.set_flag("game_started", true)
 	SceneManager.change_area("village", "start")
 	await SceneManager.area_ready
-	await wait(3.6)
-	await shot("03_intro_tower_pan")
 	while not DialogueManager.is_active():
 		await get_tree().process_frame
-	await wait(1.8)
-	await shot("04_dialogue_pip")
-	while DialogueManager.is_active():
-		if DialogueManager.is_waiting_for_advance():
-			DialogueManager.advance()
-		elif DialogueManager.is_waiting_for_choice():
-			await wait(0.4)
-			await shot("05_dialogue_choice")
-			DialogueManager.choose(0)
-		await wait(0.05)
+	await drain()
 	await wait(2.0)
-	await shot("06_objective_toast")
 	await put(Vector2(384, 392), "up")
 	await wait(1.0)
-	await shot("07_village_sunset")
-	# Echo at the well
+	await shot("02_village_sunset")
+	# Echo at the well: the vision now has room (no toast, no prompt on top)
 	await put(Vector2(386, 360), "up")
-	await wait(0.5)
-	await shot("08_echo_prompt")
-	player().get_node("Echo").call("activate")
-	await wait(1.3)
-	await shot("09_echo_well")
-	while DialogueManager.is_active():
-		if DialogueManager.is_waiting_for_advance():
-			DialogueManager.advance()
-		await wait(0.05)
-	UI.open_journal()
-	await wait(0.4)
-	await shot("10_journal")
-	UI.journal.call("close")
-	# the forge
+	listen_here()
+	await wait(1.4)
+	await shot("03_echo_well_clear")
+	await drain()
+	await wait(3.0)
+	await shot("04_journal_toast_after_vision")
+	# the forge: the pin is easier to find
 	flags(["spoke_to_mara", "mara_showed_pin"])
 	await goto_area("forge", "from_village")
-	await put(Vector2(236, 92), "up")
-	await wait(0.8)
-	await shot("11_forge")
-	player().get_node("Echo").call("activate")
-	await wait(1.4)
-	await shot("12_echo_pin")
-	while DialogueManager.is_active():
-		if DialogueManager.is_waiting_for_advance():
-			DialogueManager.advance()
-		await wait(0.05)
-	await talk("mara_marks", 0)
-	# the chapel and the seals
-	await goto_area("chapel", "from_village")
-	await wait(0.5)
-	await shot("13_chapel")
-	await put(Vector2(300, 168), "up")
-	var chapel := area()
-	chapel.call("_on_seal_pressed", player(), "flame")
-	await wait(0.4)
-	chapel.call("_on_seal_pressed", player(), "moon")
-	await wait(0.6)
-	await shot("14_seals_lit")
-	chapel.call("_on_seal_pressed", player(), "crown")
-	await wait(2.2)
-	await talk("chapel_seal_wrong")
-	await put(Vector2(232, 168), "up")
-	player().get_node("Echo").call("activate")
-	await wait(1.5)
-	await shot("15_echo_inscription")
-	while DialogueManager.is_active():
-		if DialogueManager.is_waiting_for_advance():
-			DialogueManager.advance()
-		await wait(0.05)
-	for s in ["moon", "flame", "crown"]:
-		chapel.call("_on_seal_pressed", player(), s)
-		await wait(0.5)
+	await put(Vector2(160, 150), "up")
+	area().set("_glint_t", 0.28)
+	await wait(0.05)
+	await shot("05_forge_pin_cue_from_room")
+	await put(Vector2(250, 96), "up")
+	area().set("_glint_t", 0.28)
+	await wait(0.2)
+	await shot("06_forge_pin_selected")
+	listen_here()
 	await wait(1.6)
-	await talk("chapel_seal_solved")
-	await wait(0.8)
+	await shot("07_echo_pin_clear")
+	await drain()
+	await talk("mara_marks", 0)
+	# the chapel: named, highlighted seals and non-modal feedback
+	await goto_area("chapel", "from_village")
+	var moon := area().get_node("Interactions/SealMoonUse") as Interactable
+	await put(Vector2(moon.global_position.x, 166), "left")
+	await wait(0.4)
+	check(player().focus == moon, "facing left under Moon selects Moon (QA-04)")
+	await shot("08_seal_moon_selected_facing_left")
+	for s in ["Flame", "Moon", "Crown"]:
+		var it := area().get_node("Interactions/Seal%sUse" % s) as Interactable
+		await put(Vector2(it.global_position.x, 166), "up")
+		await press("interact")
+		await wait(0.3)
+	await wait(0.9)
+	await shot("09_seal_wrong_caption")
+	check(not DialogueManager.is_active(), "a wrong order does not open a dialogue box")
+	await put(Vector2(232, 168), "up")
+	listen_here()
+	await wait(1.5)
+	await shot("10_echo_inscription_clear")
+	await drain()
+	await wait(2.5)
+	for s in ["Moon", "Flame", "Crown"]:
+		var it := area().get_node("Interactions/Seal%sUse" % s) as Interactable
+		await put(Vector2(it.global_position.x, 166), "up")
+		await press("interact")
+		await wait(0.4)
+	await wait(1.0)
+	await drain()
 	await put(Vector2(272, 112), "up")
-	await wait(0.6)
-	await shot("16_archive")
-	UI.open_document("ledger")
-	await wait(0.6)
-	await shot("17_ledger")
-	UI.document_view.call("_close")
 	await talk("chapel_ledger", 0)
-	# night falls on the village
+	# night falls; the song; the journal with a long history
 	await goto_area("village", "from_chapel")
 	await wait(3.5)
-	await shot("18_village_night")
+	await shot("11_village_night_title")
 	await put(Vector2(404, 340), "up")
-	await talk("pip_song", 0, "19_pip_song", 3)
+	await talk("pip_song", 0)
+	flags(["promised_mara", "echo_cradle", "mara_lullaby_told", "echo_chorus", "echo_ledger"])
+	await wait(0.5)
+	UI.open_journal()
+	await wait(0.5)
+	await shot("12_journal_late_top")
+	for i in 30:
+		await press("move_down")
+	await wait(0.2)
+	await shot("13_journal_done_list_scrolled")
+	await press("move_right")
+	for i in 40:
+		await press("move_down")
+	await wait(0.2)
+	await shot("14_journal_discoveries_scrolled")
+	UI.journal.call("close")
 	await put(Vector2(384, 196), "up")
 	await talk("village_gate", 0)
-	await wait(1.0)
-	await shot("20_gate_open")
-	# the mistbound path
+	# the mistbound path: Rowan's light and readable hazards
 	await goto_area("mist_path", "from_village")
-	await wait(0.5)
-	await shot("21_mist_path")
-	await put(Vector2(192, 476), "up")
-	await wait(1.0)
-	await shot("22_sentinel")
+	await put(Vector2(192, 560), "up")
+	await wait(0.6)
+	await shot("15_mist_path_rowan_lit")
+	flags(["met_sentinel"])  # skip the greeting so the trial itself is on screen
+	await put(Vector2(192, 490), "up")
+	await wait(0.6)
 	var path_area := area()
-	path_area.call("_start_challenge")
-	await put(Vector2(150, 330), "up")
-	await wait(2.4)
-	await shot("23_mist_challenge")
+	await path_area.call("_start_challenge")
+	await wait(0.4)
+	var pulse := path_area.get_node("Encounter/MistPulse2") as MistPulse
+	var t := 0.0
+	while pulse.state() != "warn" and t < 8.0:
+		await get_tree().process_frame
+		t += get_process_delta_time()
+	await wait(0.5)
+	await shot("16_mist_pulse_warning")
+	while pulse.state() != "burst" and t < 16.0:
+		await get_tree().process_frame
+		t += get_process_delta_time()
+	await wait(0.15)
+	await shot("17_mist_pulse_burst")
+	UI.open_pause()
+	await wait(0.4)
+	await shot("18_pause_save_paused_during_trial")
+	UI.pause_menu.call("close")
 	path_area.call("_challenge_cancel")
 	await wait(0.5)
 	await talk("sentinel_story", 2)
 	await wait(2.5)
-	await shot("24_sentinel_gone")
 	# the tower
 	await goto_area("bell_tower", "from_path")
-	await wait(0.5)
-	await shot("25_tower")
+	await put(Vector2(224, 196), "up")
+	await wait(0.4)
+	await shot("19_tower_mechanism_selected")
 	var tower := area()
 	await tower.call("_install_pin")
 	await tower.call("_orin_appear")
 	await wait(0.5)
-	await shot("26_orin")
-	await tower.call("_show_vista")
-	await wait(0.5)
-	await shot("27_vista")
+	await shot("20_orin")
 
 
 func _endings() -> void:
+	var shots := {"keeper": "21", "promise": "22", "chorus": "23"}
 	for kind in ["keeper", "promise", "chorus"]:
 		while SceneManager.transitioning:
 			await wait(0.1)
+		GameState.reset()
+		flags(["learned_village_song", "rowan_kind_to_pip", "asked_orin_lullaby", "told_mara_truth", "echo_well",
+			"sentinel_resolved_peacefully"])
 		GameState.set_flag("ending_selected", kind)
 		SceneManager.goto_scene("res://scenes/main/ending.tscn")
-		await wait(9.0)
-		await shot("28_ending_%s" % kind)
+		await wait(1.0)
 		var ending := get_tree().current_scene
-		print("  ending scene: ", ending.name if ending else "<none>")
 		var t := 0.0
-		while is_instance_valid(ending) and not (ending.get_node("%Summary") as Control).visible and t < 60.0:
-			await wait(0.5)
-			t += 0.5
-		await wait(1.2)
-		await shot("29_summary_%s" % kind)
+		var card_shot := false
+		while is_instance_valid(ending) and str(ending.get("phase")) != "summary" and t < 90.0:
+			if not card_shot and str(ending.get("phase")) == "title" and (ending.get_node("%TitleCard") as Label).modulate.a > 0.95:
+				card_shot = true
+				await shot("%s_%s_title_card" % [shots[kind], kind])
+			await wait(0.1)
+			t += 0.1
+		check(card_shot, "%s: the title card appeared (QA-01)" % kind)
+		check(is_instance_valid(ending) and str(ending.get("phase")) == "summary", "%s: the epilogue appeared" % kind)
+		await wait(1.3)
+		await shot("%s_%s_epilogue_top" % [shots[kind], kind])
+		if ending.call("summary_overflows"):
+			for i in 30:
+				await press("move_down")
+			await wait(0.2)
+			check(ending.call("summary_at_end"), "%s: the last epilogue line can be reached (QA-03)" % kind)
+			await shot("%s_%s_epilogue_end" % [shots[kind], kind])
+		(ending.get_node("%ToTitle") as Button).grab_focus()
+		await press("ui_accept")
+		t = 0.0
+		while (get_tree().current_scene == null or get_tree().current_scene.name != "MainMenu" or SceneManager.transitioning) and t < 10.0:
+			await wait(0.1)
+			t += 0.1
+		check(get_tree().current_scene != null and get_tree().current_scene.name == "MainMenu",
+			"%s: Return to Title reached the main menu" % kind)
+	await wait(1.5)
+	await shot("24_back_at_title")

@@ -593,6 +593,7 @@ prompt = "Open"
 conversation_id = "village_gate"
 prompt_offset = Vector2(0, -42)
 hidden_when = "gate_unlocked"
+important = true
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/GateUse"]
 shape = SubResource("CircleShape2D_54")

@@ -11,6 +11,9 @@ const STAGES := {
 		"mist": 0.5, "lights": 1.3, "fireflies": true},
 }
 const INTRO_STAND := Vector2(404, 358)
+## The area title follows the light (QA-09: it said "at sundown" at night).
+const SUBTITLES := {"sunset": "Village square, at sundown", "dusk": "Village square, at dusk",
+	"night": "Village square, after dark"}
 
 var _note_tex: Texture2D = preload("res://assets/sprites/fx/note.png")
 
@@ -30,6 +33,10 @@ func area_events() -> Dictionary:
 		"pip_hum": _pip_hum,
 		"gate_open": _gate_open,
 	}
+
+
+func area_subtitle() -> String:
+	return SUBTITLES[stage()]
 
 
 func stage() -> String:

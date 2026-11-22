@@ -1,147 +1,30 @@
-extends Node
+extends "res://tests/driver.gd"
 ## End-to-end playthrough on the real scenes, headless, at 6x speed.
 ## Drives interactions, exits, echoes, the puzzle, the Sentinel and the tower
 ## the way a player would (through the same Interactable / EchoPoint / AreaExit
 ## code), and checks story flags and objectives at every step.
 
-const SPEED := 6.0
-
-var runner: Node
-var _real_save := ""
-
 
 func setup() -> void:
-	Engine.time_scale = SPEED
-	_real_save = SaveManager.save_path
-	SaveManager.save_path = "user://test_playthrough_save.json"
-	SaveManager.delete_save()
-	DialogueManager.stop()
-	GameState.reset()
-	DialogueManager.missing_events.clear()
+	begin("user://test_playthrough_save.json")
 
 
 func teardown() -> void:
-	DialogueManager.stop()
-	SaveManager.delete_save()
-	SaveManager.save_path = _real_save
-	Engine.time_scale = 1.0
-	GameState.reset()
+	finish()
 
 
-# ---------------------------------------------------------------- helpers --
-func wait(seconds: float) -> void:
-	await get_tree().create_timer(seconds).timeout
-
-
-func frames(n: int) -> void:
-	for i in n:
-		await get_tree().physics_frame
-
-
-func area() -> GameArea:
-	return SceneManager.current_area as GameArea
-
-
-func player() -> Player:
-	return area().get_player()
-
-
-func goto(area_id: String, spawn: String = "default") -> void:
+## Stand under a seal (facing away from it, the case QA-04 reported) and
+## press E through the real input path. The named prompt must match.
+func press_seal(chapel: GameArea, symbol: String) -> void:
 	await until_idle()
-	SceneManager.change_area(area_id, spawn)
-	await SceneManager.area_ready
-	while SceneManager.transitioning:
-		await frames(1)
-	runner.check(area() != null and area().area_id == area_id, "entered %s" % area_id)
-
-
-## Walk onto a trigger (teleport onto it and let physics report the overlap).
-func step_on(trigger_path: String) -> void:
-	var t := area().get_node(trigger_path) as Node2D
-	player().teleport(t.global_position)
+	var it := chapel.get_node("Interactions/Seal%sUse" % symbol.capitalize()) as Interactable
+	player().teleport(Vector2(it.global_position.x, 166))
+	player().face("left" if symbol != "flame" else "right")
 	await frames(3)
-
-
-## After walking into an exit: wait until the new area is up and idle.
-func wait_area(area_id: String) -> void:
-	var t := 0.0
-	while (area() == null or area().area_id != area_id or SceneManager.transitioning) and t < 20.0:
-		await wait(0.05)
-		t += 0.05
-	runner.check(area() != null and area().area_id == area_id, "arrived in %s" % area_id)
-	await until_idle()
-
-
-func until_idle(timeout: float = 30.0) -> void:
-	var t := 0.0
-	while (DialogueManager.is_active() or SceneManager.transitioning or GameState.is_input_locked()) and t < timeout:
-		await wait(0.05)
-		t += 0.05
-	runner.check(t < timeout, "game returned to idle (locks: %s, conv: %s)" % [GameState.lock_reasons(), DialogueManager.current_conversation()])
-
-
-## Play the current/next conversation to the end. `picks` are choice indices
-## used in order (the last one repeats). Documents are read to the last page.
-func play(picks: Array = [0], must_start: bool = true) -> void:
-	var t := 0.0
-	var window := 20.0 if must_start else 1.5
-	while not DialogueManager.is_active() and t < window:
-		await wait(0.05)
-		t += 0.05
-	if must_start:
-		runner.check(DialogueManager.is_active(), "a conversation started")
-	var i := 0
-	var guard := 0
-	while DialogueManager.is_active() and guard < 6000:
-		guard += 1
-		var doc: Control = UI.document_view
-		if doc.visible:
-			doc.set("_page", (doc.get("_pages") as Array).size() - 1)
-			doc.call("_show_page")
-			doc.call("_close")
-		elif DialogueManager.is_waiting_for_advance():
-			DialogueManager.advance()
-		elif DialogueManager.is_waiting_for_choice():
-			DialogueManager.choose(int(picks[mini(i, picks.size() - 1)]))
-			i += 1
-		await wait(0.02)
-	await until_idle()
-
-
-func use(path: String, picks: Array = [0]) -> void:
-	await until_idle()
-	var it := area().get_node(path) as Interactable
-	runner.check(it.is_available(), "%s is available" % path)
-	it.interact(player())
-	await play(picks)
-
-
-func talk(npc_name: String, picks: Array = [0]) -> void:
-	await until_idle()
-	var n := area().npc(npc_name)
-	runner.check(n != null and n.visible, "%s is here" % npc_name)
-	n.talk.interact(player())
-	await play(picks)
-
-
-func listen(path: String, picks: Array = [0]) -> void:
-	await until_idle()
-	var ep := area().get_node(path) as EchoPoint
-	runner.check(ep.is_available(), "%s can be heard" % path)
-	player().teleport(ep.global_position + Vector2(0, 14))
-	await frames(2)
-	var echo := player().get_node("Echo")
-	runner.check(echo.call("best_target") == ep, "Echo targets %s" % path)
-	echo.call("activate")
-	await play(picks)
-
-
-func objective() -> String:
-	return str(QuestManager.get_primary().get("id", ""))
-
-
-func has(flag: String) -> bool:
-	return GameState.has_flag(flag)
+	runner.check(player().focus == it, "standing under %s selects %s (got %s)" % [symbol, symbol,
+		player().focus.name if player().focus else "nothing"])
+	await press("interact")
+	await wait(0.15)
 
 
 # ------------------------------------------------------------------ tests --
@@ -179,14 +62,15 @@ func test_full_story_to_the_chorus_ending() -> void:
 	await listen("Interactions/PlaqueEcho")
 	runner.check(has("inscription_clear"), "Echo made the inscription readable")
 	var chapel := area()
+	# press the seals the way a player does: stand in front, press E
 	for s in ["flame", "moon", "crown"]:
-		(chapel.get_node("Interactions/Seal%sUse" % s.capitalize()) as Interactable).interact(player())
-		await wait(0.1)
-	await play([0])
+		await press_seal(chapel, s)
+	await until_idle()
 	runner.check(int(GameState.get_flag("seal_attempts")) == 1 and not has("solved_chapel_puzzle"), "wrong order resets")
+	runner.check(not DialogueManager.is_active() and UI.caption_text().contains("grind back"),
+		"a wrong order answers with a short caption, not a dialogue box")
 	for s in ["moon", "flame", "crown"]:
-		(chapel.get_node("Interactions/Seal%sUse" % s.capitalize()) as Interactable).interact(player())
-		await wait(0.1)
+		await press_seal(chapel, s)
 	await play([0])
 	runner.check(has("solved_chapel_puzzle"), "Moon, Flame, Crown opens the archive")
 	runner.check((chapel.get_node("Objects/ArchiveDoor/Shape") as CollisionShape2D).disabled, "archive door no longer blocks")

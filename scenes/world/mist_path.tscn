@@ -92,6 +92,7 @@ music = "mist"
 ambience = "mist_forest"
 reverb = 0.25
 footstep_surface = "dirt"
+player_light = 0.6
 
 [node name="Ambient" type="CanvasModulate" parent="."]
 color = Color(0.42, 0.5, 0.6, 1.0)

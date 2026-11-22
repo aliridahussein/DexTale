@@ -81,14 +81,17 @@ def build_journal():
                   **ninepatch(sc, "res://assets/sprites/ui/panel_parchment.png")})
     sc.add("Title", "Label", parent=book, props={**rect(0, 7, 424, 20), **label("Journal", 18, INK, 1, NO_SHADOW)})
     rich = {"bbcode_enabled": True, "theme_override_colors/default_color": INK,
-            "theme_override_colors/font_shadow_color": Col(0, 0, 0, 0)}
-    sc.add("Left", "RichTextLabel", parent=book, props={**rect(14, 32, 190, 190), **rich, "scroll_active": False},
-           unique_name=True)
-    sc.add("Divider", "ColorRect", parent=book, props={**rect(211, 34, 1, 186), "color": Col("#b0a080")})
-    sc.add("Right", "RichTextLabel", parent=book, props={**rect(218, 32, 194, 190), **rich, "scroll_active": True},
-           unique_name=True)
+            "theme_override_colors/font_shadow_color": Col(0, 0, 0, 0), "scroll_active": True, "focus_mode": 0}
+    # Both pages scroll independently (QA-05); the active one has a gold heading.
+    sc.add("LeftHead", "Label", parent=book, props={**rect(14, 28, 190, 12),
+           **label("Objectives", None, INK, 0, NO_SHADOW)}, unique_name=True)
+    sc.add("RightHead", "Label", parent=book, props={**rect(218, 28, 194, 12),
+           **label("Discoveries", None, INK_DIM, 0, NO_SHADOW)}, unique_name=True)
+    sc.add("Left", "RichTextLabel", parent=book, props={**rect(14, 42, 190, 178), **rich}, unique_name=True)
+    sc.add("Divider", "ColorRect", parent=book, props={**rect(211, 30, 1, 190), "color": Col("#b0a080")})
+    sc.add("Right", "RichTextLabel", parent=book, props={**rect(218, 42, 194, 178), **rich}, unique_name=True)
     sc.add("Footer", "Label", parent=book, props={**rect(0, 225, 424, 12),
-           **label("J / Esc: close      W / S: scroll discoveries", None, INK_DIM, 1, NO_SHADOW)})
+           **label("W/S: scroll    A/D: change page    J/Esc: close", None, INK_DIM, 1, NO_SHADOW)})
     sc.save("scenes/ui/journal.tscn")
 
 
@@ -304,8 +307,15 @@ def build_ending():
                 **ninepatch(sc, "res://assets/sprites/ui/panel_dark.png")})
     sc.add("SummaryTitle", "Label", parent=sp, props={**rect(0, 9, 380, 20), **label("", 18, GOLD, 1)},
            unique_name=True)
-    sc.add("SummaryText", "RichTextLabel", parent=sp, props={**rect(16, 34, 348, 172), "bbcode_enabled": True,
-           "scroll_active": False}, unique_name=True)
+    # Scrollable (QA-03): long epilogues used to be cut off at the bottom.
+    sc.add("SummaryText", "RichTextLabel", parent=sp, props={**rect(16, 32, 344, 168), "bbcode_enabled": True,
+           "scroll_active": True, "focus_mode": 0}, unique_name=True)
+    sc.add("SummaryUp", "Label", parent=sp, props={**rect(362, 32, 10, 12), **label("▲", None, GOLD, 1),
+           "visible": False}, unique_name=True)
+    sc.add("SummaryDown", "Label", parent=sp, props={**rect(362, 188, 10, 12), **label("▼", None, GOLD, 1),
+           "visible": False}, unique_name=True)
+    sc.add("SummaryHint", "Label", parent=sp, props={**rect(16, 200, 344, 12),
+           **label("W/S or mouse wheel: read the rest", None, DIM, 2), "visible": False}, unique_name=True)
     bx = sc.add("Buttons", "HBoxContainer", parent=sp, props={**rect(60, 214, 260, 16), "alignment": 1,
                 "theme_override_constants/separation": 16})
     sc.add("ToCredits", "Button", parent=bx, props={"text": "Credits"}, unique_name=True)

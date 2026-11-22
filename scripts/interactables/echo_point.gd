@@ -22,7 +22,9 @@ signal revealed
 @export var sound := "echo_whisper"
 
 var _ghost: Sprite2D
+var _backing: Sprite2D
 var _busy := false
+var _holding_ui := false
 
 
 func _ready() -> void:
@@ -30,6 +32,17 @@ func _ready() -> void:
 	collision_mask = 0
 	monitoring = false
 	monitorable = true
+	# A soft dark halo behind the vision keeps pale, additive art readable on
+	# bright or busy backgrounds (QA-11).
+	_backing = Sprite2D.new()
+	_backing.texture = preload("res://assets/sprites/fx/light_radial.png")
+	_backing.position = reveal_offset
+	_backing.modulate = Color(0.02, 0.02, 0.06, 0.0)
+	_backing.z_index = 19
+	if reveal_texture:
+		var s := reveal_texture.get_size()
+		_backing.scale = Vector2(s.x / 128.0 * 1.9, s.y / 128.0 * 2.6).max(Vector2(0.3, 0.3))
+	add_child(_backing)
 	_ghost = Sprite2D.new()
 	_ghost.texture = reveal_texture
 	_ghost.position = reveal_offset
@@ -68,14 +81,19 @@ func reveal(_by: Node = null) -> void:
 	_busy = true
 	var first_time := not heard()
 	AudioManager.play_sfx(sound, -2.0)
+	_hold_ui(true)
+	var vision: Tween = null
 	if _ghost.texture:
-		var t := create_tween()
-		t.tween_property(_ghost, "modulate:a", reveal_tint.a, 0.7)
-		t.parallel().tween_property(_ghost, "position", reveal_offset + Vector2(0, -3), 2.2)
-		t.tween_interval(reveal_hold)
-		t.tween_property(_ghost, "modulate:a", 0.0, 1.2)
-		t.tween_callback(func() -> void: _ghost.position = reveal_offset)
+		vision = create_tween()
+		vision.tween_property(_ghost, "modulate:a", reveal_tint.a, 0.7)
+		vision.parallel().tween_property(_backing, "modulate:a", 0.4, 0.7)
+		vision.parallel().tween_property(_ghost, "position", reveal_offset + Vector2(0, -3), 2.2)
+		vision.tween_interval(reveal_hold)
+		vision.tween_property(_ghost, "modulate:a", 0.0, 1.2)
+		vision.parallel().tween_property(_backing, "modulate:a", 0.0, 1.2)
+		vision.tween_callback(func() -> void: _ghost.position = reveal_offset)
 	GameState.set_flag("echo_" + echo_id, true)
+	GameState.set_flag("used_echo", true)
 	if sets_flag != "":
 		GameState.set_flag(sets_flag, true)
 	revealed.emit()
@@ -84,11 +102,28 @@ func reveal(_by: Node = null) -> void:
 		conv = replay_conversation_id
 	if conv != "":
 		await get_tree().create_timer(0.6).timeout
-		DialogueManager.start(conv, self)
-		await DialogueManager.ended
+		if DialogueManager.start(conv, self):
+			await DialogueManager.ended
 	else:
 		await get_tree().create_timer(reveal_hold).timeout
+	# Let the vision finish fading before prompts and journal toasts return.
+	if vision != null and vision.is_valid() and vision.is_running():
+		await vision.finished
+	_hold_ui(false)
 	_busy = false
+
+
+func _hold_ui(on: bool) -> void:
+	if on and not _holding_ui:
+		UI.begin_reveal()
+	elif not on and _holding_ui:
+		UI.end_reveal()
+	_holding_ui = on
+
+
+## Leaving the area mid-vision must not leave the UI waiting forever.
+func _exit_tree() -> void:
+	_hold_ui(false)
 
 
 func get_prompt_position() -> Vector2:

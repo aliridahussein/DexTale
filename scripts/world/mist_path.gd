@@ -93,7 +93,8 @@ func _stir() -> Signal:
 ## Rowan is placed at the start of the field, north of the cancel line.
 func _start_challenge() -> void:
 	GameState.lock_input("challenge_intro")
-	SaveManager.block_saving("sentinel_challenge")
+	# Owned by this area: leaving it any way at all (title, load, quit) releases it.
+	SaveManager.block_saving("sentinel_challenge", self)
 	sentinel.walk_to(SENTINEL_ASIDE, 40.0)
 	await SceneManager.fade_to(1.0, 0.35)
 	get_player().teleport(get_spawn_position("challenge_start"))

@@ -6,7 +6,8 @@
 [ext_resource type="Script" path="res://scripts/player/player_echo.gd" id="7_player_echo_gd"]
 [ext_resource type="Texture2D" path="res://assets/sprites/fx/mote.png" id="10_mote_png"]
 [ext_resource type="Texture2D" path="res://assets/sprites/fx/ring.png" id="11_ring_png"]
-[ext_resource type="Script" path="res://scripts/player/game_camera.gd" id="12_game_camera_gd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/light_radial.png" id="12_light_radial_png"]
+[ext_resource type="Script" path="res://scripts/player/game_camera.gd" id="13_game_camera_gd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4"]
 size = Vector2(10, 6)
@@ -87,6 +88,15 @@ material = SubResource("CanvasItemMaterial_9")
 visible = false
 texture = ExtResource("11_ring_png")
 
+[node name="CarriedLight" type="PointLight2D" parent="."]
+position = Vector2(0, -10)
+enabled = false
+energy = 0.0
+color = Color(1.0, 0.85098, 0.65882, 1.0)
+texture = ExtResource("12_light_radial_png")
+texture_scale = 0.7
+
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2(0, -12)
-script = ExtResource("12_game_camera_gd")
+process_callback = 0
+script = ExtResource("13_game_camera_gd")

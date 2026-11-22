@@ -4,6 +4,10 @@ extends GameArea
 
 const SOLUTION: Array[String] = ["moon", "flame", "crown"]
 const ARCHIVE_SPOT := Vector2(252, 108)
+## A wrong order used to open a dialogue box every time. Now the seals answer
+## with a short line that floats over them and fades, and Rowan can keep going.
+const WRONG_LINE := "The seals grind back into place."
+const WRONG_LINE_HINT := "The seals grind back. The inscription must give the order."
 
 var puzzle := SealPuzzle.new(SOLUTION)
 var _busy := false
@@ -57,7 +61,11 @@ func _on_seal_pressed(_by: Node, symbol: String) -> void:
 	if result == SealPuzzle.Result.IGNORED:
 		return
 	AudioManager.play_sfx("seal_press", -4.0, 0.9 + 0.1 * puzzle.entered.size())
-	(seals[symbol].get_node("Sprite") as Sprite2D).frame = 1
+	var sprite := seals[symbol].get_node("Sprite") as Sprite2D
+	sprite.frame = 1
+	var pop := create_tween()
+	pop.tween_property(sprite, "scale", Vector2(1.15, 1.15), 0.06)
+	pop.tween_property(sprite, "scale", Vector2.ONE, 0.12)
 	match result:
 		SealPuzzle.Result.WRONG:
 			_busy = true
@@ -66,10 +74,11 @@ func _on_seal_pressed(_by: Node, symbol: String) -> void:
 			AudioManager.play_sfx("seal_wrong", -2.0)
 			camera().shake(1.5, 0.3)
 			_seal_frames(0)
-			GameState.inc_flag("seal_attempts")
+			var attempts := GameState.inc_flag("seal_attempts")
 			GameState.unlock_input("puzzle")
 			_busy = false
-			DialogueManager.start("chapel_seal_wrong")
+			UI.caption(WRONG_LINE if attempts < 2 else WRONG_LINE_HINT,
+				(seals["moon"] as Node2D).global_position + Vector2(0, -26))
 		SealPuzzle.Result.SOLVED:
 			_busy = true
 			GameState.lock_input("puzzle")

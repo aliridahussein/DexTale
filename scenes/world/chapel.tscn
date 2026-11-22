@@ -247,6 +247,7 @@ script = ExtResource("24_interactable_gd")
 prompt = "Read"
 conversation_id = "chapel_inscription"
 prompt_offset = Vector2(0, -32)
+important = true
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/PlaqueRead"]
 shape = SubResource("CircleShape2D_25")
@@ -267,10 +268,13 @@ shape = SubResource("CircleShape2D_28")
 [node name="SealFlameUse" type="Area2D" parent="Interactions"]
 position = Vector2(298, 152)
 script = ExtResource("24_interactable_gd")
-prompt = "Press"
+prompt = "Press Flame"
 conversation_id = ""
 prompt_offset = Vector2(0, -34)
 hidden_when = "solved_chapel_puzzle"
+align_select = true
+important = true
+highlight_path = NodePath("../../Objects/SealFlame/Sprite")
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/SealFlameUse"]
 shape = SubResource("CircleShape2D_29")
@@ -278,10 +282,13 @@ shape = SubResource("CircleShape2D_29")
 [node name="SealMoonUse" type="Area2D" parent="Interactions"]
 position = Vector2(316, 152)
 script = ExtResource("24_interactable_gd")
-prompt = "Press"
+prompt = "Press Moon"
 conversation_id = ""
 prompt_offset = Vector2(0, -34)
 hidden_when = "solved_chapel_puzzle"
+align_select = true
+important = true
+highlight_path = NodePath("../../Objects/SealMoon/Sprite")
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/SealMoonUse"]
 shape = SubResource("CircleShape2D_30")
@@ -289,10 +296,13 @@ shape = SubResource("CircleShape2D_30")
 [node name="SealCrownUse" type="Area2D" parent="Interactions"]
 position = Vector2(334, 152)
 script = ExtResource("24_interactable_gd")
-prompt = "Press"
+prompt = "Press Crown"
 conversation_id = ""
 prompt_offset = Vector2(0, -34)
 hidden_when = "solved_chapel_puzzle"
+align_select = true
+important = true
+highlight_path = NodePath("../../Objects/SealCrown/Sprite")
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/SealCrownUse"]
 shape = SubResource("CircleShape2D_31")
@@ -314,6 +324,7 @@ script = ExtResource("24_interactable_gd")
 prompt = "Read"
 conversation_id = "chapel_ledger"
 prompt_offset = Vector2(0, -32)
+important = true
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/LedgerRead"]
 shape = SubResource("CircleShape2D_33")

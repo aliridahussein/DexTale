@@ -9,12 +9,20 @@ const KEY_ICONS := {
 	"echo": preload("res://assets/sprites/ui/key_f.png"),
 }
 
+const PROMPT_COLOR := Color("#ebdec7")
+const PROMPT_IMPORTANT := Color("#f0d27a")
+
 var _gameplay_hud := false
 var _focus: Node = null
 var _echo_focus: Node = null
 var _toast_queue: Array = []
 var _toast_busy := false
+var _toast_tween: Tween
 var _echo_tween: Tween
+## While an Echo vision is on screen, prompts hide and toasts wait (QA-11).
+var _reveal_holds := 0
+var _caption: Label
+var _caption_tween: Tween
 
 @onready var hud: Control = %Hud
 @onready var objective_box: Control = %Objective
@@ -50,8 +58,16 @@ func _ready() -> void:
 	QuestManager.objective_changed.connect(_on_objective_changed)
 	QuestManager.journal_updated.connect(_on_journal_updated)
 	SaveManager.saved.connect(_on_saved)
+	SaveManager.save_failed.connect(func(_m: String) -> void:
+		if _gameplay_hud:
+			show_toast("Couldn't save. Your previous save is safe."))
 	Settings.changed.connect(_refresh_objective)
 	GameState.flag_changed.connect(func(_f: String, _v: Variant) -> void: _refresh_objective())
+	GameState.state_reset.connect(func() -> void:
+		if _reveal_holds > 0:
+			_reveal_holds = 0
+			_resume_toast())
+	_make_caption()
 	_register_global_events()
 
 
@@ -63,6 +79,12 @@ func set_gameplay_hud(on: bool) -> void:
 	if not on:
 		set_interact_focus(null)
 		set_echo_focus(null)
+		clear_toasts()
+		if _reveal_holds > 0:
+			_reveal_holds = 0
+			_resume_toast()
+		if _caption:
+			_caption.visible = false
 	_refresh_objective()
 
 
@@ -102,12 +124,20 @@ func set_interact_focus(target: Node) -> void:
 	_focus = target
 	if target and "prompt" in target:
 		prompt_label.text = str(target.get("prompt"))
-	prompt.visible = target != null and _gameplay_hud
+		var important: bool = target.get("important") == true
+		prompt_label.add_theme_color_override("font_color", PROMPT_IMPORTANT if important else PROMPT_COLOR)
+		prompt.reset_size()
+	prompt.visible = target != null and _gameplay_hud and not _busy()
 
 
 func set_echo_focus(target: Node) -> void:
 	_echo_focus = target
-	echo_prompt.visible = target != null and _gameplay_hud
+	echo_prompt.visible = target != null and _gameplay_hud and not _busy()
+
+
+## Prompts hide while something else has the player's attention.
+func _busy() -> bool:
+	return DialogueManager.is_active() or GameState.is_input_locked() or is_menu_open() or _reveal_holds > 0
 
 
 func hide_prompts() -> void:
@@ -116,7 +146,7 @@ func hide_prompts() -> void:
 
 
 func _process(_delta: float) -> void:
-	var busy := DialogueManager.is_active() or GameState.is_input_locked() or is_menu_open()
+	var busy := _busy()
 	if _focus and is_instance_valid(_focus) and _gameplay_hud and not busy:
 		prompt.visible = true
 		_place_over(prompt, _focus.call("get_prompt_position"))
@@ -130,6 +160,7 @@ func _process(_delta: float) -> void:
 		_place_over(echo_prompt, pos)
 	else:
 		echo_prompt.visible = false
+	_update_caption()
 
 
 func _place_over(c: Control, world_pos: Vector2) -> void:
@@ -155,6 +186,10 @@ func _next_toast() -> void:
 		toast_box.visible = false
 		return
 	_toast_busy = true
+	# Don't cover an Echo vision: wait until it has faded.
+	while _reveal_holds > 0:
+		toast_box.visible = false
+		await get_tree().process_frame
 	var item: Array = _toast_queue.pop_front()
 	toast_label.text = item[0]
 	var icon_name: String = item[1]
@@ -168,12 +203,17 @@ func _next_toast() -> void:
 	await get_tree().process_frame
 	toast_box.reset_size()
 	toast_box.position.x = round((480.0 - toast_box.size.x) * 0.5)
-	var t := create_tween()
-	t.tween_property(toast_box, "modulate:a", 1.0, 0.25)
-	t.tween_interval(2.1)
-	t.tween_property(toast_box, "modulate:a", 0.0, 0.4)
-	await t.finished
+	_toast_tween = create_tween()
+	_toast_tween.tween_property(toast_box, "modulate:a", 1.0, 0.25)
+	_toast_tween.tween_interval(2.1)
+	_toast_tween.tween_property(toast_box, "modulate:a", 0.0, 0.4)
+	await _toast_tween.finished
 	_next_toast()
+
+
+## Drop queued toasts (the current one still finishes). Used when gameplay ends.
+func clear_toasts() -> void:
+	_toast_queue.clear()
 
 
 func show_area_title(title: String, sub: String = "") -> void:
@@ -188,6 +228,75 @@ func show_area_title(title: String, sub: String = "") -> void:
 	t.tween_interval(2.2)
 	t.tween_property(area_title, "modulate:a", 0.0, 1.0)
 	t.tween_callback(func() -> void: area_title.visible = false)
+
+
+## An Echo vision started / ended. Prompts stay hidden and toasts wait while
+## any vision is showing, so UI never sits on top of a clue (QA-11).
+func begin_reveal() -> void:
+	_reveal_holds += 1
+	# A toast already on screen is paused (not killed: its coroutine must still
+	# finish) and hidden until the vision is over.
+	if _toast_tween and _toast_tween.is_valid() and _toast_tween.is_running():
+		_toast_tween.pause()
+		toast_box.visible = false
+
+
+func end_reveal() -> void:
+	_reveal_holds = maxi(0, _reveal_holds - 1)
+	if _reveal_holds == 0:
+		_resume_toast()
+
+
+func _resume_toast() -> void:
+	if _toast_tween and _toast_tween.is_valid() and not _toast_tween.is_running():
+		toast_box.visible = true
+		_toast_tween.play()
+
+
+func is_revealing() -> bool:
+	return _reveal_holds > 0
+
+
+# --------------------------------------------------------------- captions --
+## A short, non-modal line that floats over a spot in the world and fades on
+## its own: for small reactions that don't deserve a dialogue box.
+func caption(text: String, world_pos: Vector2, duration: float = 2.4) -> void:
+	if not _gameplay_hud:
+		return
+	_caption.text = text
+	_caption.reset_size()
+	_caption.set_meta("world_pos", world_pos)
+	_place_over(_caption, world_pos)
+	_caption.visible = true
+	_caption.modulate.a = 0.0
+	if _caption_tween and _caption_tween.is_valid():
+		_caption_tween.kill()
+	_caption_tween = create_tween()
+	_caption_tween.tween_property(_caption, "modulate:a", 1.0, 0.2)
+	_caption_tween.tween_interval(duration)
+	_caption_tween.tween_property(_caption, "modulate:a", 0.0, 0.5)
+	_caption_tween.tween_callback(func() -> void: _caption.visible = false)
+
+
+func caption_text() -> String:
+	return _caption.text if _caption.visible else ""
+
+
+func _make_caption() -> void:
+	_caption = Label.new()
+	_caption.name = "Caption"
+	_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_caption.add_theme_color_override("font_color", Color("#f0e4c8"))
+	_caption.add_theme_color_override("font_shadow_color", Color(0.02, 0.01, 0.04, 0.9))
+	_caption.add_theme_constant_override("shadow_outline_size", 2)
+	_caption.visible = false
+	hud.add_child(_caption)
+
+
+func _update_caption() -> void:
+	if _caption.visible and _caption.has_meta("world_pos"):
+		_place_over(_caption, _caption.get_meta("world_pos"))
 
 
 # ------------------------------------------------------------ echo effect --

@@ -204,6 +204,8 @@ conversation_id = "forge_pin"
 prompt_offset = Vector2(0, -32)
 requires = "mara_showed_pin"
 hidden_when = "has_tuning_pin"
+important = true
+highlight_path = NodePath("../../Objects/TuningPin")
 
 [node name="Shape" type="CollisionShape2D" parent="Interactions/PinInspect"]
 shape = SubResource("CircleShape2D_25")

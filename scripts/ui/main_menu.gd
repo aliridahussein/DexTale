@@ -47,7 +47,7 @@ func _refresh_save() -> void:
 	var info := SaveManager.save_info()
 	continue_btn.disabled = info.is_empty()
 	if info.is_empty():
-		save_info.text = ""
+		save_info.text = "Your saved game could not be read." if SaveManager.has_unreadable_save() else ""
 		new_btn.grab_focus()
 	else:
 		var minutes := int(float(info.get("play_time", 0.0)) / 60.0)
@@ -55,6 +55,8 @@ func _refresh_save() -> void:
 		var names := {"village": "Village square", "forge": "Mara's forge", "chapel": "The chapel",
 			"mist_path": "The Mistbound Path", "bell_tower": "The bell tower"}
 		save_info.text = "Saved: %s  -  %d min" % [names.get(area, area), minutes]
+		if SaveManager.last_read_source != "main":
+			save_info.text += "  (restored from backup)"
 		continue_btn.grab_focus()
 
 

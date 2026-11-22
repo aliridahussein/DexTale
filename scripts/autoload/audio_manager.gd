@@ -42,16 +42,21 @@ func _notification(what: int) -> void:
 
 ## Stop and release all audio, give the audio server a couple of frames to let
 ## go of the streams, then quit (avoids "resources still in use" at exit).
-func quit_game() -> void:
+func quit_game(exit_code: int = 0) -> void:
+	release_all()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	get_tree().quit(exit_code)
+
+
+## Stop every player and drop cached streams (before quitting).
+func release_all() -> void:
 	for p in _music + _ambience + _sfx:
 		p.stop()
 		p.stream = null
 	_cache.clear()
 	_current_music = ""
 	_current_ambience = ""
-	await get_tree().process_frame
-	await get_tree().process_frame
-	get_tree().quit()
 
 
 func _make_player(bus: String) -> AudioStreamPlayer:

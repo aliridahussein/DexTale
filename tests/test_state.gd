@@ -84,8 +84,11 @@ func test_save_round_trip() -> void:
 	f.store_string("{ not json")
 	f.close()
 	runner.check(not SaveManager.has_save(), "corrupt save ignored")
-	SaveManager.write_save({"version": 999, "flags": {}, "area": "village"})
-	runner.check(not SaveManager.has_save(), "wrong version ignored")
+	runner.check(not SaveManager.write_save({"version": 999, "flags": {}, "area": "village"}), "wrong version never written")
+	f = FileAccess.open(SaveManager.save_path, FileAccess.WRITE)
+	f.store_string(JSON.stringify({"version": 999, "flags": {}, "area": "village"}))
+	f.close()
+	runner.check(not SaveManager.has_save(), "wrong version on disk ignored")
 	SaveManager.delete_save()
 	runner.check(not SaveManager.has_save(), "save deleted")
 	SaveManager.save_path = real_path

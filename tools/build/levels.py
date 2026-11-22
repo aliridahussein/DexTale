@@ -10,7 +10,11 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from level_kit import Level, PROPS  # noqa: E402
-from tscn import V2, Col  # noqa: E402
+from tscn import V2, Col, Raw  # noqa: E402
+
+
+def node_path(path: str) -> Raw:
+    return Raw(f'NodePath("{path}")')
 
 FX = "res://assets/sprites/fx/"
 CH = "res://assets/sprites/characters/"
@@ -108,7 +112,8 @@ def village():
     L.interact("NoticeRead", 336, 432, "village_notice", "Read", r=14, prompt_offset=V2(0, -36))
     L.interact("SignRead", 432, 432, "village_signpost", "Read", r=10, prompt_offset=V2(0, -34))
     L.interact("StallInspect", 312, 302, "village_stall", r=14, prompt_offset=V2(0, -44))
-    L.interact("GateUse", 384, 184, "village_gate", "Open", r=14, prompt_offset=V2(0, -42), hidden_when="gate_unlocked")
+    L.interact("GateUse", 384, 184, "village_gate", "Open", r=14, prompt_offset=V2(0, -42), hidden_when="gate_unlocked",
+               important=True)
     L.interact("DoorNW", 184, 220, "village_door_nw", "Knock", r=9, prompt_offset=V2(0, -26))
     L.interact("DoorNE", 478, 220, "village_door_ne", "Knock", r=9, prompt_offset=V2(0, -26))
     L.interact("DoorSW", 158, 500, "village_door_sw", "Knock", r=9, prompt_offset=V2(0, -26))
@@ -176,7 +181,8 @@ def forge():
     L.player(160, 196)
     L.npc("Mara", 176, 136, "mara", "mara", facing="left")
     L.interact("PinInspect", 252, 76, "forge_pin", r=12, prompt_offset=V2(0, -32),
-               requires="mara_showed_pin", hidden_when="has_tuning_pin")
+               requires="mara_showed_pin", hidden_when="has_tuning_pin", important=True,
+               highlight_path=node_path("../../Objects/TuningPin"))
     L.echo("PinEcho", 252, 76, "pin_marking", "forge_pin_echo", texture=FX + "symbol_bell13.png", r=14,
            requires="mara_showed_pin", hidden_when="has_tuning_pin", sets_flag="discovered_bell_markings",
            reveal_offset=V2(-20, -66), hint_offset=V2(0, -44))
@@ -246,14 +252,17 @@ def chapel():
     L.decal("papers", 300, 94, "ArchivePapers")
     L.player(176, 324)
     L.npc("Alden", 70, 172, "alden", "alden", facing="down")
-    L.interact("PlaqueRead", 234, 152, "chapel_inscription", "Read", r=8, prompt_offset=V2(0, -32))
+    L.interact("PlaqueRead", 234, 152, "chapel_inscription", "Read", r=8, prompt_offset=V2(0, -32), important=True)
     L.echo("PlaqueEcho", 234, 152, "inscription", "chapel_inscription_echo", texture=FX + "echo_inscription.png",
            r=14, sets_flag="inscription_clear", reveal_offset=V2(-100, -70), hint_offset=V2(0, -44))
-    for name, x, sym in (("SealFlameUse", 298, "flame"), ("SealMoonUse", 316, "moon"), ("SealCrownUse", 334, "crown")):
-        L.interact(name, x, 152, "", "Press", r=7, prompt_offset=V2(0, -34), hidden_when="solved_chapel_puzzle")
+    # QA-04: each seal names itself, brightens while selected, and is chosen by
+    # where Rowan stands (not by the way he faces).
+    for name, x, sym in (("SealFlameUse", 298, "Flame"), ("SealMoonUse", 316, "Moon"), ("SealCrownUse", 334, "Crown")):
+        L.interact(name, x, 152, "", f"Press {sym}", r=7, prompt_offset=V2(0, -34), hidden_when="solved_chapel_puzzle",
+                   align_select=True, important=True, highlight_path=node_path(f"../../Objects/Seal{sym}/Sprite"))
     L.interact("ArchiveDoorLook", 272, 152, "chapel_archive_door", r=7, prompt_offset=V2(0, -46),
                hidden_when="solved_chapel_puzzle")
-    L.interact("LedgerRead", 272, 98, "chapel_ledger", "Read", r=12, prompt_offset=V2(0, -32))
+    L.interact("LedgerRead", 272, 98, "chapel_ledger", "Read", r=12, prompt_offset=V2(0, -32), important=True)
     L.echo("LedgerEcho", 272, 98, "ledger", "chapel_ledger_echo", atlas=(CH + "orin.png", (0, 48, 16, 24)), r=16,
            requires="read_bellkeeper_ledger", reveal_offset=V2(-16, -12), hint_offset=V2(0, -40))
     L.echo("ChorusEcho", 176, 250, "chorus", "chapel_chorus_echo", texture=FX + "echo_chorus.png", r=22,
@@ -282,7 +291,7 @@ def chapel():
 def mist_path():
     L = Level("MistPath", "mist_path", 24, 46, "res://scripts/world/mist_path.gd", seed=17,
               display_name="The Mistbound Path", subtitle="The road to the tower", music="mist",
-              ambience="mist_forest", reverb=0.25, footstep_surface="dirt")
+              ambience="mist_forest", reverb=0.25, footstep_surface="dirt", player_light=0.6)
     L.fill("forest")
     L.fill("canopy", "overlay")
     L.rect(4, 0, 19, 11, None, "overlay")
@@ -372,7 +381,7 @@ def bell_tower():
     L.player(160, 222)
     L.npc("Orin", 160, 156, "orin", "orin_after", facing="down", spectral=True, present_when="orin_appeared")
     L.interact("MechanismUse", 224, 172, "tower_mechanism", r=14, prompt_offset=V2(0, -50),
-               hidden_when="orin_appeared")
+               hidden_when="orin_appeared", important=True, highlight_path=node_path("../../Objects/Mechanism/Sprite"))
     L.interact("BellLook", 160, 124, "tower_bell", r=16, prompt_offset=V2(0, -70), hidden_when="orin_appeared")
     L.echo("BellEcho", 160, 124, "tower_memories", "tower_memories_echo", texture=FX + "echo_crowd.png", r=24,
            hidden_when="orin_appeared", reveal_offset=V2(-48, -96), hint_offset=V2(0, -84))
