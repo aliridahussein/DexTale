@@ -159,6 +159,57 @@ def build_ritual_view():
     sc.save("scenes/ui/ritual_view.tscn")
 
 
+def build_inventory_view():
+    """V2.2 inventory: dark leather panel, eight slots, item text and actions."""
+    sc = Scene("InventoryView", "Control", {**FULL})
+    sc.nodes[0][3]["script"] = sc.ext("Script", "res://scripts/ui/inventory_view.gd")
+    dim(sc, a=0.55)
+    panel = sc.add("Panel", "NinePatchRect", props={**rect(56, 20, 368, 230),
+                   **ninepatch(sc, "res://assets/sprites/ui/panel_dark.png")})
+    sc.add("Title", "Label", parent=panel, props={**rect(0, 6, 368, 20), **label("Inventory", 18, GOLD, 1)})
+    sc.add("Slots", "Control", parent=panel, props={**rect(14, 32, 132, 64), "mouse_filter": 0}, unique_name=True)
+    sc.add("InvName", "Label", parent=panel, props={**rect(158, 30, 198, 14), **label("", None, GOLD)},
+           unique_name=True)
+    sc.add("InvDesc", "RichTextLabel", parent=panel, props={**rect(158, 46, 198, 82), "bbcode_enabled": True,
+           "scroll_active": False, "focus_mode": 0}, unique_name=True)
+    sc.add("Divider", "ColorRect", parent=panel, props={**rect(14, 132, 340, 1), "color": Col(0.55, 0.41, 0.15, 0.6)})
+    acts = sc.add("Actions", "HBoxContainer", parent=panel, props={**rect(14, 136, 340, 14),
+                  "theme_override_constants/separation": 8})
+    for name in ("ActInspect", "ActHold", "ActCombine", "ActLight"):
+        sc.add(name, "Label", parent=acts, props={**label("", None, Col("#ebdec7"))}, unique_name=True)
+    sc.add("InvMessage", "RichTextLabel", parent=panel, props={**rect(14, 154, 340, 52), "bbcode_enabled": True,
+           "scroll_active": False, "focus_mode": 0}, unique_name=True)
+    sc.add("InvHint", "Label", parent=panel, props={**rect(0, 210, 368, 12), **label("", None, DIM, 1)},
+           unique_name=True)
+    sc.save("scenes/ui/inventory_view.tscn")
+
+
+def build_winch_view():
+    """V2.2 winch: a panel under the mechanism with the tension gauge."""
+    sc = Scene("WinchView", "Control", {**FULL, "mouse_filter": 2})
+    sc.nodes[0][3]["script"] = sc.ext("Script", "res://scripts/ui/winch_view.gd")
+    panel = sc.add("Panel", "NinePatchRect", props={**rect(56, 150, 368, 114), "mouse_filter": 2,
+                   **ninepatch(sc, "res://assets/sprites/ui/panel_dark.png")})
+    sc.add("Title", "Label", parent=panel, props={**rect(12, 5, 200, 14), **label("The Winch", None, GOLD)})
+    sc.add("WinchStatus", "Label", parent=panel, props={**rect(150, 5, 206, 14), **label("", None, GOLD, 2)},
+           unique_name=True)
+    sc.add("WinchGauge", "Control", parent=panel, props={**rect(14, 18, 340, 52), "mouse_filter": 2},
+           unique_name=True)
+    # zone names under the track (shape + text, not colour alone)
+    sc.add("LooseLabel", "Label", parent=panel, props={**rect(58, 52, 60, 12), **label("loose", None, Col("#7398d8"))})
+    sc.add("SafeLabel", "Label", parent=panel, props={**rect(186, 52, 40, 12), **label("SAFE", None, GOLD)})
+    sc.add("TightLabel", "Label", parent=panel, props={**rect(300, 52, 40, 12), **label("tight", None, Col("#d86a60"))})
+    sc.add("WinchMessage", "Label", parent=panel, props={**rect(10, 66, 348, 24),
+           **label("", None, Col("#ece2cc"), 1, {"autowrap_mode": 3})}, unique_name=True)
+    row = sc.add("Buttons", "HBoxContainer", parent=panel, props={**rect(10, 92, 348, 14), "alignment": 1,
+                 "theme_override_constants/separation": 14})
+    sc.add("WinchSlack", "Label", parent=row, props={**label("◀ A: slacken", None, DIM)}, unique_name=True)
+    sc.add("WinchTight", "Label", parent=row, props={**label("D: tighten ▶", None, DIM)}, unique_name=True)
+    sc.add("WinchRelease", "Label", parent=row, props={**label("E: release the weight", None, GOLD)}, unique_name=True)
+    sc.add("WinchBack", "Label", parent=row, props={**label("Esc: step back", None, DIM)})
+    sc.save("scenes/ui/winch_view.tscn")
+
+
 def build_pause_menu():
     sc = Scene("PauseMenu", "Control", {**FULL})
     sc.nodes[0][3]["script"] = sc.ext("Script", "res://scripts/ui/pause_menu.gd")
@@ -245,13 +296,27 @@ def build_ui_root():
     sc.add("Icon", "TextureRect", parent=sn, props={"texture": sc.ext("Texture2D", "res://assets/sprites/ui/icon_quill.png"),
            "stretch_mode": 3})
     sc.add("Text", "Label", parent=sn, props={**label("Saved", None, Col("#d8ccb4"))})
+    # V2.2: what Rowan is holding, and the lantern's shutter (bottom-left)
+    cb = sc.add("CarryBar", "HBoxContainer", parent=hud, props={**rect(4, 248, 320, 18), "mouse_filter": 2,
+                "theme_override_constants/separation": 4}, unique_name=True)
+    hc = sc.add("HeldChip", "PanelContainer", parent=cb, props={"mouse_filter": 2, "theme_override_styles/panel": small},
+                unique_name=True)
+    hr = sc.add("Row", "HBoxContainer", parent=hc, props={"theme_override_constants/separation": 3, "mouse_filter": 2})
+    sc.add("HeldIcon", "TextureRect", parent=hr, props={"stretch_mode": 3, "mouse_filter": 2}, unique_name=True)
+    sc.add("HeldLabel", "Label", parent=hr, props={**label("", None, Col("#ebdec7"))}, unique_name=True)
+    lc = sc.add("LanternChip", "PanelContainer", parent=cb, props={"mouse_filter": 2,
+                "theme_override_styles/panel": small}, unique_name=True)
+    lr = sc.add("Row", "HBoxContainer", parent=lc, props={"theme_override_constants/separation": 3, "mouse_filter": 2})
+    sc.add("LanternIcon", "TextureRect", parent=lr, props={"stretch_mode": 3, "mouse_filter": 2,
+           "texture": sc.ext("Texture2D", "res://assets/sprites/ui/icon_old_lantern.png")})
+    sc.add("LanternLabel", "Label", parent=lr, props={**label("", None, Col("#f0d27a"))}, unique_name=True)
     dl = sc.add("DialogueLayer", "CanvasLayer", props={"layer": 15})
     sc.add("DialogueBox", None, parent=dl, instance=sc.ext("PackedScene", "res://scenes/ui/dialogue_box.tscn"),
            unique_name=True)
     ml = sc.add("MenuLayer", "CanvasLayer", props={"layer": 20})
-    for name, path in (("RitualView", "ritual_view"), ("DocumentView", "document_view"),
-                       ("ReconstructionView", "reconstruction_view"), ("Journal", "journal"),
-                       ("PauseMenu", "pause_menu"), ("SettingsMenu", "settings_menu")):
+    for name, path in (("RitualView", "ritual_view"), ("WinchView", "winch_view"), ("InventoryView", "inventory_view"),
+                       ("DocumentView", "document_view"), ("ReconstructionView", "reconstruction_view"),
+                       ("Journal", "journal"), ("PauseMenu", "pause_menu"), ("SettingsMenu", "settings_menu")):
         sc.add(name, None, parent=ml, instance=sc.ext("PackedScene", f"res://scenes/ui/{path}.tscn"), unique_name=True)
     sc.save("scenes/ui/ui.tscn")
 
@@ -378,6 +443,8 @@ def build_all():
     build_document_view()
     build_reconstruction_view()
     build_ritual_view()
+    build_inventory_view()
+    build_winch_view()
     build_pause_menu()
     build_settings_menu()
     build_ui_root()

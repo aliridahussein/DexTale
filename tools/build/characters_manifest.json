@@ -113,5 +113,18 @@
    "walk_right": 2,
    "walk_left": 2
   }
+ },
+ "watchman": {
+  "frame": [
+   24,
+   32
+  ],
+  "anims": {
+   "walk_down": 2,
+   "walk_up": 2,
+   "walk_right": 2,
+   "walk_left": 2,
+   "lowered": 1
+  }
  }
 }

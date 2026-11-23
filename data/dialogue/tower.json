@@ -78,6 +78,7 @@
 			{"text": "Mara asked about her lullaby.", "if": "promised_mara", "once": true, "id": "lullaby", "goto": "lullaby"},
 			{"text": "Whose voice did the bell borrow?", "once": true, "id": "voice", "goto": "voice"},
 			{"text": "Why me? Why the letter?", "once": true, "id": "why", "goto": "why"},
+			{"text": "There was a watchman at the crossing.", "if": "watchman_resolved", "once": true, "id": "watchman", "goto": "watchman"},
 			{"text": "What happens now?", "goto": "now"}
 		]},
 		{"label": "lullaby"},
@@ -100,6 +101,13 @@
 		{"if": "learned_village_song", "say": "rowan", "text": "I remember. Pip hummed it, and I knew how it ended."},
 		{"if": "!learned_village_song", "say": "rowan", "text": "I don't remember that."},
 		{"if": "!learned_village_song", "say": "orin", "text": "No. Perhaps someone else in Dawnmere still does."},
+		{"goto": "hub"},
+		{"label": "watchman"},
+		{"set": {"told_orin_watchman": true}},
+		["orin", "Edrin. He kept that crossing longer than I've kept this tower."],
+		["orin", "One night he asked me who he was waiting for. I didn't know. I'm not sure anyone did, by then."],
+		["rowan", "He remembers that he waited."],
+		["orin", "Then the bell didn't take everything. It never quite does."],
 		{"goto": "hub"},
 		{"label": "now"},
 		{"run": "orin_decide"}

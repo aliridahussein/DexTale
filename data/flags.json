@@ -54,6 +54,24 @@
 		"told_tobin_promise": "V2. Rowan told Tobin why he lights the lamp (changes his lines and epilogue).",
 		"kept_tobin_secret": "V2. Rowan let Tobin keep the habit without knowing why (changes his epilogue).",
 		"has_tobin_lantern": "V2. Tobin gave Rowan his lantern (a stronger light on the Mistbound Path; epilogue).",
-		"bell_retuned": "V2. Rowan completed the bell ritual (the Gathering Song), so The Chorus can play."
+		"bell_retuned": "V2. Rowan completed the bell ritual (the Gathering Song), so The Chorus can play.",
+		"entered_crossing": "V2.2. Reached the Watchman's Crossing.",
+		"crossing_arrived": "V2.2. Saw the raised bridge on arrival (trigger once).",
+		"found_lantern": "V2.2. Took the Old Lantern from the watchhouse (item, never cleared).",
+		"lantern_on": "V2.2. The Old Lantern's shutter is open (Rowan's light; the Shadow sees it from farther away).",
+		"found_rope": "V2.2. Took the Strong Rope (item).",
+		"found_hook": "V2.2. Took the Iron Hook (item).",
+		"made_hooked_line": "V2.2. Combined rope and hook into the Hooked Line (uses both up).",
+		"chain_secured": "V2.2. The Hooked Line caught the lower chain and lashed it to the winch (uses the line).",
+		"bridge_lowered": "V2.2. The winch was released at safe tension and the drawbridge is down (persistent).",
+		"heard_creak": "V2.2. A weak plank creaked while the Shadow was patrolling (first time shows a caption).",
+		"watchman_catches": "V2.2. Times the Watchman's Shadow caught Rowan (number; only drives hints).",
+		"crossing_complete": "V2.2. Rowan crossed to the tower (set on entering the tower, also for older saves).",
+		"found_token": "V2.2. Took the Watchman's Token from the window sill (optional).",
+		"seen_tally": "V2.2. Looked at the tally marks on the watchhouse wall (supporting clue).",
+		"watchman_promise_known": "V2.2. Solved the token's reconstruction: he waited for someone to come back.",
+		"token_placed": "V2.2. Put the token back on the post (uses the token).",
+		"watchman_resolved": "V2.2. The Watchman's Shadow is at peace and no longer patrols.",
+		"told_orin_watchman": "V2.2. Told Orin about the watchman at the crossing (needs watchman_resolved)."
 	}
 }

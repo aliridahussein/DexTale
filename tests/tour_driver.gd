@@ -3,10 +3,14 @@ extends Node
 ## V2 fixes and all three endings, saving screenshots to docs/screenshots/v2/.
 ## Unlike V1's tour it also asserts: an ending that never reaches its card,
 ## epilogue and title menu fails the run.
-## Run:  godot --path . res://tests/tour.tscn  [-- --only=story|endings|v2]
+## Run:  godot --path . res://tests/tour.tscn  [-- --only=story|endings|v2|crossing]
+## (The crossing's screenshots go to docs/screenshots/v2_2/.)
 ## Lives under the root (not as the current scene) so scene changes don't free it.
 
 const OUT := "res://docs/screenshots/v2/"
+const OUT_V2_2 := "res://docs/screenshots/v2_2/"
+
+var _out := OUT
 
 var _errors: Array[String] = []
 var _failures: Array[String] = []
@@ -53,7 +57,7 @@ func shot(file_name: String) -> void:
 	await RenderingServer.frame_post_draw
 	var img := get_viewport().get_texture().get_image()
 	img.resize(img.get_width() * 2, img.get_height() * 2, Image.INTERPOLATE_NEAREST)
-	img.save_png(ProjectSettings.globalize_path(OUT + file_name + ".png"))
+	img.save_png(ProjectSettings.globalize_path(_out + file_name + ".png"))
 	print("  shot: %s (%dx%d)" % [file_name, img.get_width(), img.get_height()])
 
 
@@ -163,8 +167,235 @@ func _tour() -> void:
 		await _story()
 	if only in ["", "v2"]:
 		await _v2_features()
+	if only in ["", "crossing"]:
+		await _crossing()
 	if only in ["", "endings"]:
 		await _endings()
+
+
+## V2.2: the Watchman's Crossing, played through the real interactions.
+## Screenshots go to docs/screenshots/v2_2/.
+func _crossing() -> void:
+	_out = OUT_V2_2
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(_out))
+	while SceneManager.transitioning:
+		await wait(0.1)
+	GameState.reset()
+	flags(["game_started", "met_pip", "spoke_to_mara", "mara_showed_pin", "has_tuning_pin", "solved_chapel_puzzle",
+		"read_ledger", "read_bellkeeper_ledger", "has_gate_key", "gate_unlocked", "saw_song_marks",
+		"learned_village_song", "met_sentinel", "passed_sentinel", "sentinel_resolved_peacefully"])
+	await goto_area("crossing", "from_path")
+	await wait(1.5)
+	await drain()
+	await shot("01_crossing_arrival")
+	await put(Vector2(208, 380), "up")
+	await wait(0.6)
+	await drain()
+	await shot("02_crossing_bridge_up")
+	await put(Vector2(240, 352), "up")
+	await wait(0.4)
+	await shot("03_chain_prompt")
+	await put(Vector2(258, 356), "up")
+	listen_here()
+	await wait(2.2)
+	await shot("04_winch_echo")
+	await drain()
+	await wait(2.5)
+	# the watchhouse
+	await goto_area("watchhouse", "from_crossing")
+	await wait(0.8)
+	await shot("05_watchhouse")
+	var wh := area()
+	for p in ["LanternTake", "RopeTake", "HookTake", "TokenTake"]:
+		var it := wh.get_node("Interactions/" + p) as Interactable
+		await put(it.global_position + Vector2(0, 12), "up")
+		await press("interact")
+		await wait(0.8)
+		await drain()
+	await shot("06_watchhouse_items_taken")
+	await put(Vector2(112, 104), "up")
+	listen_here()
+	await wait(1.4)
+	await shot("07_chair_memory")
+	await drain()
+	await wait(2.0)
+	UI.open_inventory()
+	await wait(0.4)
+	await shot("08_inventory")
+	var inv: Control = UI.inventory_view
+	inv.set("cursor", Inventory.owned().find("rope"))
+	inv.call("select")
+	inv.set("action_cursor", 2)
+	inv.call("do_action", "combine")
+	await wait(0.2)
+	inv.set("cursor", Inventory.owned().find("hook"))
+	await shot("09_inventory_combine")
+	inv.call("select")
+	await wait(0.4)
+	await shot("10_inventory_hooked_line")
+	inv.call("do_action", "hold")  # Hold: closes the screen with the line in hand
+	# repair and the winch
+	await goto_area("crossing", "from_watchhouse")
+	var cr := area()
+	await put(Vector2(232, 336), "up")
+	await wait(0.6)
+	await shot("11_holding_the_line_at_the_chain")
+	await press("interact")
+	await wait(0.9)
+	await shot("12_repair_hook_thrown")
+	await wait(2.6)
+	await shot("13_chain_secured")
+	await put(Vector2(258, 356), "up")
+	await press("interact")
+	var wv: Control = UI.winch_view
+	var t := 0.0
+	while not wv.visible and t < 8.0:
+		if DialogueManager.is_waiting_for_advance():
+			DialogueManager.advance()
+		await wait(0.1)
+		t += 0.1
+	await wait(0.5)
+	await shot("14_winch_loose")
+	wv.call("release")  # too early: the chain slips, nothing falls
+	await wait(0.5)
+	await shot("15_winch_released_too_loose")
+	var wp: WinchPuzzle = wv.get("puzzle")
+	while wp.zone() != WinchPuzzle.Result.SAFE:
+		wv.call("turn", 1, 0.1)
+		await wait(0.05)
+	wv.call("turn", 1, 0.25)
+	await wait(0.3)
+	await shot("16_winch_safe")
+	wv.call("release")
+	await wait(2.4)
+	await shot("17_bridge_lowering")
+	t = 0.0
+	while (GameState.is_input_locked() or DialogueManager.is_active()) and t < 15.0:
+		await wait(0.1)
+		t += 0.1
+	await wait(1.0)
+	await shot("18_shadow_revealed")
+	# stealth: the cone with the shutter open, then closed
+	var shadow := cr.get_node("Objects/Watchman") as WatchmanShadow
+	await put(Vector2(208, 300), "up")
+	await wait(1.5)
+	await shot("19_stealth_lantern_open")
+	player().toggle_lantern()
+	await wait(0.8)
+	await shot("20_stealth_shutter_closed")
+	check(not cr.call("lane_blocked"), "the bridge lane is walkable once lowered")
+	# a rotten plank creaks and the Shadow turns toward it
+	shadow.start_at(0)
+	await put(Vector2(201, 268), "up")
+	await put(Vector2(201.5, 253.5), "up")
+	await wait(0.6)
+	await shot("21_plank_creaks")
+	check(GameState.has_flag("heard_creak"), "the rotten plank creaked")
+	await put(Vector2(208, 340), "up")
+	await wait(5.0)
+	# seen with the lantern open: the "?" warning, then caught and sent back
+	player().toggle_lantern()
+	shadow.start_at(0)
+	await put(Vector2(196, 196), "left")
+	t = 0.0
+	while shadow.state != WatchmanShadow.State.SUSPICIOUS and t < 6.0:
+		await wait(0.05)
+		t += 0.05
+	await wait(0.25)
+	await shot("22_shadow_suspicious")
+	while not cr.call("is_capturing") and t < 14.0:
+		await wait(0.05)
+		t += 0.05
+	await wait(0.2)
+	await shot("23_caught")
+	while cr.call("is_capturing") and t < 20.0:
+		await wait(0.05)
+		t += 0.05
+	await wait(0.5)
+	await shot("24_back_at_the_bridge_head")
+	shadow.start_at(0)
+	await put(Vector2(150, 196), "left")
+	t = 0.0
+	while int(GameState.get_flag("watchman_catches", 0)) < 2 and t < 10.0:
+		await wait(0.05)
+		t += 0.05
+	while cr.call("is_capturing") and t < 16.0:
+		await wait(0.05)
+		t += 0.05
+	await wait(0.6)
+	await shot("25_hint_after_two_catches")
+	check(UI.caption_text().contains("stone pillars"), "a hint after the second catch")
+	# sneaking over with the shutter closed, around the rotten planks
+	player().toggle_lantern()
+	shadow.start_at(1)
+	await put(Vector2(202, 300), "up")
+	for p in [Vector2(202, 268), Vector2(215, 268), Vector2(215, 246)]:
+		await player().walk_to(p, 1.0)
+	await wait(0.2)
+	await shot("26_sneaking_shutter_closed")
+	check(int(GameState.get_flag("watchman_catches", 0)) == 2, "sneaking with the shutter closed is not noticed")
+	# the peaceful route: too early at the post, the post's echo, the deduction, the token on the post
+	await put(Vector2(172, 342), "up")
+	Inventory.set_held("token")
+	await press("interact")
+	await wait(0.5)
+	await shot("27_token_not_yet")
+	Inventory.clear_held()
+	listen_here()
+	await wait(2.0)
+	await shot("28_post_memory")
+	await drain()
+	await wait(2.5)
+	UI.inspect_token("watchman_promise")
+	await wait(0.5)
+	await shot("29_token_board")
+	var board: Control = UI.reconstruction_view
+	board.call("choose", 0)
+	await wait(0.4)
+	await shot("30_token_board_wrong")
+	board.call("choose", 1)
+	await wait(2.0)
+	await drain()
+	await put(Vector2(172, 342), "up")
+	await press("interact")
+	await wait(3.2)
+	await shot("31_shadow_at_peace")
+	t = 0.0
+	while (DialogueManager.is_active() or GameState.is_input_locked()) and t < 20.0:
+		if DialogueManager.is_waiting_for_advance():
+			DialogueManager.advance()
+		await wait(0.1)
+		t += 0.1
+	check(GameState.has_flag("watchman_resolved"), "the watchman was given his memory back")
+	await put(Vector2(208, 60), "up")
+	await wait(0.6)
+	await shot("32_far_bank")
+	# up into the tower, and back down its stairs
+	player().teleport(Vector2(208, 6))
+	await wait_for_area("bell_tower")
+	await wait(1.0)
+	await drain()
+	await shot("33_tower_from_the_crossing")
+	await put(Vector2(160, 236), "down")
+	await wait(0.4)
+	await shot("34_tower_stairwell_open")
+	player().teleport(Vector2(160, 246))
+	await wait_for_area("crossing")
+	await wait(1.0)
+	await shot("35_back_down_at_the_crossing")
+	check(SceneManager.current_area.get("area_id") == "crossing", "the tower's stairs lead back down to the crossing")
+	_out = OUT
+
+
+func wait_for_area(area_id: String) -> void:
+	var t := 0.0
+	while t < 15.0:
+		var a: Variant = SceneManager.current_area
+		if is_instance_valid(a) and a.get("area_id") == area_id and not SceneManager.transitioning:
+			return
+		await wait(0.1)
+		t += 0.1
+	check(false, "reached %s" % area_id)
 
 
 ## Milestone 2: the Echo Reconstruction at the well and the bell ritual.

@@ -516,6 +516,51 @@ def fringe(mask, seed, dark=False):
     return cv
 
 
+# ------------------------------------------------- V2.2: the crossing ravine ---
+# Not solid: collision over the ravine is handled by the crossing scene, so the
+# lowered bridge can open a walkable lane across it.
+def chasm_face(seed):
+    """The far wall of the ravine, seen face-on, fading into the depths."""
+    rng = np.random.default_rng(seed)
+    cv = Canvas(T, T)
+    n = smooth_noise(T, T, rng, 3)
+    for y in range(T):
+        for x in range(T):
+            depth = y / T
+            v = n[y, x] * (1.0 - depth * 0.8)
+            col = "st2" if v > 0.55 else ("st1" if v > 0.3 else ("sl0" if v > 0.14 else "void"))
+            cv.px(x, y, col)
+    for _ in range(2):
+        x = int(rng.integers(2, T - 2))
+        for y in range(int(rng.integers(0, 6)), T - 3):
+            cv.px(x + (1 if rng.random() < 0.25 else 0), y, "ink")
+    cv.hline(0, 0, T, "st3")
+    return cv
+
+
+def chasm_deep(seed):
+    """The ravine's depths: near-black with cold blue mist drifting through."""
+    rng = np.random.default_rng(seed)
+    cv = Canvas(T, T)
+    n = smooth_noise(T, T, rng, 2)
+    tone_fill(cv, np.clip(n * 0.9, 0, 1), ["void", "#0f1426", "bl0"])
+    for _ in range(4):
+        cv.px(int(rng.integers(0, T)), int(rng.integers(0, T)), "bl2")
+    return cv
+
+
+def chasm_lip(seed):
+    """The near edge of the ravine: ground ending in a ragged stone lip."""
+    rng = np.random.default_rng(seed)
+    cv = grass(seed, dark=True)
+    edge = [int(3 + rng.integers(0, 3)) for _ in range(T)]
+    for x in range(T):
+        for y in range(edge[x]):
+            cv.px(x, y, "void" if y < edge[x] - 2 else ("st1" if (x + y) % 3 else "st2"))
+        cv.px(x, edge[x], "gr0")
+    return cv
+
+
 def build():
     at = Atlas()
     # --- ground: village
@@ -568,6 +613,13 @@ def build():
         at.add(f"fringe_{m}", fringe(m, 1100))
     for m in range(1, 16):
         at.add(f"fringe_dark_{m}", fringe(m, 1200, dark=True))
+    # V2.2 (appended last so every existing tile keeps its atlas position)
+    for i in range(2):
+        at.add(f"chasm_face_{i}", chasm_face(1300 + i))
+    for i in range(3):
+        at.add(f"chasm_{i}", chasm_deep(1310 + i))
+    for i in range(2):
+        at.add(f"chasm_lip_{i}", chasm_lip(1320 + i))
     sheet = at.save()
     return at, sheet
 

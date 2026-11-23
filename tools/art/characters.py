@@ -763,6 +763,100 @@ def build_sentinel():
     sheet.save("assets/sprites/characters/sentinel.png")
 
 
+# V2.2: the Watchman's Shadow, a spectral guard at the crossing (tinted in-engine)
+WATCHMAN_SIDE = [
+    "........................",
+    "..........oooo..........",
+    ".........oHHhhoo........",
+    "........oHHhhhhdo.......",
+    "........oHhhhhhdo.......",
+    "........ohhhhhhdo.......",
+    "........ohhhhkkko.......",
+    "........ohhhhkeeo.......",
+    "........ohhhhkkko.......",
+    ".........ohhhhdo........",
+    "........oohhhhdoo.......",
+    ".......oHhhhhhhhdo......",
+    ".......oHhhhhhhhdo......",
+    ".......ohhhhhhhhdo......",
+    ".......occcchhhhdo......",
+    ".......occcchhhdo.......",
+    ".......obbbbbbbo........",
+    ".......occcccco.........",
+    ".......occcccco.........",
+    ".......occcccco.........",
+    "......occcccccco........",
+    "......occcccccco........",
+    ".......ohhhoohhho.......",
+    ".......ohhho.ohho.......",
+    ".......ohhdo.ohdo.......",
+    ".......ohhdo.ohdo.......",
+    ".......ohhdo.ohdo.......",
+    "......oHhhhdooHhhdo.....",
+    "......ohhhhdoohhhdo.....",
+    "......ooooooo.ooooo.....",
+    "........................",
+    "........................",
+]
+
+
+def build_watchman():
+    key = {"o": "ink", "H": "st5", "h": "st3", "d": "st1", "k": "ink2", "e": "sp4",
+           "c": "#3a4256", "b": "go1"}
+
+    def lantern(cv, x, y):
+        cv.rect(x, y, 4, 1, "ir2")
+        cv.rect(x, y + 1, 4, 4, "sp3")
+        cv.rect(x + 1, y + 2, 2, 2, "sp4")
+        cv.rect(x, y + 5, 4, 1, "ir2")
+        cv.px(x + 1, y - 1, "ir2")
+
+    def spear(cv, x, y0=2, y1=30):
+        cv.vline(x, y0, y1 - y0, "wd2")
+        cv.vline(x + 1, y0, y1 - y0, "wd1")
+        cv.px(x, y0 - 2, "st5")
+        cv.px(x, y0 - 1, "st4")
+        cv.px(x - 1, y0, "st3")
+        cv.px(x + 2, y0, "st2")
+
+    def bob(cv):
+        b = Canvas(24, 32)
+        b.a[1:] = cv.a[:-1]
+        b.a[28:] = cv.a[28:]
+        return b
+
+    front = from_ascii(SENTINEL["down"], key)
+    down = Canvas(24, 32)
+    down.blit(front, 0, 0)
+    spear(down, 21)
+    lantern(down, 2, 18)
+    back_rows = list(SENTINEL["down"])
+    for r in (6, 7, 8):
+        back_rows[r] = back_rows[r].replace("k", "h").replace("e", "h")
+    up = Canvas(24, 32)
+    up.blit(from_ascii(back_rows, key), 0, 0)
+    spear(up, 21)
+    lantern(up, 2, 18)
+    up = up.flipped()
+    side = Canvas(24, 32)
+    side.blit(from_ascii(WATCHMAN_SIDE, key), 0, 0)
+    lantern(side, 16, 16)
+    spear(side, 20)
+    lowered = Canvas(24, 32)
+    lowered.blit(front, 0, 0)
+    lowered.line(14, 29, 23, 13, "wd2")       # the spear lowered, tip to the ground
+    lowered.line(15, 29, 23, 14, "wd1")
+    lowered.px(13, 30, "st4")
+    lantern(lowered, 2, 18)
+    rows = [[down, bob(down)], [up, bob(up)], [side, bob(side)], [side.flipped(), bob(side.flipped())],
+            [lowered]]
+    sheet = Canvas(48, 32 * len(rows))
+    for r, frames in enumerate(rows):
+        for c, f in enumerate(frames):
+            sheet.blit(f, c * 24, r * 32)
+    sheet.save("assets/sprites/characters/watchman.png")
+
+
 CAT = {
     "side": [
         "................",
@@ -812,6 +906,9 @@ def build_all():
     meta["sentinel"] = {"frame": [24, 32], "anims": {"idle_down": 2}}
     build_cat()
     meta["cat"] = {"frame": [16, 16], "anims": {"walk_right": 2, "walk_left": 2}}
+    build_watchman()
+    meta["watchman"] = {"frame": [24, 32], "anims": {"walk_down": 2, "walk_up": 2, "walk_right": 2,
+                                                     "walk_left": 2, "lowered": 1}}
     path = os.path.join(ROOT, "tools", "build", "characters_manifest.json")
     with open(path, "w") as f:
         json.dump(meta, f, indent=1)

@@ -37,10 +37,17 @@
 			"done": "passed_sentinel"
 		},
 		{
+			"id": "cross",
+			"title": "Find a way across the old crossing.",
+			"detail": "Past the Sentinel the road ends at a ravine. The drawbridge is up and its lifting chain is broken. The watchhouse beside it belonged to the guard. (I: inventory.)",
+			"start": "passed_sentinel",
+			"done": "crossing_complete"
+		},
+		{
 			"id": "truth",
 			"title": "Confront the truth of the bell.",
 			"detail": "The road is open. Climb the tower and find Orin.",
-			"start": "passed_sentinel",
+			"start": "crossing_complete",
 			"done": "met_orin_echo"
 		},
 		{
@@ -75,6 +82,22 @@
 			"done": ["echo_well_lamp", "seen_well_bench"]
 		},
 		{
+			"id": "the_watchman",
+			"title": "Find out what the watchman was waiting for.",
+			"detail": "An iron token with two initials. A chair turned to the window. A post at the bridge head. Listen (F), then look at the token again in your inventory (I).",
+			"optional": true,
+			"start": "found_token",
+			"done": "watchman_promise_known"
+		},
+		{
+			"id": "the_watchman_rest",
+			"title": "Give the watchman back what he waited for.",
+			"detail": "He was waiting for someone who promised to come back. His token belongs at the post where he waited.",
+			"optional": true,
+			"start": "watchman_promise_known",
+			"done": "watchman_resolved"
+		},
+		{
 			"id": "the_promise_solve",
 			"title": "Piece together the forgotten promise.",
 			"detail": "Her voice, the lamp she hung, the bench that faces the road. At the well, put them together.",
@@ -103,6 +126,14 @@
 		{"id": "shrine", "when": "echo_shrine", "title": "The Shrine Without a Name", "text": "A mother calling her son home for supper. The name she called has been cut out of the world."},
 		{"id": "sentinel", "when": "sentinel_story_heard", "title": "The Hollow Sentinel", "text": "A boy who guarded the tower road when the first bell was cast. The bell rang, and everyone forgot his name."},
 		{"id": "memories", "when": "echo_tower_memories", "title": "What the Bell Keeps", "text": "Inside the bell: a laugh, a lullaby, two names on a well, a monk tearing pages, a boy who held the road. Everything Dawnmere gave away."},
+		{"id": "crossing_log", "when": "read_watch_log", "title": "The Crossing Log", "text": "\"When the lower chain fails, secure it before releasing the weight. The bridge must never fall freely.\""},
+		{"id": "winch_memory", "when": "echo_winch", "title": "The Guard at the Winch", "text": "In the winch's echo, a guard caught the loose chain with a hook first, and only then turned the wheel."},
+		{"id": "bridge_down", "when": "bridge_lowered", "title": "The Watchman's Shadow", "text": "When the bridge came down, a lantern lit itself across the ravine and an armoured figure began to walk the far bank. It notices light."},
+		{"id": "watch_token", "when": "found_token", "title": "The Watchman's Token", "text": "An iron token from the watchhouse window sill. Two initials: E., and one worn away."},
+		{"id": "watch_chair", "when": "echo_watch_chair", "title": "Until the Last Lantern", "text": "A child: \"Will you still be here when I come back?\" A guard: \"Until the last lantern goes out.\""},
+		{"id": "watch_post", "when": "echo_watch_post", "title": "The Post by the Bridge", "text": "Someone waiting by a lit post. A small figure coming up the road. The bell. Then the memory ends."},
+		{"id": "watch_promise", "when": "watchman_promise_known", "title": "The Watchman's Promise", "text": "He wasn't guarding the bridge. He was waiting at it, for someone who promised to come back. The bell took the rest."},
+		{"id": "watch_rest", "when": "watchman_resolved", "title": "He Remembers That He Waited", "text": "The token is back on the post. The watchman lowered his spear and stood aside."},
 		{"id": "orin", "when": "met_orin_echo", "title": "Orin's Echo", "text": "Night after night, Orin fed the bell his own memories to spare everyone else. Last night it took the last of him."}
 	]
 }

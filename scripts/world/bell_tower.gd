@@ -23,6 +23,9 @@ var _marks: Array[Sprite2D] = []
 
 func _area_ready() -> void:
 	GameState.set_flag("entered_tower", true)
+	# V2.2: reaching the tower means the crossing is behind Rowan (also true
+	# for V1/V2 saves made inside the tower before the crossing existed).
+	GameState.set_flag("crossing_complete", true)
 	mechanism_sprite.frame = 1 if GameState.has_flag("pin_installed") else 0
 	_build_vista()
 

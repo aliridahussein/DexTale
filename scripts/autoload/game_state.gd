@@ -15,6 +15,8 @@ const AREAS: Dictionary = {
 	"forge": "res://scenes/world/forge.tscn",
 	"chapel": "res://scenes/world/chapel.tscn",
 	"mist_path": "res://scenes/world/mist_path.tscn",
+	"crossing": "res://scenes/world/crossing.tscn",
+	"watchhouse": "res://scenes/world/watchhouse.tscn",
 	"bell_tower": "res://scenes/world/bell_tower.tscn",
 }
 

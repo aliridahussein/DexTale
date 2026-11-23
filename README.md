@@ -2,9 +2,25 @@
 
 *Every night the bell saves the village. Every night, someone forgets why.*
 
-A short medieval dark-fantasy mystery made in **Godot 4.7.2** (GDScript, Compatibility renderer). Rowan comes home to Dawnmere the night its bell falls silent and learns what the bell has been taking. There are five areas, an Echo ability for hearing the past, a seal puzzle, a guardian with two ways past it, and three endings. A first play takes about 10 to 20 minutes (an estimate; no timed playtests yet).
+A short medieval dark-fantasy mystery made in **Godot 4.7.2** (GDScript, Compatibility renderer). Rowan comes home to Dawnmere the night its bell falls silent and learns what the bell has been taking. The game has:
+- seven areas;
+- an Echo ability for hearing the past;
+- a seal puzzle;
+- a guardian with two ways past it;
+- a broken drawbridge guarded by something that notices light;
+- three endings.
 
-**This is Prototype V2** (branch `prototype-v2`). It fixes the defects found by the independent QA audit and adds an optional mystery you piece together from clues and a ritual you perform on the bell. See [docs/V2_RELEASE_NOTES.md](docs/V2_RELEASE_NOTES.md). V1 is tagged `v1-baseline`.
+A first play takes about 15 to 25 minutes. That is an estimate; there have been no timed playtests yet.
+
+**This is Prototype V2.2** (branch `feature/watchmans-crossing`, built on V2's `prototype-v2`). It adds **the Watchman's Crossing** between the Sentinel and the tower:
+- an inventory, and a drawbridge to repair with tools found in the guard's watchhouse;
+- a winch to work at safe tension;
+- a short stealth crossing past the Watchman's Shadow, using light and cover;
+- an optional mystery that can put the Shadow to rest.
+
+See [docs/V2_2_CHANGELOG.md](docs/V2_2_CHANGELOG.md) and [docs/WATCHMANS_CROSSING_DESIGN.md](docs/WATCHMANS_CROSSING_DESIGN.md).
+
+V2 fixed the defects from the independent QA audit and added the well mystery and the bell ritual ([docs/V2_RELEASE_NOTES.md](docs/V2_RELEASE_NOTES.md)). V1 is tagged `v1-baseline`.
 
 ![The village square at sunset](docs/screenshots/07_village_sunset.png)
 
@@ -14,13 +30,13 @@ A short medieval dark-fantasy mystery made in **Godot 4.7.2** (GDScript, Compati
 2. Open the editor, choose **Import**, and select `project.godot` in this folder.
 3. Press **F5** to play from the title screen. To test one area, open it in `scenes/world/` and press **F6**.
 
-Run the tests (48 tests, about 90 s):
+Run the tests (75 tests in 11 suites, about 10 minutes; add `-- --suite=test_crossing` for one suite, or `--test=sneaking` for matching tests):
 
 ```powershell
 & "C:\Users\user\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --headless --path . res://tests/test_runner.tscn
 ```
 
-Run the visual tour, which plays through the whole game in a window, checks that every ending completes, and saves screenshots to `docs/screenshots/v2/`. Add `-- --only=story`, `v2` or `endings` to run one section.
+Run the visual tour, which plays through the whole game in a window, checks that every ending completes, and saves screenshots to `docs/screenshots/v2/`. The crossing's section saves to `docs/screenshots/v2_2/`. Add `-- --only=story`, `v2`, `crossing` or `endings` to run one section.
 
 ```powershell
 & "C:\Users\user\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --path . res://tests/tour.tscn
@@ -36,28 +52,36 @@ Export templates for 4.7.2 are installed on this machine. *Project → Export* h
 | Interact | E | A |
 | Listen to the Echo | F | X |
 | Journal | J | Y |
+| Inventory (V2.2) | I | Back / View |
+| Lantern shutter (V2.2) | L | LB |
 | Advance dialogue | Enter / Space / E | A |
 | Pause | Esc | Start |
 | Fullscreen | F11 | |
 
-Inside the journal: W/S scrolls and A/D switches pages. On the reconstruction board: W/S chooses an answer and E decides. In the bell ritual: W/S sings higher or lower and E sings the circled note. Esc steps back from any of them. Gamepad bindings are untested.
+Inside the journal: W/S scrolls and A/D switches pages. On the reconstruction board: W/S chooses an answer and E decides. In the bell ritual: W/S sings higher or lower and E sings the circled note.
+
+V2.2 screens:
+- **Inventory:** arrows/WASD choose, E selects and does an action (Inspect, Hold, Combine, Shutter). The mouse works too.
+- **Winch:** hold A/D to slacken or tighten (or hold the on-screen labels), E releases the weight.
+
+Esc steps back from any of them. Gamepad bindings are untested.
 
 ## Folder structure
 
 ```
 project.godot            settings, input map, autoloads
-scenes/world/            the five areas (village, forge, chapel, mist_path, bell_tower)
+scenes/world/            seven areas (village, forge, chapel, mist_path, crossing, watchhouse, bell_tower)
 scenes/characters/       player.tscn, npc.tscn (one NPC scene for everyone)
 scenes/interactables/    drop-in Interactable / EchoPoint / AreaExit / StoryTrigger
 scenes/props/            82 props (each with sprite, collision, optional light)
 scenes/ui/, scenes/main/ HUD, dialogue box, journal, menus, prologue, ending
 scripts/autoload/        GameState, QuestManager, DialogueManager, SaveManager, ...
 scripts/world/           game_area.gd (base) + one script per area
-scripts/systems/         seal_puzzle.gd, mist_pulse.gd, resonance_ritual.gd (V2)
+scripts/systems/         seal_puzzle.gd, mist_pulse.gd, resonance_ritual.gd (V2), winch_puzzle.gd (V2.2)
 data/                    ALL story content as JSON (dialogue, quests, documents, endings, flags,
-                         reconstructions)
+                         reconstructions, items)
 assets/                  generated art, font, shaders, audio
-tests/                   test runner, 9 suites, shared driver, V1 save fixtures, visual tour
+tests/                   test runner, 11 suites, shared driver, V1 save fixtures, visual tour
 tools/                   Python generators for art, scenes and audio (ignored by Godot)
 docs/                    GAME_DESIGN, ARCHITECTURE, QA_REPORT, NEXT_STEPS, screenshots
 ```
@@ -128,9 +152,32 @@ cd ..\build; python build_resources.py; python build_ui.py; python levels.py
 cd ..\audio; python generate_audio.py
 ```
 
-⚠️ `levels.py` rewrites the five area scenes, so skip it once you've edited areas in the editor.
+⚠️ `levels.py` rewrites the seven area scenes, so skip it once you've edited areas in the editor.
 
-## Status (Prototype V2)
+## Status (Prototype V2.2)
+
+- **Working and tested:**
+  - The Watchman's Crossing, played through on both routes past the Sentinel: the repair and the winch, sneaking past the Shadow, being caught and recovering, and the optional Last Promise.
+  - The inventory.
+  - Old saves.
+  - Leaving mid-scene.
+  - The tests cover all of it: 75 automated tests, a windowed tour of 35 screenshots, and a web build played in a browser.
+- **Not yet done:**
+  - No human playtest of the crossing yet ([docs/V2_2_PLAYTEST_GUIDE.md](docs/V2_2_PLAYTEST_GUIDE.md)).
+  - The tuning values are first-pass.
+  - Browser frame rate and smoothness are unverified.
+  - Gamepad is untested.
+  - Details: [docs/WATCHMANS_CROSSING_QA.md](docs/WATCHMANS_CROSSING_QA.md).
+
+| V2.2 document | For |
+|---|---|
+| [docs/V2_2_CHANGELOG.md](docs/V2_2_CHANGELOG.md) | Features, source changes, integration decisions, compatibility |
+| [docs/WATCHMANS_CROSSING_DESIGN.md](docs/WATCHMANS_CROSSING_DESIGN.md) | The encounter: places, bridge, winch, lantern, Shadow, the Last Promise |
+| [docs/INVENTORY_SYSTEM.md](docs/INVENTORY_SYSTEM.md) | Items, use, combinations, persistence, adding items |
+| [docs/WATCHMANS_CROSSING_QA.md](docs/WATCHMANS_CROSSING_QA.md) | Test cases, actual results, known issues, what is unverified |
+| [docs/V2_2_PLAYTEST_GUIDE.md](docs/V2_2_PLAYTEST_GUIDE.md) | Running a playtest of the crossing with 3–5 new players |
+
+### Prototype V2 (unchanged by V2.2)
 
 - **Working and tested:**
   - The complete game from the title screen to all three endings.

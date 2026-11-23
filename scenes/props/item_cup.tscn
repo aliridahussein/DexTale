@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/props/item_cup.png" id="1_item_cup_png"]
+
+[node name="ItemCup" type="Node2D"]
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_item_cup_png")
+centered = false
+offset = Vector2(-7, -7)

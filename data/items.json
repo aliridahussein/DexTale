@@ -1,0 +1,98 @@
+{
+	"_about": "Inventory items (V2.2). Ownership is never stored twice: 'owned' is a condition over story flags (GameState.check), so the inventory is always a view of the save. 'found_flag' is set when the item is picked up and never cleared, which stops pickups repeating; items are used up by flags that make 'owned' false (e.g. the rope is gone once 'made_hooked_line' is set). 'actions' lists what the inventory offers: inspect, hold (to use on something in the world), combine, light. Icons are 16x16. See docs/INVENTORY_SYSTEM.md.",
+
+	"items": [
+		{
+			"id": "tuning_pin",
+			"name": "Iron Tuning Pin",
+			"icon": "res://assets/sprites/ui/icon_pin.png",
+			"owned": "has_tuning_pin, !pin_installed",
+			"actions": ["inspect", "hold", "combine"],
+			"description": "Mara's family kept it for generations. A bell ringed by thirteen marks is stamped into its head.",
+			"inspect": "Heavier than it looks, and cold, the way iron is cold after a night outside. It was made for the bell, and only the bell."
+		},
+		{
+			"id": "gate_key",
+			"name": "Iron Key",
+			"icon": "res://assets/sprites/ui/icon_key.png",
+			"owned": "has_gate_key",
+			"actions": ["inspect", "hold", "combine"],
+			"description": "Orin hid it in the spine of the Bellkeeper's Ledger. A small bell is stamped on the bow.",
+			"inspect": "It opened the north gate. Orin's keys were always for one door each."
+		},
+		{
+			"id": "tobin_lantern",
+			"name": "Tobin's Lantern",
+			"icon": "res://assets/sprites/ui/icon_lantern.png",
+			"owned": "has_tobin_lantern",
+			"actions": ["inspect"],
+			"description": "\"Bring it back lit.\" You keep it wrapped in your coat, saving the wick for the road home.",
+			"inspect": "Tobin's lamp from the square. It lit the Mistbound Path for you. It's for the way back."
+		},
+		{
+			"id": "old_lantern",
+			"name": "Old Lantern",
+			"icon": "res://assets/sprites/ui/icon_old_lantern.png",
+			"owned": "found_lantern",
+			"found_flag": "found_lantern",
+			"actions": ["inspect", "light", "combine"],
+			"description": "A watchman's lantern with an iron shutter. Its flame has burned without oil for longer than anyone remembers. (L: open or close the shutter.)",
+			"inspect": "The flame doesn't flicker when you breathe on it. Whatever keeps it burning isn't oil. The shutter slides closed with a soft iron click."
+		},
+		{
+			"id": "rope",
+			"name": "Strong Rope",
+			"icon": "res://assets/sprites/ui/icon_rope.png",
+			"owned": "found_rope, !made_hooked_line",
+			"found_flag": "found_rope",
+			"actions": ["inspect", "hold", "combine"],
+			"description": "A coil of tarred rope, still sound. Long enough to reach down over an edge.",
+			"inspect": "Good hemp, tarred against the damp. On its own it would only slide off smooth iron."
+		},
+		{
+			"id": "hook",
+			"name": "Iron Hook",
+			"icon": "res://assets/sprites/ui/icon_hook.png",
+			"owned": "found_hook, !made_hooked_line",
+			"found_flag": "found_hook",
+			"actions": ["inspect", "hold", "combine"],
+			"description": "A heavy grappling hook with an eye for a line. Made to catch and hold.",
+			"inspect": "The eye at the top is worn smooth. Something used to be tied through it."
+		},
+		{
+			"id": "hooked_line",
+			"name": "Hooked Line",
+			"icon": "res://assets/sprites/ui/icon_hooked_line.png",
+			"owned": "made_hooked_line, !chain_secured",
+			"actions": ["inspect", "hold", "combine"],
+			"description": "The iron hook knotted to the strong rope. Something to catch what has fallen out of reach.",
+			"inspect": "A line that can go down over an edge and come back up holding something."
+		},
+		{
+			"id": "token",
+			"name": "Watchman's Token",
+			"icon": "res://assets/sprites/ui/icon_token.png",
+			"owned": "found_token, !token_placed",
+			"found_flag": "found_token",
+			"actions": ["inspect", "hold"],
+			"description": "An old iron token. Two initials have been scratched into its surface: E. and a letter worn too smooth to read.",
+			"inspect_reconstruction": "watchman_promise",
+			"inspect": "Someone carried this for a long time. The edge is worn where a thumb rubbed it."
+		}
+	],
+
+	"combinations": [
+		{"items": ["rope", "hook"], "result": "hooked_line", "set": {"made_hooked_line": true},
+			"text": "You knot the hook to the rope's end. Now it can catch something out of reach."}
+	],
+
+	"refusals": [
+		{"items": ["tuning_pin", "rope"], "text": "A fine instrument, but not the tool for this job."},
+		{"items": ["old_lantern", "hook"], "text": "The hook has nowhere to attach to the lantern."},
+		{"items": ["tuning_pin", "*"], "text": "The pin is for the bell. You won't risk it on anything else."},
+		{"items": ["gate_key", "*"], "text": "The key did its one job. It isn't a tool."},
+		{"items": ["old_lantern", "*"], "text": "The lantern is better off in your hand."}
+	],
+	"fallback": "Those don't go together.",
+	"use_fallback": "That won't help here."
+}

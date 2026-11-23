@@ -53,7 +53,8 @@ func _refresh_save() -> void:
 		var minutes := int(float(info.get("play_time", 0.0)) / 60.0)
 		var area := str(info.get("area", ""))
 		var names := {"village": "Village square", "forge": "Mara's forge", "chapel": "The chapel",
-			"mist_path": "The Mistbound Path", "bell_tower": "The bell tower"}
+			"mist_path": "The Mistbound Path", "crossing": "The Watchman's Crossing", "watchhouse": "The watchhouse",
+			"bell_tower": "The bell tower"}
 		save_info.text = "Saved: %s  -  %d min" % [names.get(area, area), minutes]
 		if SaveManager.last_read_source != "main":
 			save_info.text += "  (restored from backup)"

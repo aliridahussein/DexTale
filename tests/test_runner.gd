@@ -1,7 +1,7 @@
 extends Node
 ## Minimal test runner. Run headless:
 ##   godot --headless --path . res://tests/test_runner.tscn
-## Optional filter:  -- --suite=test_data
+## Optional filters:  -- --suite=test_data   -- --test=sneaking (method names containing it)
 ## Each suite is a script in res://tests/ named test_*.gd with methods test_*().
 ## Test methods may be coroutines (use await). Exit code: 0 = all passed.
 
@@ -14,6 +14,8 @@ const SUITES := [
 	"res://tests/test_ui.gd",
 	"res://tests/test_endings.gd",
 	"res://tests/test_v2.gd",
+	"res://tests/test_inventory.gd",
+	"res://tests/test_crossing.gd",
 	"res://tests/test_playthrough.gd",
 ]
 
@@ -50,9 +52,12 @@ func _ready() -> void:
 		get_tree().current_scene = null
 	await get_tree().process_frame
 	var only := ""
+	var only_test := ""
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--suite="):
 			only = arg.substr(8)
+		elif arg.begins_with("--test="):
+			only_test = arg.substr(7)
 	print("\n=== THE THIRTEENTH BELL - test run ===")
 	for path in SUITES:
 		if only != "" and not path.contains(only):
@@ -67,7 +72,7 @@ func _ready() -> void:
 		print("\n-- %s" % path.get_file())
 		for m in suite.get_method_list():
 			var mname: String = m["name"]
-			if not mname.begins_with("test_"):
+			if not mname.begins_with("test_") or (only_test != "" and not mname.contains(only_test)):
 				continue
 			_current = "%s.%s" % [path.get_file().get_basename(), mname]
 			var before := failed

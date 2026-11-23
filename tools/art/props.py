@@ -1519,6 +1519,315 @@ def stairs_down():
     return cv
 
 
+# ================================================ V2.2: the Watchman's Crossing ===
+def watchhouse_ext():
+    """A small guard's watchhouse: stone base, timber walls, slate roof, a lit window."""
+    return house_side_gable(42, 22, 14, seed=301, roof="sl", windows=((28, 5),), door_x=7, lit=True)
+
+
+def drawbridge_raised():
+    """The drawbridge standing up at the near edge: we see its underside."""
+    cv = Canvas(38, 58)
+    soft_shadow(cv, 19, 56, 18, 2)
+    for i, x in enumerate(range(2, 36, 5)):
+        tone = ("wd2", "wd3", "wd2", "wd1")[i % 4]
+        cv.rect(x, 4, 5, 50, tone)
+        cv.vline(x, 4, 50, "wd1")
+        cv.px(x + 2, 10 + (i * 7) % 30, "wd4")
+    for y in (10, 30, 48):
+        cv.rect(2, y, 34, 3, "ir1")
+        cv.hline(2, y, 34, "ir3")
+        for x in range(4, 36, 6):
+            cv.px(x, y + 1, "ir4")
+    cv.rect(0, 52, 38, 4, "ir2")   # the hinge beam
+    cv.hline(0, 52, 38, "ir3")
+    cv.rect(1, 0, 4, 5, "ir2")      # chain rings at the top corners
+    cv.rect(33, 0, 4, 5, "ir2")
+    cv.outline("ink")
+    return cv
+
+
+def drawbridge_deck(weak=()):
+    """The lowered bridge, planks running across, seen from above (36 x 92)."""
+    cv = Canvas(36, 92)
+    cv.rect(0, 0, 36, 92, "wd1")
+    for i, y in enumerate(range(0, 92, 5)):
+        tone = ("wd3", "wd2", "wd3", "wd4")[i % 4]
+        cv.rect(3, y, 30, 4, tone)
+        cv.hline(3, y + 4, 30, "ink2")
+        cv.px(6, y + 1, "ir3")
+        cv.px(29, y + 1, "ir3")
+        for (wi, side) in weak:  # a rotten half-plank, darker and split
+            if i == wi:
+                x0 = 3 if side == "l" else 18
+                cv.rect(x0, y, 15, 4, "wd1")
+                cv.line(x0 + 3, y + 1, x0 + 11, y + 3, "ink2")
+    cv.rect(0, 0, 3, 92, "wd1")      # side beams
+    cv.rect(33, 0, 3, 92, "wd1")
+    cv.vline(1, 0, 92, "wd2")
+    cv.vline(34, 0, 92, "wd2")
+    for y in (2, 46, 88):
+        cv.rect(0, y, 36, 2, "ir2")
+    cv.outline("ink")
+    return cv
+
+
+def weak_plank_mark():
+    """Overlay drawn over a rotten plank; the lantern makes it visible."""
+    cv = Canvas(15, 4)
+    cv.line(1, 1, 7, 3, "fi3")
+    cv.line(7, 3, 13, 0, "fi3")
+    cv.px(4, 3, "fi2")
+    cv.px(11, 2, "fi2")
+    return cv
+
+
+def winch():
+    """The lifting winch: a drum on a timber frame and a spoked handwheel.
+    Frames: broken, repaired, turning A, turning B."""
+    frames = []
+    for state in ("broken", "fixed", "turn1", "turn2"):
+        cv = Canvas(36, 38)
+        soft_shadow(cv, 18, 36, 17, 2)
+        for x in (3, 28):                       # A-frame posts
+            cv.rect(x, 8, 4, 28, "wd2")
+            cv.vline(x, 8, 28, "wd3")
+        cv.rect(2, 32, 32, 4, "wd1")
+        cv.hline(2, 32, 32, "wd3")
+        cv.rect(6, 12, 22, 9, "ir2")            # the drum
+        cv.hline(6, 12, 22, "ir3")
+        cv.hline(6, 20, 22, "ir1")
+        wraps = 6 if state != "broken" else 3
+        for k in range(wraps):
+            cv.vline(8 + k * 3, 13, 7, "ir3")
+            cv.px(8 + k * 3, 15, "ink2")
+        if state == "broken":
+            cv.line(18, 21, 22, 30, "ir3")      # the chain end hangs loose
+            cv.px(22, 31, "ir4")
+            cv.px(23, 32, "ink")
+            cv.line(20, 20, 24, 18, "ink")       # cracked coupling
+        else:
+            cv.rect(14, 21, 6, 3, "hy2")         # rope lashing the chain to the drum
+            cv.hline(14, 22, 6, "hy1")
+        cx, cy, r = 28, 16, 7                    # handwheel
+        cv.ellipse(cx, cy, r, r, "wd2")
+        cv.ellipse(cx, cy, r - 2, r - 2, "wd1")
+        ang0 = {"broken": 0.2, "fixed": 0.2, "turn1": 0.6, "turn2": 1.0}[state]
+        for k in range(4):
+            a = ang0 + k * math.pi / 2
+            cv.line(cx, cy, int(round(cx + math.cos(a) * (r - 1))), int(round(cy + math.sin(a) * (r - 1))), "wd4")
+        cv.ellipse(cx, cy, 1.5, 1.5, "ir3")
+        cv.outline("ink")
+        frames.append(cv)
+    return frames
+
+
+def counterweight():
+    """A stone counterweight in a timber gantry. Frames: raised, lowered."""
+    frames = []
+    for state in ("up", "down"):
+        cv = Canvas(24, 46)
+        soft_shadow(cv, 12, 44, 11, 2)
+        cv.rect(2, 2, 3, 42, "wd2")
+        cv.rect(19, 2, 3, 42, "wd2")
+        cv.rect(1, 1, 22, 3, "wd1")
+        cv.hline(1, 1, 22, "wd3")
+        by = 8 if state == "up" else 26
+        cv.vline(11, 4, by - 4, "ir3")
+        cv.vline(12, 4, by - 4, "ir2")
+        stone_wall(cv, 6, by, 12, 12, bw=6, bh=4, seed=313, moss=0.2)
+        cv.rect(6, by - 1, 12, 1, "ir2")
+        cv.outline("ink")
+        frames.append(cv)
+    return frames
+
+
+def chain_end():
+    """The bridge's lower chain at the edge. Frames: broken and hanging, secured."""
+    frames = []
+    for state in ("loose", "secured"):
+        cv = Canvas(22, 26)
+        cv.rect(8, 18, 8, 5, "st2")               # iron cleat on a stone block
+        cv.hline(8, 18, 8, "st3")
+        cv.rect(10, 15, 4, 3, "ir2")
+        if state == "loose":
+            for y in range(2, 26, 3):              # chain slipping over the edge
+                x = 4 + (y // 3) % 2
+                cv.rect(x, y, 3, 3, "ir2")
+                cv.px(x + 1, y + 1, "ink")
+            cv.rect(4, 0, 3, 2, "ir4")             # the broken link
+            cv.px(7, 1, "ir4")
+        else:
+            for x in range(2, 14, 3):              # chain drawn tight to the cleat
+                cv.rect(x, 12, 3, 3, "ir2")
+                cv.px(x + 1, 13, "ink")
+            cv.rect(13, 11, 6, 4, "hy2")           # rope and hook binding it
+            cv.hline(13, 12, 6, "hy1")
+            cv.line(18, 11, 20, 8, "ir3")
+        cv.outline("ink")
+        frames.append(cv)
+    return frames
+
+
+def stone_pillar(seed=0):
+    """A broken stone support by the crossing (cover from the Shadow's sight)."""
+    cv = Canvas(18, 36)
+    soft_shadow(cv, 9, 34, 9, 2)
+    stone_wall(cv, 2, 6, 14, 28, bw=7, bh=5, seed=330 + seed, moss=0.25)
+    cv.rect(1, 3, 16, 4, "st2")
+    cv.hline(1, 3, 16, "st4")
+    cv.rect(3 + seed % 3, 0, 8, 3, "st1")   # broken top
+    cv.outline("ink")
+    return cv
+
+
+def watch_lantern():
+    """The tall lantern on the far side. Frames: dark, lit A, lit B."""
+    frames = []
+    for f in range(3):
+        cv = Canvas(14, 44)
+        soft_shadow(cv, 7, 42, 5, 1.5)
+        cv.rect(6, 10, 2, 32, "ir1")
+        cv.vline(6, 10, 32, "ir2")
+        cv.rect(4, 40, 6, 2, "ir1")
+        cv.rect(3, 2, 8, 2, "ir2")             # hood
+        cv.rect(4, 4, 6, 7, "ir1")
+        glow = [("bl0", "bl1"), ("fi3", "fi4"), ("fi2", "fi5")][f]
+        cv.rect(5, 5, 4, 5, glow[0])
+        cv.rect(6, 6, 2, 3, glow[1])
+        cv.rect(4, 11, 6, 1, "ir2")
+        cv.outline("ink")
+        frames.append(cv)
+    return frames
+
+
+def waiting_post():
+    """The old post at the near end of the bridge, where the watchman waited.
+    Frames: bare, with the token on its shelf and a small flame lit."""
+    frames = []
+    for state in ("bare", "token"):
+        cv = Canvas(14, 38)
+        soft_shadow(cv, 7, 36, 5, 1.5)
+        cv.rect(5, 6, 4, 30, "wd2")
+        cv.vline(5, 6, 30, "wd3")
+        cv.vline(8, 6, 30, "wd1")
+        for y in (12, 20, 27):
+            cv.hline(5, y, 4, "wd1")           # notches cut into it
+        cv.rect(2, 16, 10, 2, "wd3")           # a small shelf
+        cv.rect(1, 0, 12, 2, "ir2")
+        cv.rect(2, 2, 2, 5, "ir1")             # an empty lantern hook
+        if state == "token":
+            cv.rect(6, 14, 3, 2, "ir3")
+            cv.px(7, 13, "ir4")
+            cv.rect(9, 3, 4, 4, "fi3")
+            cv.px(10, 4, "fi5")
+        cv.outline("ink")
+        frames.append(cv)
+    return frames
+
+
+def rope_peg():
+    """A coil of rope hanging on a wall peg. Frames: with rope, empty peg."""
+    frames = []
+    for state in ("rope", "empty"):
+        cv = Canvas(16, 22)
+        cv.rect(7, 1, 3, 3, "wd1")
+        cv.hline(6, 3, 5, "wd3")
+        if state == "rope":
+            cv.ellipse(8, 11, 6, 7, "hy1")
+            cv.ellipse(8, 11, 4.5, 5.5, "hy2")
+            cv.ellipse(8, 11, 3, 4, "hy1")
+            cv.ellipse(8, 11, 1.5, 2.5, "ink2")
+            for y in (6, 10, 14):
+                cv.px(3, y, "hy3")
+                cv.px(13, y, "hy3")
+            cv.line(8, 18, 9, 21, "hy2")
+        cv.outline("ink")
+        frames.append(cv)
+    return frames
+
+
+def small_item(kind):
+    """Small world sprites for things that can be taken."""
+    if kind == "hook":
+        cv = Canvas(12, 14)
+        cv.ellipse(6, 2, 1.8, 1.8, "ir3")
+        cv.rect(5, 4, 2, 6, "ir3")
+        cv.line(5, 10, 2, 7, "ir3")
+        cv.line(6, 10, 9, 7, "ir2")
+        cv.px(2, 6, "ir4")
+        cv.px(9, 6, "ir4")
+    elif kind == "lantern":
+        cv = Canvas(10, 14)
+        cv.rect(4, 0, 2, 2, "ir3")
+        cv.poly([(1, 4), (5, 1), (9, 4)], "ir2")
+        cv.rect(2, 4, 6, 6, "fi3")
+        cv.rect(3, 5, 4, 4, "fi5")
+        cv.vline(1, 4, 6, "ir2")
+        cv.vline(8, 4, 6, "ir2")
+        cv.rect(1, 10, 8, 2, "ir2")
+    elif kind == "token":
+        cv = Canvas(8, 6)
+        cv.ellipse(4, 3, 3, 2.4, "ir2")
+        cv.ellipse(4, 3, 2, 1.4, "ir3")
+        cv.px(3, 2, "ir4")
+    elif kind == "cup":
+        cv = Canvas(14, 8)
+        cv.ellipse(5, 5, 4, 2, "cr1")          # a plate with a dry crust
+        cv.rect(3, 3, 3, 2, "dt3")
+        cv.rect(9, 1, 4, 5, "ir3")             # a tin cup, half full
+        cv.rect(10, 2, 2, 1, "dt1")
+        cv.vline(13, 2, 3, "ir2")
+    elif kind == "scarf":
+        cv = Canvas(12, 6)
+        cv.rect(1, 1, 10, 4, "bl2")            # a small folded scarf, child-sized
+        cv.hline(1, 2, 10, "bl3")
+        cv.rect(8, 4, 2, 2, "rd2")
+    else:  # tally marks scratched into the wall
+        cv = Canvas(34, 12)
+        for g in range(5):
+            x0 = 1 + g * 7
+            for k in range(4):
+                cv.vline(x0 + k, 2, 7, "pl0")
+            cv.line(x0 - 1, 7, x0 + 4, 3, "pl0")
+        return cv
+    cv.outline("ink")
+    return cv
+
+
+def chair_back():
+    """A chair seen from behind: it faces the window, away from the room."""
+    cv = Canvas(14, 20)
+    soft_shadow(cv, 7, 18, 6, 1.5)
+    for x in (2, 10):
+        cv.rect(x, 12, 2, 6, "wd1")
+    cv.rect(2, 9, 10, 4, "wd3")                # the seat, mostly hidden
+    cv.rect(2, 0, 10, 11, "wd2")               # the back, toward us
+    cv.hline(2, 0, 10, "wd4")
+    for x in (4, 7, 10):
+        cv.vline(x, 2, 8, "wd1")
+    cv.outline("ink")
+    return cv
+
+
+def build_crossing_props():
+    register("watchhouse", watchhouse_ext(), (23, 38), collide=(-21, -14, 42, 12))
+    register("drawbridge_raised", drawbridge_raised(), (19, 56))
+    register("drawbridge_deck", drawbridge_deck(weak=((6, "l"), (11, "r"))), (18, 92))
+    register("weak_plank", weak_plank_mark(), (7, 2))
+    register("winch", winch(), (18, 36), collide=(-15, -6, 30, 6))
+    register("counterweight", counterweight(), (12, 44), collide=(-10, -4, 20, 4))
+    register("chain_end", chain_end(), (11, 24))
+    for i in range(3):
+        register(f"stone_pillar_{i}", stone_pillar(i), (9, 34), collide=(-8, -10, 16, 10))
+    register("watch_lantern", watch_lantern(), (7, 42), collide=(-2, -2, 4, 3))
+    register("waiting_post", waiting_post(), (7, 36), collide=(-2, -2, 4, 3))
+    register("rope_peg", rope_peg(), (8, 21))
+    for kind in ("hook", "lantern", "token", "cup", "scarf", "tally"):
+        register(f"item_{kind}", small_item(kind), (small_item(kind).w // 2, small_item(kind).h - 1))
+    register("chair_back", chair_back(), (7, 18), collide=(-5, -3, 10, 3))
+
+
 # ============================================================ build all ===
 def build_all():
     # nature
@@ -1616,6 +1925,7 @@ def build_all():
     register("window_arch", window_arch(), (15, 45), ysort=False)
     register("desk", desk(), (17, 22), collide=(-16, -8, 32, 8))
     register("chair", chair(), (7, 18), collide=(-5, -3, 10, 3))
+    build_crossing_props()  # V2.2 (registered last so earlier props stay identical)
     register("stairs_down", stairs_down(), (17, 25), ysort=False)
     path = os.path.join(ROOT, "tools", "build", "props_manifest.json")
     with open(path, "w") as f:

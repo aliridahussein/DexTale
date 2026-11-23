@@ -1,0 +1,74 @@
+{
+	"_about": "V2.2: the Watchman's Crossing and its watchhouse. Most of this encounter is shown through objects, animation and the Echo; lines are kept short on purpose.",
+
+	"crossing_arrive": [
+		["rowan", "The tower's right there. And the bridge is up."]
+	],
+
+	"crossing_chain": [
+		["rowan", "The bridge is still intact. The lifting chain isn't."],
+		["narrator", "The lower chain has torn free of the winch. Its broken end hangs over the edge, just out of reach."]
+	],
+
+	"crossing_winch": [
+		{"if": "bridge_lowered", "goto": "down"},
+		{"if": "chain_secured", "goto": "ready"},
+		["rowan", "The bridge is still intact. The lifting chain isn't."],
+		["narrator", "The drum turns freely. Nothing connects it to the bridge any more. Released now, the weight would only drop the bridge into the ravine."],
+		{"end": true},
+		{"label": "ready"},
+		{"event": "winch_puzzle", "hide": true},
+		{"end": true},
+		{"label": "down"},
+		["narrator", "The bridge is down and the winch is locked. The counterweight hangs still."]
+	],
+
+	"crossing_winch_echo": [
+		{"event": "winch_memory", "hide": true},
+		["rowan", "Hook first. Then the wheel."]
+	],
+
+	"crossing_post": [
+		["narrator", "An old post at the bridge head: a small shelf, an empty lantern hook. Notches are cut down its side, one above another."],
+		{"if": "watchman_promise_known", "say": "rowan", "text": "This is where he waited."}
+	],
+
+	"crossing_post_echo": [
+		{"event": "post_memory", "hide": true},
+		["narrator", "The memory breaks off, like a wick pinched out."]
+	],
+
+	"crossing_watchhouse": [
+		["narrator", "The watchhouse. Smoke-dark beams, a window still lit from inside, a door that was never locked."]
+	],
+
+	"watch_log_read": [
+		["narrator", "A guard's desk. A tin cup, half full and long dry, beside a plate with a crust nobody came back for. An open logbook."],
+		{"event": "open_document", "args": ["watch_log"]}
+	],
+
+	"watch_tally": [
+		{"set": {"seen_tally": true}},
+		["narrator", "Scratches on the wall in groups of five. Nights, counted. Hundreds of them, and then they simply stop."]
+	],
+
+	"watch_shelf": [
+		["narrator", "Spare wicks, a whetstone, a folded blue scarf, child-sized. Someone folded it with care and never unfolded it again."]
+	],
+
+	"watch_chair_echo": [
+		{"event": "chair_memory", "hide": true},
+		["child", "[wave amp=8 freq=2]Will you still be here when I come back?[/wave]"],
+		["edrin", "Until the last lantern goes out."]
+	],
+
+	"watch_promise_known": [
+		["rowan", "He wasn't guarding the bridge. He was waiting at it, for someone who promised to come back."],
+		{"event": "toast", "args": ["Reconstructed: The Watchman's Promise", "quill"]}
+	],
+
+	"watch_resolved": [
+		["narrator", "He no longer remembers her face. But he remembers that he waited."],
+		{"event": "toast", "args": ["The Watchman's Shadow is at peace", "eye"]}
+	]
+}

@@ -33,6 +33,10 @@ FAMILIES = {
     "forgefloor": (["forgefloor_0", "forgefloor_1", "forgefloor_2"], [], 0.0),
     "plank": (["plank_0", "plank_1", "plank_2"], [], 0.0),
     "steps": (["steps_0", "steps_1"], [], 0.0),
+    # V2.2: the ravine at the Watchman's Crossing (not solid; the scene adds collision)
+    "chasm_face": (["chasm_face_0", "chasm_face_1"], [], 0.0),
+    "chasm": (["chasm_0", "chasm_1", "chasm_2"], [], 0.0),
+    "chasm_lip": (["chasm_lip_0", "chasm_lip_1"], [], 0.0),
 }
 PATHLIKE = ("cobble", "cobble_dark", "dirt", "steps")
 
@@ -123,6 +127,20 @@ class Level:
         self.nodes.append({"group": "Interactions", "kind": "area", "script": "interactables/echo_point.gd",
                            "pos": (x, y), "name": name, "r": r, "size": None, "props": p,
                            "texture": texture, "atlas": atlas})
+
+    def item_target(self, name, x, y, conversation="", accepts="", prompt="Inspect", r=12, **props):
+        """V2.2: something an inventory item can be used on (scripts/interactables/item_target.gd)."""
+        self.nodes.append({"group": "Interactions", "kind": "area", "script": "interactables/item_target.gd",
+                           "pos": (x, y), "name": name, "r": r, "size": None,
+                           "props": {"prompt": prompt, "conversation_id": conversation, "accepts": accepts, **props}})
+
+    def pickup(self, name, x, y, item_id, sprite_path="", r=10, **props):
+        """V2.2: an item Rowan can take (scripts/interactables/item_pickup.gd)."""
+        p = {"item_id": item_id, **props}
+        if sprite_path:
+            p["sprite_path"] = Raw(f'NodePath("{sprite_path}")')
+        self.nodes.append({"group": "Interactions", "kind": "area", "script": "interactables/item_pickup.gd",
+                           "pos": (x, y), "name": name, "r": r, "size": None, "props": p})
 
     def exit(self, name, x, y, w, h, target, spawn, **props):
         self.nodes.append({"group": "Triggers", "kind": "area", "script": "interactables/area_exit.gd",

@@ -88,6 +88,14 @@ def build_sprite_frames():
     }
     sprite_frames("cat", "res://assets/sprites/characters/cat.png", (16, 16), cat_rows,
                   {a: (1.0 if a.startswith("idle") else 6.0) for a in ANIMS})
+    # V2.2: the Watchman's Shadow (rows: down, up, right, left, spear lowered)
+    wm_rows = {}
+    for row, d in enumerate(("down", "up", "right", "left")):
+        wm_rows[f"idle_{d}"] = (row, 1, 0)
+        wm_rows[f"walk_{d}"] = (row, 2, 0)
+    wm_rows["lowered"] = (4, 1, 0)
+    sprite_frames("watchman", "res://assets/sprites/characters/watchman.png", (24, 32), wm_rows,
+                  {a: (1.0 if not a.startswith("walk") else 3.0) for a in wm_rows})
 
 
 # ------------------------------------------------------------------- props --

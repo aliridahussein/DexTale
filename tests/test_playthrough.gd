@@ -106,12 +106,19 @@ func test_full_story_to_the_chorus_ending() -> void:
 	runner.check(SaveManager.save_game(true), "can save in a calm moment")
 	var saved := SaveManager.save_info()
 	runner.check(saved.get("area") == "mist_path" and (saved["flags"] as Dictionary).has("passed_sentinel"), "save holds progress")
+	# --- the Watchman's Crossing (V2.2): mend the bridge, then give the watchman his memory back
+	await step_on("Triggers/ToCrossing")
+	await wait_area("crossing")
+	runner.check(objective() == "cross", "objective: cross the ravine")
+	await complete_crossing(true)
+	runner.check(has("crossing_complete") and has("watchman_resolved"), "crossed, and the watchman is at peace")
+	runner.check(Inventory.has("tuning_pin"), "the tuning pin is still in Rowan's pocket")
 	# --- the tower
-	await step_on("Triggers/ToTower")
-	await wait_area("bell_tower")
-	await use("Interactions/MechanismUse", [0, 0, 0, 0, 0, 2])
+	runner.check(objective() == "truth", "objective: the truth in the tower")
+	await use("Interactions/MechanismUse", [0, 0, 0, 0, 0, 0, 2])
 	runner.check(has("pin_installed") and has("orin_appeared") and has("met_orin_echo"), "Orin's echo appeared")
 	runner.check(has("asked_orin_lullaby") and has("asked_orin_voice") and has("asked_orin_why"), "asked Orin everything")
+	runner.check(has("told_orin_watchman"), "Orin heard about the watchman")
 	runner.check(str(GameState.get_flag("ending_selected")) == "chorus", "the Chorus ending was available and chosen")
 	var t := 0.0
 	while (get_tree().current_scene == null or get_tree().current_scene.name != "Ending") and t < 20.0:
@@ -128,6 +135,7 @@ func test_full_story_to_the_chorus_ending() -> void:
 	runner.check(text.contains("Mara woke humming"), "epilogue remembers asking about the lullaby")
 	runner.check(text.contains("Tobin stopped lighting"), "epilogue remembers the well")
 	runner.check(text.contains("chosen to remember a soldier"), "epilogue remembers the peaceful Sentinel")
+	runner.check(text.contains("He didn't need to be"), "epilogue remembers the watchman (Chorus variant)")
 	runner.check(DialogueManager.missing_events.is_empty(), "no dialogue event lacked a handler: %s" % [DialogueManager.missing_events])
 
 
@@ -178,6 +186,14 @@ func test_endure_route_and_no_softlock() -> void:
 	await play([0])
 	runner.check(has("passed_sentinel") and has("sentinel_endured"), "endured the mist")
 	runner.check(SaveManager.can_save_now(), "saving allowed again")
+	# V2.2: this route also leads on to the crossing, and over it by stealth
+	await until_idle()
+	await step_on("Triggers/ToCrossing")
+	await wait_area("crossing")
+	runner.check(objective() == "cross", "the endure route reaches the crossing")
+	await complete_crossing(false)
+	runner.check(has("crossing_complete") and not has("watchman_resolved"), "crossed past the Shadow unseen")
+	runner.check(objective() == "truth", "objective moves on to the tower")
 
 
 func test_other_endings_play() -> void:

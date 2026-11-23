@@ -29,5 +29,33 @@
 		],
 		"solved_flag": "promise_reconstructed",
 		"solved_line": "That's it. That's what the lamp is for."
+	},
+
+	"watchman_promise": {
+		"title": "The Watchman's Token",
+		"intro": "An iron token, a chair that faces the window, a post at the bridge head.",
+		"question": "What was the Watchman waiting for?",
+		"clues": [
+			{"id": "token", "when": "found_token", "required": true, "title": "The token",
+				"text": "Two initials scratched into iron: E., and one worn away by a thumb.",
+				"missing": "Something small was left behind in the watchhouse."},
+			{"id": "chair", "when": "echo_watch_chair", "required": true, "title": "The chair by the window",
+				"text": "A child: \"Will you still be here when I come back?\" The guard: \"Until the last lantern goes out.\"",
+				"missing": "The chair facing the window remembers something."},
+			{"id": "post", "when": "echo_watch_post", "required": true, "title": "The post by the bridge",
+				"text": "Someone waiting by the lit post. A small figure on the road. The bell. Then nothing.",
+				"missing": "The old post at the bridge head remembers something."},
+			{"id": "tally", "when": "seen_tally", "title": "The wall",
+				"text": "Nights counted in fives, hundreds of them, until they stop."}
+		],
+		"answers": [
+			{"text": "Orders from the bellkeeper.", "rule_out": "chair",
+				"feedback": "He made his promise to a child, not to a superior. \"Until the last lantern goes out.\""},
+			{"text": "Someone who promised to return.", "correct": true},
+			{"text": "A signal to close the bridge.", "rule_out": "post",
+				"feedback": "He kept the lantern lit and watched the road for someone coming, not for a sign to shut it."}
+		],
+		"solved_flag": "watchman_promise_known",
+		"solved_line": "Someone was coming home. The bell rang before they arrived."
 	}
 }

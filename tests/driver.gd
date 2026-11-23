@@ -193,6 +193,144 @@ func solve_board() -> void:
 		t += 0.05
 
 
+# --------------------------------------------- V2.2: the Watchman's Crossing --
+## A careful route over the bridge, around both rotten half-planks (west half
+## at y 250-255, east half at y 275-280; Rowan's feet are 10x6): up the west
+## side, across in the gap between them, up the east side, then up the road.
+## Ends just short of the exit; step_on() then takes Rowan through it.
+const SNEAK_PATH := [Vector2(202, 300), Vector2(202, 268), Vector2(215, 268), Vector2(215, 240),
+	Vector2(208, 214), Vector2(208, 120), Vector2(208, 28)]
+
+
+func take(path: String) -> void:
+	var it := area().get_node(path) as Interactable
+	runner.check(it != null and it.is_available(), "%s can be taken" % path)
+	it.interact(player())
+	await wait(0.6)
+
+
+## Combine two items through the inventory screen, as a player would.
+func combine_in_inventory(a: String, b: String) -> void:
+	UI.open_inventory()
+	var inv: Control = UI.inventory_view
+	inv.set("cursor", Inventory.owned().find(a))
+	inv.call("select")
+	inv.call("do_action", "combine")
+	inv.set("cursor", Inventory.owned().find(b))
+	inv.call("select")
+	inv.call("close")
+	await get_tree().process_frame
+
+
+## Turn the winch into the safe band and release it.
+func operate_winch() -> void:
+	var view: Control = UI.winch_view
+	var t := 0.0
+	while not view.visible and t < 10.0:
+		if DialogueManager.is_waiting_for_advance():
+			DialogueManager.advance()
+		await wait(0.05)
+		t += 0.05
+	runner.check(view.visible, "the winch opens once the chain is secured")
+	var puzzle: WinchPuzzle = view.get("puzzle")
+	while puzzle.zone() != WinchPuzzle.Result.SAFE:
+		view.call("turn", 1, 0.1)
+	view.call("turn", 1, 0.2)
+	runner.check(view.call("release") == WinchPuzzle.Result.SAFE, "released at safe tension")
+	t = 0.0
+	while (DialogueManager.is_active() or GameState.is_input_locked() or view.visible) and t < 30.0:
+		await wait(0.05)
+		t += 0.05
+
+
+## Walks waypoint to waypoint with the real movement code (collision, the
+## weak planks' triggers). Stops early, returning false, if the walk is cut
+## short (caught and sent back) or the area changes.
+func walk_path(points: Array) -> bool:
+	for p in points:
+		if area() == null or area().area_id != "crossing":
+			return false
+		var rowan := player()
+		await rowan.walk_to(p, 1.0)
+		if not is_instance_valid(rowan) or rowan.global_position.distance_to(p) > 3.0:
+			return false
+	return true
+
+
+## Where the Shadow is and what it is doing, for failure messages.
+func shadow_report() -> String:
+	var s := area().get_node_or_null("Objects/Watchman") as WatchmanShadow
+	if s == null:
+		return "no shadow"
+	return "shadow %s state %d awareness %.2f facing %s; Rowan %s; lantern %s" % [s.position.round(), s.state,
+		s.awareness, s.facing.snapped(Vector2(0.01, 0.01)), player().global_position.round(), Inventory.lantern_on()]
+
+
+## Pick an item in the inventory screen and choose Hold, as a player would.
+func hold_in_inventory(id: String) -> void:
+	UI.open_inventory()
+	var inv: Control = UI.inventory_view
+	inv.set("cursor", Inventory.owned().find(id))
+	inv.call("select")
+	inv.call("do_action", "hold")
+	await get_tree().process_frame
+
+
+## Plays the whole crossing: watchhouse items, the repair, the winch, then
+## either sneaking past the Shadow or giving its memory back. Ends in the tower.
+func complete_crossing(peaceful: bool = false) -> void:
+	runner.check(area().area_id == "crossing", "arrived at the crossing")
+	await until_idle()
+	if not has("crossing_arrived"):
+		await step_on("Triggers/Arrive")  # walking up the road: the first look at the raised bridge
+		await play([0])
+	await step_on("Triggers/ToWatchhouse")
+	await wait_area("watchhouse")
+	for p in ["Interactions/LanternTake", "Interactions/RopeTake", "Interactions/HookTake"]:
+		await take(p)
+	if peaceful:
+		await take("Interactions/TokenTake")
+		await listen("Interactions/ChairEcho")
+	await combine_in_inventory("rope", "hook")
+	runner.check(Inventory.has("hooked_line"), "made the Hooked Line")
+	await step_on("Triggers/ToCrossing")
+	await wait_area("crossing")
+	(area().get_node("Interactions/ChainUse") as Interactable).interact(player())
+	await until_idle()
+	runner.check(has("chain_secured") and not Inventory.has("hooked_line"), "the chain is secured with the line")
+	(area().get_node("Interactions/WinchUse") as Interactable).interact(player())
+	await operate_winch()
+	runner.check(has("bridge_lowered"), "the bridge is down")
+	var shadow := area().get_node("Objects/Watchman") as WatchmanShadow
+	if peaceful:
+		await listen("Interactions/PostEcho")
+		UI.inspect_token("watchman_promise")
+		await wait(0.2)
+		var board: Control = UI.reconstruction_view
+		runner.check(board.call("choose", 0) == "ruled_out", "a wrong guess about the watchman can be retried")
+		runner.check(board.call("choose", 1) == "correct", "he was waiting for someone to come back")
+		await play([0])
+		player().teleport(Vector2(172, 342))
+		await frames(2)
+		(area().get_node("Interactions/PostUse") as Interactable).interact(player())
+		await play([0])
+		runner.check(has("watchman_resolved") and not shadow.is_hostile(), "the watchman is at peace")
+	else:
+		# a known moment of the round: at the east post, heading north
+		shadow.start_at(1)
+		if Inventory.lantern_on():
+			player().toggle_lantern()
+	var catches := int(GameState.get_flag("watchman_catches", 0))
+	player().teleport(SNEAK_PATH[0])
+	await frames(2)
+	var whole: bool = await walk_path(SNEAK_PATH)
+	runner.check(whole and int(GameState.get_flag("watchman_catches", 0)) == catches,
+		"crossed the bridge without being caught (%s)" % shadow_report())
+	runner.check(not has("heard_creak"), "stepped around the rotten planks")
+	await step_on("Triggers/ToTower")
+	await wait_area("bell_tower")
+
+
 func press(action: String) -> void:
 	var ev := InputEventAction.new()
 	ev.action = action

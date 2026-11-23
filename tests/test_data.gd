@@ -3,7 +3,7 @@ extends Node
 ## documents, speakers and endings. Catches typos before anyone plays.
 
 const GLOBAL_EVENTS := ["toast", "sfx", "music", "ambience", "shake", "flash", "open_document", "fade_out",
-	"fade_in", "echo_effect", "reconstruct", "caption_here"]
+	"fade_in", "echo_effect", "reconstruct", "caption_here", "give_item"]
 
 var runner: Node
 
@@ -60,6 +60,53 @@ func test_every_flag_is_registered() -> void:
 				used[m.get_string()] = true
 	for flag in used:
 		runner.check(_known(str(flag), reg), "flag '%s' is not documented in data/flags.json" % flag)
+
+
+## V2.2: items.json. Every flag an item, combination or reconstruction uses
+## is registered; icons exist; combinations and refusals name real items.
+func test_items_are_well_formed() -> void:
+	var reg := _flag_registry()
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/items.json"))
+	runner.check(parsed is Dictionary, "data/items.json loads")
+	var data: Dictionary = parsed
+	var ids: Array[String] = []
+	var flag_names: Array[String] = []
+	for d in data.get("items", []):
+		var id := str(d.get("id", ""))
+		runner.check(id != "" and not ids.has(id), "item ids are unique and set (%s)" % id)
+		ids.append(id)
+		runner.check(str(d.get("name", "")) != "" and str(d.get("description", "")) != "", "%s has a name and description" % id)
+		runner.check(ResourceLoader.exists(str(d.get("icon", ""))), "%s icon exists" % id)
+		for a in d.get("actions", []):
+			runner.check(a in Inventory.ACTIONS, "%s: action '%s' is known" % [id, a])
+		for part in str(d.get("owned", "")).split(",", false):
+			flag_names.append(part.strip_edges().trim_prefix("!"))
+		if d.has("found_flag"):
+			flag_names.append(str(d["found_flag"]))
+		if d.has("inspect_reconstruction"):
+			var recon: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/reconstructions.json"))
+			runner.check((recon as Dictionary).has(str(d["inspect_reconstruction"])), "%s: reconstruction exists" % id)
+	for c in data.get("combinations", []):
+		for i in c.get("items", []):
+			runner.check(ids.has(str(i)), "combination uses known item '%s'" % i)
+		runner.check(ids.has(str(c.get("result", ""))), "combination result '%s' is an item" % c.get("result", ""))
+		for k in (c.get("set", {}) as Dictionary):
+			flag_names.append(str(k))
+	for r in data.get("refusals", []):
+		for i in r.get("items", []):
+			runner.check(i == "*" or ids.has(str(i)), "refusal uses known item '%s'" % i)
+		runner.check(str(r.get("text", "")) != "", "every refusal says something")
+	for f in flag_names:
+		runner.check(_known(f, reg), "item flag '%s' is not documented in data/flags.json" % f)
+	var recon_data: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/reconstructions.json"))
+	for rid in (recon_data as Dictionary):
+		if str(rid).begins_with("_"):
+			continue
+		var entry: Dictionary = recon_data[rid]
+		for c in entry.get("clues", []):
+			runner.check(_known(str(c.get("when", "")), reg), "%s clue flag '%s' is registered" % [rid, c.get("when", "")])
+		if entry.has("solved_flag"):
+			runner.check(_known(str(entry["solved_flag"]), reg), "%s solved flag is registered" % rid)
 
 
 func test_quests_are_well_formed() -> void:

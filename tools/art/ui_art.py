@@ -316,6 +316,61 @@ def icon(name: str) -> Canvas:
         cv.vline(5, 5, 7, "ir3")
         cv.vline(10, 5, 7, "ir3")
         cv.rect(4, 12, 8, 2, "ir2")
+    # ---- V2.2: the Watchman's Crossing
+    elif name == "old_lantern":  # a watchman's hooded lantern with a side shutter
+        cv.rect(7, 0, 2, 2, "ir3")
+        cv.poly([(4, 5), (8, 2), (12, 5)], "ir2")
+        cv.hline(4, 5, 9, "ir1")
+        cv.rect(5, 6, 6, 6, "fi2")
+        cv.rect(6, 7, 4, 4, "fi4")
+        cv.px(7, 8, "fi5")
+        cv.vline(4, 6, 6, "ir2")
+        cv.vline(11, 6, 6, "ir2")
+        cv.rect(10, 6, 2, 6, "ir3")  # the shutter, half drawn
+        cv.rect(4, 12, 8, 2, "ir2")
+        cv.hline(5, 14, 6, "ir1")
+    elif name == "rope":  # a coil of tarred rope
+        cv.ellipse(8, 9, 6.5, 4.5, "hy1")
+        cv.ellipse(8, 9, 5, 3.2, "hy2")
+        cv.ellipse(8, 9, 3.4, 2.1, "hy1")
+        cv.ellipse(8, 9, 1.6, 1, "ink2")
+        for x in (3, 6, 10, 13):
+            cv.px(x, 8, "hy3")
+        cv.line(13, 11, 15, 14, "hy2")
+    elif name == "hook":  # a grappling hook with an eye for a line
+        cv.ellipse(8, 2.5, 2, 2, "ir3")
+        cv.px(8, 2, (0, 0, 0, 0))
+        cv.rect(8, 4, 2, 8, "ir3")
+        cv.vline(9, 4, 8, "ir2")
+        cv.line(8, 12, 4, 9, "ir3")
+        cv.line(4, 9, 3, 6, "ir3")
+        cv.line(9, 12, 13, 9, "ir2")
+        cv.line(13, 9, 14, 6, "ir2")
+        cv.px(3, 5, "ir4")
+        cv.px(14, 5, "ir4")
+    elif name == "hooked_line":  # the hook knotted to the rope
+        cv.ellipse(6, 11, 5, 3.4, "hy1")
+        cv.ellipse(6, 11, 3.4, 2.2, "hy2")
+        cv.ellipse(6, 11, 1.8, 1.1, "ink2")
+        cv.line(9, 9, 11, 4, "hy2")
+        cv.ellipse(12, 2.5, 1.5, 1.5, "ir3")
+        cv.vline(12, 4, 5, "ir3")
+        cv.line(12, 9, 10, 8, "ir3")
+        cv.line(12, 9, 15, 7, "ir2")
+        cv.px(15, 6, "ir4")
+    elif name == "token":  # an old iron token with scratched initials
+        cv.ellipse(8, 8, 6.5, 6.5, "ir2")
+        cv.ellipse(8, 8, 5.2, 5.2, "ir3")
+        cv.ellipse(7.5, 7.5, 3.5, 3.5, "ir3")
+        cv.px(4, 4, "ir4")
+        cv.px(5, 3, "ir4")
+        cv.vline(5, 6, 5, "ir1")
+        cv.hline(5, 6, 3, "ir1")
+        cv.hline(5, 8, 2, "ir1")
+        cv.hline(5, 10, 3, "ir1")
+        cv.px(10, 7, "ir1")
+        cv.px(11, 9, "ir1")
+        cv.px(10, 10, "ir2")
     cv.outline("ink")
     return cv
 
@@ -785,7 +840,8 @@ def build_all():
     for k in ("E", "F", "J"):
         keycap(k).save(out + f"key_{k.lower()}.png")
     keycap("ESC").save(out + "key_esc.png")
-    for n in ("bell", "pin", "key", "ledger", "song", "quill", "eye", "lantern"):
+    for n in ("bell", "pin", "key", "ledger", "song", "quill", "eye", "lantern",
+              "old_lantern", "rope", "hook", "hooked_line", "token"):
         icon(n).save(out + f"icon_{n}.png")
     ic = Canvas(64, 64)
     big = icon("bell")

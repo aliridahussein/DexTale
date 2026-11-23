@@ -1677,6 +1677,371 @@
   "light": null,
   "ysort": true
  },
+ "watchhouse": {
+  "png": "res://assets/sprites/props/watchhouse.png",
+  "size": [
+   46,
+   40
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   23,
+   38
+  ],
+  "collide": [
+   -21,
+   -14,
+   42,
+   12
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "drawbridge_raised": {
+  "png": "res://assets/sprites/props/drawbridge_raised.png",
+  "size": [
+   38,
+   58
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   19,
+   56
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "drawbridge_deck": {
+  "png": "res://assets/sprites/props/drawbridge_deck.png",
+  "size": [
+   36,
+   92
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   18,
+   92
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "weak_plank": {
+  "png": "res://assets/sprites/props/weak_plank.png",
+  "size": [
+   15,
+   4
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   2
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "winch": {
+  "png": "res://assets/sprites/props/winch.png",
+  "size": [
+   36,
+   38
+  ],
+  "frames": 4,
+  "fps": 0.0,
+  "origin": [
+   18,
+   36
+  ],
+  "collide": [
+   -15,
+   -6,
+   30,
+   6
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "counterweight": {
+  "png": "res://assets/sprites/props/counterweight.png",
+  "size": [
+   24,
+   46
+  ],
+  "frames": 2,
+  "fps": 0.0,
+  "origin": [
+   12,
+   44
+  ],
+  "collide": [
+   -10,
+   -4,
+   20,
+   4
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "chain_end": {
+  "png": "res://assets/sprites/props/chain_end.png",
+  "size": [
+   22,
+   26
+  ],
+  "frames": 2,
+  "fps": 0.0,
+  "origin": [
+   11,
+   24
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "stone_pillar_0": {
+  "png": "res://assets/sprites/props/stone_pillar_0.png",
+  "size": [
+   18,
+   36
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   9,
+   34
+  ],
+  "collide": [
+   -8,
+   -10,
+   16,
+   10
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "stone_pillar_1": {
+  "png": "res://assets/sprites/props/stone_pillar_1.png",
+  "size": [
+   18,
+   36
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   9,
+   34
+  ],
+  "collide": [
+   -8,
+   -10,
+   16,
+   10
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "stone_pillar_2": {
+  "png": "res://assets/sprites/props/stone_pillar_2.png",
+  "size": [
+   18,
+   36
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   9,
+   34
+  ],
+  "collide": [
+   -8,
+   -10,
+   16,
+   10
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "watch_lantern": {
+  "png": "res://assets/sprites/props/watch_lantern.png",
+  "size": [
+   14,
+   44
+  ],
+  "frames": 3,
+  "fps": 0.0,
+  "origin": [
+   7,
+   42
+  ],
+  "collide": [
+   -2,
+   -2,
+   4,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "waiting_post": {
+  "png": "res://assets/sprites/props/waiting_post.png",
+  "size": [
+   14,
+   38
+  ],
+  "frames": 2,
+  "fps": 0.0,
+  "origin": [
+   7,
+   36
+  ],
+  "collide": [
+   -2,
+   -2,
+   4,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
+ "rope_peg": {
+  "png": "res://assets/sprites/props/rope_peg.png",
+  "size": [
+   16,
+   22
+  ],
+  "frames": 2,
+  "fps": 0.0,
+  "origin": [
+   8,
+   21
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "item_hook": {
+  "png": "res://assets/sprites/props/item_hook.png",
+  "size": [
+   12,
+   14
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   6,
+   13
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "item_lantern": {
+  "png": "res://assets/sprites/props/item_lantern.png",
+  "size": [
+   10,
+   14
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   5,
+   13
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "item_token": {
+  "png": "res://assets/sprites/props/item_token.png",
+  "size": [
+   8,
+   6
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   4,
+   5
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "item_cup": {
+  "png": "res://assets/sprites/props/item_cup.png",
+  "size": [
+   14,
+   8
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   7
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "item_scarf": {
+  "png": "res://assets/sprites/props/item_scarf.png",
+  "size": [
+   12,
+   6
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   6,
+   5
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "item_tally": {
+  "png": "res://assets/sprites/props/item_tally.png",
+  "size": [
+   34,
+   12
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   17,
+   11
+  ],
+  "collide": null,
+  "light": null,
+  "ysort": true
+ },
+ "chair_back": {
+  "png": "res://assets/sprites/props/chair_back.png",
+  "size": [
+   14,
+   20
+  ],
+  "frames": 1,
+  "fps": 0.0,
+  "origin": [
+   7,
+   18
+  ],
+  "collide": [
+   -5,
+   -3,
+   10,
+   3
+  ],
+  "light": null,
+  "ysort": true
+ },
  "stairs_down": {
   "png": "res://assets/sprites/props/stairs_down.png",
   "size": [

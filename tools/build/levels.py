@@ -313,7 +313,10 @@ def mist_path():
     L.path([(12, 10.5), (12, 31), (9, 35), (9, 38), (12, 41), (12, 46)], 2.4, "dirt")
     L.rect(8, 32, 10, 33, "steps")
     L.rect(10, 9, 13, 11, "cobble_dark")
-    L.prop("tower_base", 192, 152, "TowerBase")
+    # V2.2: the road no longer ends at the tower's door; it runs on north to the
+    # Watchman's Crossing, with the tower rising beyond the trees.
+    L.path([(12, 0), (12, 10.5)], 2.4, "dirt")
+    L.prop("tower_distant", 262, 128, "TowerDistant")
     for (k, x, y) in [("tree_dead", 104, 224), ("tree_pine_dark", 282, 236), ("tree_dead", 276, 368),
                       ("tree_pine_dark", 104, 352), ("tree_dead", 92, 600), ("tree_pine_dark", 252, 640),
                       ("tree_dead", 228, 712), ("tree_pine_dark", 84, 120), ("tree_dead", 300, 96),
@@ -342,15 +345,16 @@ def mist_path():
                width=176.0, phase=float(i) * 0.85)
     L.trigger("SentinelApproach", 192, 474, 96, 12, conversation_id="sentinel_first", once_flag="met_sentinel")
     L.exit("ToVillage", 192, 734, 80, 8, "village", "from_path")
-    L.exit("ToTower", 192, 158, 28, 8, "bell_tower", "from_path", requires="passed_sentinel")
+    L.exit("ToCrossing", 192, 6, 64, 10, "crossing", "from_path", requires="passed_sentinel")
     L.spawn("default", 192, 690, "up")
     L.spawn("from_village", 192, 712, "up")
-    L.spawn("from_tower", 192, 176, "down")
+    L.spawn("from_crossing", 192, 30, "down")
+    L.spawn("from_tower", 192, 30, "down")  # kept for old references
     L.spawn("challenge_start", 192, 404, "up")
     L.spawn("challenge_retreat", 192, 458, "up")
     L.ambient = Col(0.42, 0.5, 0.6)
-    L.light("TowerSlit", 196, 52, "#7ad0ff", 0.5, 0.5, flicker=False)
-    L.light("TowerSlit2", 196, 88, "#7ad0ff", 0.4, 0.4, flicker=False)
+    L.light("TowerSlit", 262, 30, "#7ad0ff", 0.5, 0.5, flicker=False)
+    L.light("TowerSlit2", 262, 70, "#7ad0ff", 0.4, 0.4, flicker=False)
     L.light("SentinelLight", 192, 400, "#8ad8ff", 0.7, 0.9, flicker=True)
     L.particles("Motes", 192, 420, amount=16, lifetime=4.0, emission_shape=3, emission_rect_extents=(40.0, 30.0),
                 direction=(0.0, -1.0), spread=40.0, gravity=(0.0, -4.0), initial_velocity_min=2.0,
@@ -373,6 +377,7 @@ def bell_tower():
     L.rect(1, 1, 18, 1, "face:tower:upper")
     L.rect(1, 2, 18, 2, "face:tower:lower")
     L.rect(1, 3, 18, 14, "plank")
+    L.rect(9, 15, 10, 15, "plank")  # V2.2: the stairwell is open (the way down was walled in since V1)
     L.prop("window_arch", 48, 46, "WindowW")
     L.prop("window_arch", 272, 46, "WindowE")
     L.prop("bell_yoke", 160, 56, "Yoke")
@@ -397,7 +402,7 @@ def bell_tower():
     L.interact("DeskRead", 62, 216, "tower_desk", "Read", r=12, prompt_offset=V2(0, -30))
     L.interact("ChairLook", 92, 210, "tower_chair", r=8)
     L.interact("WindowLook", 48, 58, "tower_window", "Look", r=12, prompt_offset=V2(0, -46))
-    L.exit("ToPath", 160, 246, 24, 10, "mist_path", "from_tower")
+    L.exit("ToPath", 160, 246, 24, 10, "crossing", "from_tower")  # V2.2: back down to the crossing
     L.spawn("default", 160, 222, "up")
     L.spawn("from_path", 160, 222, "up")
     L.ambient = Col(0.32, 0.35, 0.5)
@@ -415,11 +420,159 @@ def bell_tower():
     return L
 
 
+# ======================================================= V2.2: the crossing ===
+# Layout (px): the ravine runs east-west across rows 14-18 (y 224-304); the
+# drawbridge spans it at x 192-224. The near (south) bank has the watchhouse,
+# the winch, the counterweight, the broken chain and the old waiting post.
+# The far bank is where the Watchman's Shadow patrols among stone supports;
+# the road leaves north toward the bell tower.
+def crossing():
+    L = Level("Crossing", "crossing", 26, 38, "res://scripts/world/crossing.gd", seed=23,
+              display_name="The Watchman's Crossing", subtitle="The old bridge to the tower", music="mist",
+              ambience="mist_forest", reverb=0.3, footstep_surface="dirt")
+    L.fill("grass_dark")
+    # forest walls at the edges (solid canopy keeps the map closed)
+    L.rect(0, 0, 1, 37, "canopy", "overlay")
+    L.rect(24, 0, 25, 37, "canopy", "overlay")
+    L.rect(0, 0, 10, 1, "canopy", "overlay")
+    L.rect(15, 0, 25, 1, "canopy", "overlay")
+    L.rect(0, 36, 10, 37, "canopy", "overlay")
+    L.rect(15, 36, 25, 37, "canopy", "overlay")
+    # the ravine
+    L.rect(0, 14, 25, 14, "chasm_face")
+    L.rect(0, 15, 25, 17, "chasm")
+    L.rect(0, 18, 25, 18, "chasm_lip")
+    # roads: north to the tower, south back to the Mistbound Path, a stone apron at the bridge head
+    L.rect(12, 0, 13, 13, "cobble_dark")
+    L.rect(11, 11, 14, 13, "cobble_dark")
+    L.rect(10, 19, 15, 21, "cobble_dark")
+    L.path([(12.5, 21), (12.5, 30), (12.5, 37)], 2.2, "dirt")
+    L.path([(11, 22), (7, 25), (5, 25)], 1.4, "dirt")  # a side track to the watchhouse door
+    # the bridge (deck under everything, raised panel standing at the near edge)
+    L.decal("drawbridge_deck", 208, 306, "BridgeDeck", z=0)
+    L.prop("drawbridge_raised", 208, 308, "BridgeRaised")
+    L.prop("winch", 258, 334, "Winch")
+    L.prop("counterweight", 292, 330, "Counterweight")
+    L.prop("chain_end", 232, 318, "ChainEnd")
+    L.prop("waiting_post", 172, 322, "WaitingPost")
+    L.prop("watchhouse", 88, 392, "Watchhouse")
+    for i, (x, y) in enumerate([(150, 362), (262, 420)]):
+        L.prop("lantern_post", x, y, f"Lantern{i + 1}")
+    for (k, x, y) in [("fence_broken", 40, 314), ("fence", 72, 316), ("fence_broken", 340, 318), ("fence", 372, 314),
+                      ("crate", 122, 384), ("barrel", 132, 398), ("crate_stack", 50, 402), ("sack", 112, 402),
+                      ("tree_pine_dark", 36, 356), ("tree_pine_dark", 384, 380), ("tree_dead", 330, 470),
+                      ("tree_pine", 44, 520), ("tree_pine_dark", 372, 540), ("rock_large", 304, 512),
+                      ("rock", 110, 528), ("bush_dark", 160, 470), ("bush_dark", 268, 560), ("mushrooms", 300, 360)]:
+        L.prop(k, x, y)
+    # far bank: the watch lantern, stone supports to hide behind, trees, the tower beyond
+    L.prop("watch_lantern", 112, 210, "WatchLantern")
+    L.prop("stone_pillar_0", 178, 170, "PillarA")
+    L.prop("stone_pillar_1", 240, 142, "PillarB")
+    L.prop("stone_pillar_2", 180, 74, "PillarC")
+    for (k, x, y) in [("rock_large", 136, 150), ("rock_large", 282, 72), ("tree_dead", 60, 120),
+                      ("tree_pine_dark", 360, 150), ("tree_pine_dark", 56, 200), ("tree_dead", 352, 210),
+                      ("bush_dark", 330, 110), ("mushrooms", 90, 160)]:
+        L.prop(k, x, y)
+    L.prop("tower_distant", 318, 60, "TowerDistant")
+    scatter(L, "tall_grass_dark", [(40, 330, 380, 580), (40, 40, 380, 200)], 22, 9,
+            avoid=[(150, 0, 260, 600), (60, 340, 140, 420)])
+    L.node("Objects", "Watchman", "Node2D", 112, 196, script_path="res://scripts/world/watchman_shadow.gd")
+    L.player(208, 584)
+    # interactions
+    L.item_target("ChainUse", 232, 314, "crossing_chain", accepts="hooked_line", r=11, prompt_offset=V2(0, -30),
+                  important=True, hidden_when="chain_secured",
+                  highlight_path=node_path("../../Objects/ChainEnd/Sprite"))
+    L.interact("WinchUse", 258, 338, "crossing_winch", "Work the winch", r=13, prompt_offset=V2(0, -42),
+               important=True, highlight_path=node_path("../../Objects/Winch/Sprite"))
+    L.echo("WinchEcho", 258, 338, "winch", "crossing_winch_echo", r=16, hidden_when="bridge_lowered",
+           reveal_offset=V2(-34, -46), hint_offset=V2(0, -54))
+    L.item_target("PostUse", 172, 326, "crossing_post", accepts="token", r=10, prompt_offset=V2(0, -40),
+                  hidden_when="watchman_resolved", auto_use=False)
+    L.echo("PostEcho", 172, 326, "watch_post", "crossing_post_echo", r=12, reveal_offset=V2(0, -30),
+           hint_offset=V2(0, -50))
+    L.interact("WatchhouseLook", 104, 396, "crossing_watchhouse", r=9, prompt_offset=V2(0, -46))
+    # travel
+    L.exit("ToWatchhouse", 78, 398, 14, 8, "watchhouse", "from_crossing")
+    L.exit("ToPath", 208, 602, 72, 8, "mist_path", "from_crossing")
+    L.exit("ToTower", 208, 6, 48, 10, "bell_tower", "from_path", requires="bridge_lowered")
+    L.trigger("Arrive", 208, 372, 120, 10, conversation_id="crossing_arrive", once_flag="crossing_arrived")
+    L.spawn("default", 208, 560, "up")
+    L.spawn("from_path", 208, 580, "up")
+    L.spawn("checkpoint", 208, 340, "up")
+    L.spawn("from_watchhouse", 80, 412, "down")
+    L.spawn("from_tower", 208, 34, "down")
+    # light: moonlit, readable without a lantern; warm posts on the near side
+    L.ambient = Col(0.40, 0.46, 0.60)
+    L.light("FarLanternLight", 112, 188, "#ffc890", 0.0, 0.8)
+    L.light("TowerSlit", 318, 8, "#7ad0ff", 0.45, 0.5, flicker=False)
+    L.light("WatchhouseGlow", 116, 372, WARM, 0.5, 0.45)
+    L.particles("RavineMist", 208, 268, amount=28, lifetime=9.0, emission_shape=3,
+                emission_rect_extents=(210.0, 30.0), direction=(1.0, -0.1), spread=20.0, gravity=(0.0, 0.0),
+                initial_velocity_min=3.0, initial_velocity_max=7.0, texture="mote", scale_amount_min=3.0,
+                scale_amount_max=6.0, color=Col("#7aa8d8"),
+                ramp=[(0.0, (1, 1, 1, 0)), (0.3, (1, 1, 1, 0.35)), (0.7, (1, 1, 1, 0.3)), (1.0, (1, 1, 1, 0))])
+    L.particles("Leaves", 208, 300, amount=8, lifetime=8.0, emission_shape=3, emission_rect_extents=(200.0, 280.0),
+                direction=(1.0, 0.4), spread=30.0, gravity=(2.0, 4.0), initial_velocity_min=4.0,
+                initial_velocity_max=9.0, texture="leaf", additive=False, color=Col("#6a5a40"),
+                ramp=[(0.0, (1, 1, 1, 0)), (0.2, (1, 1, 1, 1)), (1.0, (1, 1, 1, 0))])
+    L.mist = {"density": 0.34, "edge_only": True, "tint": "#a9c2cc"}
+    return L
+
+
+def watchhouse():
+    L = Level("Watchhouse", "watchhouse", 14, 10, "res://scripts/world/watchhouse.gd", seed=29,
+              display_name="The Watchhouse", music="", ambience="tower_wind", reverb=0.2, footstep_surface="wood")
+    L.fill("cap:tower")
+    L.rect(1, 1, 12, 1, "face:tower:upper")
+    L.rect(1, 2, 12, 2, "face:tower:lower")
+    L.rect(1, 3, 12, 8, "plank")
+    L.rect(6, 9, 7, 9, "plank")
+    L.prop("window_arch", 112, 46, "Window")
+    L.prop("chair_back", 112, 84, "Chair")
+    L.prop("item_token", 120, 47, "Token")
+    L.prop("tool_rack", 40, 44, "ToolRack")
+    L.prop("item_hook", 50, 46, "Hook")
+    L.prop("rope_peg", 162, 44, "RopePeg")
+    L.prop("desk", 62, 98, "Desk")
+    L.prop("item_lantern", 52, 84, "OldLantern", z_index=1)
+    L.prop("item_cup", 72, 86, "Cup", z_index=1)
+    L.prop("bookshelf_b", 192, 52, "Shelves")
+    L.prop("item_scarf", 190, 38, "Scarf", z_index=1)
+    L.decal("item_tally", 84, 36, "Tally", z=1)
+    for (k, x, y) in [("crate_stack", 202, 128), ("crate", 186, 142), ("barrel", 28, 132), ("sack", 40, 142)]:
+        L.prop(k, x, y)
+    L.player(112, 140)
+    L.pickup("LanternTake", 52, 92, "old_lantern", "../../Objects/OldLantern", r=9, prompt_offset=V2(0, -30),
+             important=True)
+    L.pickup("HookTake", 50, 54, "hook", "../../Objects/Hook", r=10, prompt_offset=V2(0, -30), important=True)
+    L.pickup("RopeTake", 162, 52, "rope", "../../Objects/RopePeg/Sprite", r=10, prompt_offset=V2(0, -34),
+             important=True, sprite_frame_after=1)
+    L.pickup("TokenTake", 120, 56, "token", "../../Objects/Token", r=8, prompt_offset=V2(0, -22))
+    L.interact("LogRead", 66, 104, "watch_log_read", "Read", r=9, prompt_offset=V2(0, -32), important=True)
+    L.interact("TallyLook", 86, 52, "watch_tally", "Look", r=9, prompt_offset=V2(0, -26))
+    L.interact("ShelfLook", 192, 58, "watch_shelf", "Look", r=10, prompt_offset=V2(0, -46))
+    L.echo("ChairEcho", 112, 88, "watch_chair", "watch_chair_echo", r=12, reveal_offset=V2(0, -24),
+           hint_offset=V2(0, -34))
+    L.exit("ToCrossing", 112, 158, 32, 6, "crossing", "from_watchhouse")
+    L.spawn("default", 112, 140, "up")
+    L.spawn("from_crossing", 112, 140, "up")
+    L.ambient = Col(0.42, 0.40, 0.50)
+    L.light("LanternLight", 52, 74, "#ffc890", 0.9, 0.6)
+    L.light("WindowMoon", 112, 30, "#9ab8ff", 0.35, 0.6, flicker=False)
+    L.shaft("MoonShaft", 112, 24, 0, 1.0, 1.4, "#9ab8ff", 0.10)
+    L.particles("Dust", 112, 90, amount=16, lifetime=8.0, emission_shape=3, emission_rect_extents=(90.0, 50.0),
+                direction=(0.0, 1.0), spread=180.0, gravity=(0.0, 0.6), initial_velocity_min=1.0,
+                initial_velocity_max=3.0, texture="px1", color=Col("#e0d8c8"),
+                ramp=[(0.0, (1, 1, 1, 0)), (0.4, (1, 1, 1, 0.5)), (1.0, (1, 1, 1, 0))])
+    return L
+
+
 def build_all():
     out = {}
     for fn, rel in ((village, "scenes/world/village.tscn"), (forge, "scenes/world/forge.tscn"),
                     (chapel, "scenes/world/chapel.tscn"), (mist_path, "scenes/world/mist_path.tscn"),
-                    (bell_tower, "scenes/world/bell_tower.tscn")):
+                    (bell_tower, "scenes/world/bell_tower.tscn"), (crossing, "scenes/world/crossing.tscn"),
+                    (watchhouse, "scenes/world/watchhouse.tscn")):
         L = fn()
         out[rel] = L.build(rel)
     return out

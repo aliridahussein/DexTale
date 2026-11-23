@@ -1184,6 +1184,55 @@
     10
    ],
    "solid": false
+  },
+  "chasm_face_0": {
+   "atlas": [
+    9,
+    10
+   ],
+   "solid": false
+  },
+  "chasm_face_1": {
+   "atlas": [
+    10,
+    10
+   ],
+   "solid": false
+  },
+  "chasm_0": {
+   "atlas": [
+    11,
+    10
+   ],
+   "solid": false
+  },
+  "chasm_1": {
+   "atlas": [
+    12,
+    10
+   ],
+   "solid": false
+  },
+  "chasm_2": {
+   "atlas": [
+    13,
+    10
+   ],
+   "solid": false
+  },
+  "chasm_lip_0": {
+   "atlas": [
+    14,
+    10
+   ],
+   "solid": false
+  },
+  "chasm_lip_1": {
+   "atlas": [
+    15,
+    10
+   ],
+   "solid": false
   }
  }
 }

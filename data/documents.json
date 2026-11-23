@@ -28,6 +28,13 @@
 			{"text": "Pip hums it again, slowly, and you follow the ledger's marks with your finger.\n\nThirteen notes. Up, and up, and down. A rest. And home.\n\nIt is not a lullaby. It is a [color=#6a4614]calling[/color]: a tune for everyone to sing at once, so that no one has to carry it alone.", "image": "res://assets/sprites/fx/song_marks_ink.png"}
 		]
 	},
+	"watch_log": {
+		"title": "The Crossing Log",
+		"pages": [
+			"[color=#7a6650]Maintenance, written large on the first page:[/color]\n\nWhen the lower chain fails, secure it before releasing the weight. The bridge must never fall freely.\n\n[color=#7a6650]Underneath, smaller:[/color] Chain checked. Weight checked. Lantern lit at the post.",
+			"[color=#7a6650]The last entry, the ink faded almost to nothing.[/color]\n\nNight watch, as always. The lantern by the post stays lit. If anyone comes home along the road, they'll see it before they see me.\n\n[right]- E.[/right]"
+		]
+	},
 	"orin_notes": {
 		"title": "Orin's Notes",
 		"pages": [

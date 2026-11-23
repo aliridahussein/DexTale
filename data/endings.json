@@ -51,6 +51,9 @@
 		{"group": "tobin", "ending": "chorus", "if": "echo_well", "text": "Tobin stopped lighting the lantern by the well twice a night. Now he lights it once, and sits with it, and says her name."},
 		{"group": "tobin", "if": "echo_well", "text": "Tobin still lights the lantern by the well twice a night. Some habits are the shape a memory leaves behind."},
 
+		{"group": "watchman", "ending": "chorus", "if": "watchman_resolved", "text": "At dawn after the bell sang, someone walked out to the old crossing and lit the lantern on the post. The watchman wasn't there any more. He didn't need to be."},
+		{"group": "watchman", "if": "watchman_resolved", "text": "The lantern on the post by the old crossing is lit every evening now. Nobody remembers who started doing it."},
+
 		{"group": "sentinel", "if": "sentinel_resolved_peacefully", "text": "The tower road was quiet after that night. Someone had chosen to remember a soldier with no name."},
 		{"group": "sentinel", "if": "sentinel_endured", "text": "Travellers on the tower road say they feel watched. Kindly, the way a good guard watches."},
 

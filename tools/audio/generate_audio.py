@@ -440,6 +440,35 @@ def sfx_v2():
         place(y, choir(hz(n), 2.4, FORMANTS_O, 3) * 0.45, i * 0.22)
     place(y, glass(hz("D6"), 2.0) * 0.12, 0.6)
     out["memory_warm"] = reverb(y, 3.0, 0.5)
+    # ---- V2.2: the Watchman's Crossing (appended after V2's sounds so those stay identical)
+    d = 0.7                                        # a rotten plank giving under a boot
+    tt = tline(d)
+    f = 170 - 60 * tt / d
+    creak = np.sin(2 * np.pi * np.cumsum(f) / SR) * (0.5 + 0.5 * np.sin(2 * np.pi * 23 * tt))
+    creak = creak * np.exp(-tt * 3.5) * 0.6 + bandpass(noise(d), 300, 1400) * np.exp(-tt * 6) * 0.5
+    out["creak"] = reverb(creak, 0.8, 0.2)
+    d = 0.9                                        # chain links rattling over iron
+    y = np.zeros(int(d * SR))
+    for k in range(14):
+        clink = bandpass(noise(0.05), 2200, 7000) * np.exp(-np.arange(int(0.05 * SR)) / SR * 80)
+        place(y, clink, k * 0.055 + RNG.uniform(0, 0.02), 0.6 + RNG.uniform(0, 0.4))
+    out["chain_rattle"] = reverb(y, 1.0, 0.25)
+    d = 0.09                                       # one tooth of the winch's ratchet
+    tt = tline(d)
+    out["winch_click"] = bandpass(noise(d), 1200, 5000) * np.exp(-tt * 70) + \
+        np.sin(2 * np.pi * 880 * tt) * np.exp(-tt * 60) * 0.3
+    d = 1.4                                        # the Shadow notices: a thin rising tone
+    tt = tline(d)
+    f = 330 + 180 * tt / d
+    tone = sum(np.sin(2 * np.pi * np.cumsum(f * r) / SR) * a for r, a in ((1.0, 0.5), (1.007, 0.4), (2.01, 0.12)))
+    out["shadow_alert"] = reverb(tone * env(len(tt), 0.25, 0.6), 2.4, 0.5)
+    d = 1.6                                        # the drawbridge landing on the far bank
+    tt = tline(d)
+    thud = np.sin(2 * np.pi * 52 * tt) * np.exp(-tt * 5) + lowpass(noise(d), 500) * np.exp(-tt * 9) * 0.8
+    for k in range(5):
+        place(thud, bandpass(noise(0.06), 600, 2400) * np.exp(-np.arange(int(0.06 * SR)) / SR * 50),
+              0.12 + k * 0.09, 0.5)
+    out["bridge_thud"] = reverb(thud, 1.8, 0.3)
     RNG.bit_generator.state = state
     return out
 

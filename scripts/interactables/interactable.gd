@@ -80,3 +80,8 @@ func set_focused(on: bool) -> void:
 
 func get_prompt_position() -> Vector2:
 	return global_position + prompt_offset
+
+
+## The text shown next to the E key (subclasses can make it depend on state).
+func prompt_text() -> String:
+	return prompt

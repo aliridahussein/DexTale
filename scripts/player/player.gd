@@ -16,6 +16,9 @@ var _auto_speed := 1.0
 var _auto_stuck := 0.0
 var _auto_last_dist := INF
 var _step_timer := 0.0
+var _base_light := 0.0
+var _base_scale := 0.7
+var _held_lantern: Sprite2D
 
 @onready var sprite: AnimatedSprite2D = $Sprite
 @onready var sensor: Area2D = $InteractionSensor
@@ -25,6 +28,9 @@ var _step_timer := 0.0
 func _ready() -> void:
 	add_to_group("player")
 	sprite.play("idle_down")
+	Inventory.lantern_changed.connect(func(_on: bool) -> void: refresh_light())
+	Inventory.changed.connect(_update_held_lantern)
+	refresh_light()
 
 
 func _physics_process(delta: float) -> void:
@@ -50,6 +56,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		var target := focus
 		_set_focus(null)
 		target.interact(self)
+	elif event.is_action_pressed("lantern") and can_act():
+		get_viewport().set_input_as_handled()
+		toggle_lantern()
 
 
 ## Player-controlled movement allowed right now?
@@ -110,6 +119,8 @@ func _update_animation() -> void:
 	var anim := ("walk_" if moving else "idle_") + facing_name()
 	if sprite.animation != anim:
 		sprite.play(anim)
+		if _held_lantern:
+			_update_held_lantern()
 
 
 func _update_footsteps(delta: float) -> void:
@@ -202,6 +213,11 @@ func _auto_walk_step(delta: float) -> Vector2:
 		reset_physics_interpolation()
 		_finish_auto_walk()
 		return Vector2.ZERO
+	# The last bit: a step that would overshoot lands exactly on the target
+	# instead (large steps at a high time scale would otherwise bounce around it).
+	var step := walk_speed * _auto_speed * delta
+	if dist <= step:
+		return to / maxf(step, 0.001)
 	return to / dist
 
 
@@ -211,14 +227,27 @@ func _finish_auto_walk() -> void:
 	arrived.emit()
 
 
-## Turn the light Rowan carries on (energy > 0) or off.
+## The area's own light for Rowan (0 = none), e.g. the Mistbound Path's glow.
+## The old lantern (V2.2), when its shutter is open, adds to it.
 func set_carried_light(energy: float, radius_scale: float = 0.7) -> void:
+	_base_light = energy
+	_base_scale = radius_scale
+	refresh_light()
+
+
+func refresh_light() -> void:
 	var light := get_node_or_null("CarriedLight") as PointLight2D
 	if light == null:
 		return
+	var energy := _base_light
+	var radius := _base_scale
+	if Inventory.lantern_on():
+		energy = maxf(energy, 1.05)
+		radius = maxf(radius, 0.95)
 	light.enabled = energy > 0.0
 	light.energy = energy
-	light.texture_scale = radius_scale
+	light.texture_scale = radius
+	_update_held_lantern()
 
 
 func carried_light() -> float:
@@ -226,8 +255,38 @@ func carried_light() -> float:
 	return light.energy if light and light.enabled else 0.0
 
 
+## L: open or close the old lantern's shutter.
+func toggle_lantern() -> void:
+	if not Inventory.has("old_lantern"):
+		return
+	var on := Inventory.toggle_lantern()
+	AudioManager.play_sfx("lantern", -6.0, 1.1 if on else 0.8)
+	if _held_lantern:
+		var t := create_tween()
+		t.tween_property(_held_lantern, "scale", Vector2(0.75, 0.75), 0.06)
+		t.tween_property(_held_lantern, "scale", Vector2(0.6, 0.6), 0.12)
+
+
+func _update_held_lantern() -> void:
+	var owned := Inventory.has("old_lantern")
+	if owned and _held_lantern == null:
+		_held_lantern = Sprite2D.new()
+		_held_lantern.texture = preload("res://assets/sprites/props/item_lantern.png")
+		_held_lantern.scale = Vector2(0.6, 0.6)
+		add_child(_held_lantern)
+	if _held_lantern:
+		_held_lantern.visible = owned
+		_held_lantern.modulate = Color(1, 1, 1) if Inventory.lantern_on() else Color(0.55, 0.55, 0.65)
+		var off := {"down": Vector2(6, -8), "up": Vector2(-6, -10), "left": Vector2(-7, -8), "right": Vector2(7, -8)}
+		_held_lantern.position = off[facing_name()]
+		_held_lantern.z_index = -1 if facing_name() == "up" else 1
+
+
 func teleport(pos: Vector2) -> void:
+	var walking := _auto_target != null
 	global_position = pos
 	velocity = Vector2.ZERO
 	_auto_target = null
 	reset_physics_interpolation()
+	if walking:
+		arrived.emit()  # a scripted walk that was cut short still ends: nothing waits forever

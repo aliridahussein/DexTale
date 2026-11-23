@@ -8,13 +8,16 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/ui/key_e.png" id="8_key_e_png"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ui/key_f.png" id="9_key_f_png"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ui/icon_quill.png" id="10_icon_quill_png"]
-[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="11_dialogue_box_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/ritual_view.tscn" id="12_ritual_view_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/document_view.tscn" id="13_document_view_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/reconstruction_view.tscn" id="14_reconstruction_view_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/journal.tscn" id="15_journal_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="16_pause_menu_tscn"]
-[ext_resource type="PackedScene" path="res://scenes/ui/settings_menu.tscn" id="17_settings_menu_tscn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/icon_old_lantern.png" id="11_icon_old_lantern_png"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="12_dialogue_box_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ritual_view.tscn" id="13_ritual_view_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/winch_view.tscn" id="14_winch_view_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/inventory_view.tscn" id="15_inventory_view_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/document_view.tscn" id="16_document_view_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/reconstruction_view.tscn" id="17_reconstruction_view_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/journal.tscn" id="18_journal_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="19_pause_menu_tscn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/settings_menu.tscn" id="20_settings_menu_tscn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3"]
 texture = ExtResource("2_panel_small_png")
@@ -196,29 +199,82 @@ stretch_mode = 3
 text = "Saved"
 theme_override_colors/font_color = Color(0.84706, 0.8, 0.70588, 1.0)
 
+[node name="CarryBar" type="HBoxContainer" parent="HudLayer/Hud"]
+unique_name_in_owner = true
+offset_left = 4.0
+offset_top = 248.0
+offset_right = 324.0
+offset_bottom = 266.0
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="HeldChip" type="PanelContainer" parent="HudLayer/Hud/CarryBar"]
+unique_name_in_owner = true
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3")
+
+[node name="Row" type="HBoxContainer" parent="HudLayer/Hud/CarryBar/HeldChip"]
+theme_override_constants/separation = 3
+mouse_filter = 2
+
+[node name="HeldIcon" type="TextureRect" parent="HudLayer/Hud/CarryBar/HeldChip/Row"]
+unique_name_in_owner = true
+stretch_mode = 3
+mouse_filter = 2
+
+[node name="HeldLabel" type="Label" parent="HudLayer/Hud/CarryBar/HeldChip/Row"]
+unique_name_in_owner = true
+text = ""
+theme_override_colors/font_color = Color(0.92157, 0.87059, 0.78039, 1.0)
+
+[node name="LanternChip" type="PanelContainer" parent="HudLayer/Hud/CarryBar"]
+unique_name_in_owner = true
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3")
+
+[node name="Row" type="HBoxContainer" parent="HudLayer/Hud/CarryBar/LanternChip"]
+theme_override_constants/separation = 3
+mouse_filter = 2
+
+[node name="LanternIcon" type="TextureRect" parent="HudLayer/Hud/CarryBar/LanternChip/Row"]
+stretch_mode = 3
+mouse_filter = 2
+texture = ExtResource("11_icon_old_lantern_png")
+
+[node name="LanternLabel" type="Label" parent="HudLayer/Hud/CarryBar/LanternChip/Row"]
+unique_name_in_owner = true
+text = ""
+theme_override_colors/font_color = Color(0.94118, 0.82353, 0.47843, 1.0)
+
 [node name="DialogueLayer" type="CanvasLayer" parent="."]
 layer = 15
 
-[node name="DialogueBox" parent="DialogueLayer" instance=ExtResource("11_dialogue_box_tscn")]
+[node name="DialogueBox" parent="DialogueLayer" instance=ExtResource("12_dialogue_box_tscn")]
 unique_name_in_owner = true
 
 [node name="MenuLayer" type="CanvasLayer" parent="."]
 layer = 20
 
-[node name="RitualView" parent="MenuLayer" instance=ExtResource("12_ritual_view_tscn")]
+[node name="RitualView" parent="MenuLayer" instance=ExtResource("13_ritual_view_tscn")]
 unique_name_in_owner = true
 
-[node name="DocumentView" parent="MenuLayer" instance=ExtResource("13_document_view_tscn")]
+[node name="WinchView" parent="MenuLayer" instance=ExtResource("14_winch_view_tscn")]
 unique_name_in_owner = true
 
-[node name="ReconstructionView" parent="MenuLayer" instance=ExtResource("14_reconstruction_view_tscn")]
+[node name="InventoryView" parent="MenuLayer" instance=ExtResource("15_inventory_view_tscn")]
 unique_name_in_owner = true
 
-[node name="Journal" parent="MenuLayer" instance=ExtResource("15_journal_tscn")]
+[node name="DocumentView" parent="MenuLayer" instance=ExtResource("16_document_view_tscn")]
 unique_name_in_owner = true
 
-[node name="PauseMenu" parent="MenuLayer" instance=ExtResource("16_pause_menu_tscn")]
+[node name="ReconstructionView" parent="MenuLayer" instance=ExtResource("17_reconstruction_view_tscn")]
 unique_name_in_owner = true
 
-[node name="SettingsMenu" parent="MenuLayer" instance=ExtResource("17_settings_menu_tscn")]
+[node name="Journal" parent="MenuLayer" instance=ExtResource("18_journal_tscn")]
+unique_name_in_owner = true
+
+[node name="PauseMenu" parent="MenuLayer" instance=ExtResource("19_pause_menu_tscn")]
+unique_name_in_owner = true
+
+[node name="SettingsMenu" parent="MenuLayer" instance=ExtResource("20_settings_menu_tscn")]
 unique_name_in_owner = true

@@ -46,6 +46,14 @@ var _caption_tween: Tween
 @onready var settings_menu: Control = %SettingsMenu
 @onready var reconstruction_view: Control = %ReconstructionView
 @onready var ritual_view: Control = %RitualView
+@onready var inventory_view: Control = %InventoryView
+@onready var winch_view: Control = %WinchView
+@onready var carry_bar: Control = %CarryBar
+@onready var held_chip: Control = %HeldChip
+@onready var held_icon: TextureRect = %HeldIcon
+@onready var held_label: Label = %HeldLabel
+@onready var lantern_chip: Control = %LanternChip
+@onready var lantern_label: Label = %LanternLabel
 
 
 func _ready() -> void:
@@ -71,6 +79,37 @@ func _ready() -> void:
 			_resume_toast())
 	_make_caption()
 	_register_global_events()
+	# V2.2 inventory: what Rowan holds and the lantern, shown bottom-left
+	Inventory.item_gained.connect(_on_item_gained)
+	Inventory.held_changed.connect(func(_id: String) -> void: _refresh_carry())
+	Inventory.lantern_changed.connect(func(_on: bool) -> void: _refresh_carry())
+	Inventory.changed.connect(_refresh_carry)
+	_refresh_carry()
+
+
+func _on_item_gained(id: String) -> void:
+	# Toasts are for pickups (items with a found_flag). The story's own items
+	# (pin, key, Tobin's lantern) announce themselves in their scenes, and the
+	# inventory screen reports its own combinations.
+	if _gameplay_hud and not inventory_view.visible and Inventory.def(id).has("found_flag"):
+		show_toast("Received: " + Inventory.item_name(id), str(Inventory.def(id).get("icon", "")))
+
+
+func _refresh_carry() -> void:
+	var held := Inventory.held
+	held_chip.visible = held != ""
+	if held != "":
+		held_label.text = "Holding: " + Inventory.item_name(held)
+		var path := str(Inventory.def(held).get("icon", ""))
+		held_icon.texture = load(path) if ResourceLoader.exists(path) else null
+	lantern_chip.visible = Inventory.has("old_lantern")
+	lantern_label.text = "Lantern: lit" if Inventory.lantern_on() else "Lantern: shuttered"
+	lantern_label.add_theme_color_override("font_color", Color("#f0d27a") if Inventory.lantern_on() else Color("#9a8eaa"))
+	carry_bar.visible = _gameplay_hud and (held_chip.visible or lantern_chip.visible)
+	held_chip.reset_size()
+	lantern_chip.reset_size()
+	if _focus and is_instance_valid(_focus):
+		set_interact_focus(_focus)
 
 
 # ------------------------------------------------------------------- HUD --
@@ -88,6 +127,8 @@ func set_gameplay_hud(on: bool) -> void:
 		if _caption:
 			_caption.visible = false
 	_refresh_objective()
+	if carry_bar:
+		_refresh_carry()
 
 
 func is_gameplay_hud() -> bool:
@@ -125,7 +166,7 @@ func _on_saved() -> void:
 func set_interact_focus(target: Node) -> void:
 	_focus = target
 	if target and "prompt" in target:
-		prompt_label.text = str(target.get("prompt"))
+		prompt_label.text = str(target.call("prompt_text")) if target.has_method("prompt_text") else str(target.get("prompt"))
 		var important: bool = target.get("important") == true
 		prompt_label.add_theme_color_override("font_color", PROMPT_IMPORTANT if important else PROMPT_COLOR)
 		prompt.reset_size()
@@ -149,6 +190,7 @@ func hide_prompts() -> void:
 
 func _process(_delta: float) -> void:
 	var busy := _busy()
+	carry_bar.visible = _gameplay_hud and not is_menu_open() and (held_chip.visible or lantern_chip.visible)
 	if _focus and is_instance_valid(_focus) and _gameplay_hud and not busy:
 		prompt.visible = true
 		_place_over(prompt, _focus.call("get_prompt_position"))
@@ -195,7 +237,8 @@ func _next_toast() -> void:
 	var item: Array = _toast_queue.pop_front()
 	toast_label.text = item[0]
 	var icon_name: String = item[1]
-	var path := "res://assets/sprites/ui/icon_%s.png" % icon_name
+	# a short name ("bell") or, for items, the icon's full path
+	var path := icon_name if icon_name.begins_with("res://") else "res://assets/sprites/ui/icon_%s.png" % icon_name
 	toast_icon.visible = icon_name != "" and ResourceLoader.exists(path)
 	if toast_icon.visible:
 		toast_icon.texture = load(path)
@@ -297,8 +340,17 @@ func _make_caption() -> void:
 
 
 func _update_caption() -> void:
-	if _caption.visible and _caption.has_meta("world_pos"):
-		_place_over(_caption, _caption.get_meta("world_pos"))
+	if not (_caption.visible and _caption.has_meta("world_pos")):
+		return
+	_place_over(_caption, _caption.get_meta("world_pos"))
+	# Never sit on a prompt (a refusal at a target would cover its own "E Use"
+	# prompt): lift the line above any prompt it would overlap.
+	var rect := Rect2(_caption.position, _caption.size)
+	for pass_i in 2:
+		for c: Control in [prompt, echo_prompt]:
+			if c.visible and rect.intersects(Rect2(c.position, c.size)):
+				rect.position.y = c.position.y - rect.size.y - 1.0
+	_caption.position = Vector2(rect.position.x, maxf(2.0, rect.position.y))
 
 
 # ------------------------------------------------------------ echo effect --
@@ -317,7 +369,17 @@ func play_echo_effect(hold: float = 1.6) -> void:
 # ------------------------------------------------------------------ menus --
 func is_menu_open() -> bool:
 	return journal.visible or document_view.visible or pause_menu.visible or settings_menu.visible \
-		or reconstruction_view.visible or ritual_view.visible
+		or reconstruction_view.visible or ritual_view.visible or inventory_view.visible or winch_view.visible
+
+
+## The crossing's winch. The signal carries whether the bridge was released.
+func open_winch() -> Signal:
+	return winch_view.call("open")
+
+
+## Inventory (I). Not while talking, in a menu, or during a cutscene.
+func open_inventory() -> void:
+	inventory_view.call("open")
 
 
 func open_document(doc_id: String) -> Signal:
@@ -327,6 +389,14 @@ func open_document(doc_id: String) -> Signal:
 ## Echo Reconstruction board. The signal carries whether it was solved.
 func open_reconstruction(id: String) -> Signal:
 	return reconstruction_view.call("open", id)
+
+
+## Inspecting the Watchman's Token lays out its clues on the reconstruction
+## board (V2.2). Solving it plays a short scene.
+func inspect_token(reconstruction_id: String) -> void:
+	var solved: bool = await open_reconstruction(reconstruction_id)
+	if solved and not DialogueManager.is_active():
+		DialogueManager.start("watch_promise_known")
 
 
 ## The bell ritual. The signal carries whether the song was completed.
@@ -359,6 +429,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		get_viewport().set_input_as_handled()
 		open_journal()
+	elif event.is_action_pressed("inventory"):
+		if is_menu_open() or DialogueManager.is_active() or GameState.is_input_locked():
+			return
+		get_viewport().set_input_as_handled()
+		open_inventory()
 
 
 # -------------------------------------------------- global dialogue events --
@@ -374,6 +449,7 @@ func _register_global_events() -> void:
 	DialogueManager.register_event("fade_in", func(d: float = 0.6) -> Signal: return SceneManager.fade_to(0.0, d))
 	DialogueManager.register_event("echo_effect", func(hold: float = 1.6) -> void: play_echo_effect(hold))
 	DialogueManager.register_event("reconstruct", func(id: String) -> Signal: return open_reconstruction(id))
+	DialogueManager.register_event("give_item", func(id: String) -> void: Inventory.give(id))
 	DialogueManager.register_event("caption_here", func(text: String) -> void:
 		var area := SceneManager.current_area
 		if area and is_instance_valid(area) and area.has_method("get_player"):
